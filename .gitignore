@@ -1,0 +1,42 @@
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+
+# Builds
+build/
+dist/
+*.spec
+node_modules/
+
+# Test output (screenshots are regenerated; keep only the committed baseline folder)
+test-results/
+screenshots/out/
+
+# Never commit these: local settings, logs, keys, personal paths
+*.log
+settings.json
+.env
+.env.*
+*.lnk
+*.key
+*.pem
+
+# Worktrees for parallel work packages
+.worktrees/
+
+# Jarvis runtime data never lives in git (RUNTIME §10)
+/memory/
+/undo/
+/data/
+/browser/
+/logs/
+
+# The demo fixture for the settings contract is not a local settings file
+!contracts/examples/settings.json
+*.egg-info/
+
+# Laptop A pairing hand-off (holds a token; made and deleted by the Laptop A scripts)
+*.pairing

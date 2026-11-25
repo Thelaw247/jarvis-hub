@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rail.schema.json",
+  "title": "The Rail: six fixed slots that track things, kept on the server",
+  "description": "Closing, expiring, evicting, stepping aside and CLEAR VIEW dock a thing here; only done or archive removes it.",
+  "type": "object",
+  "properties": {
+    "slots": {
+      "type": "object",
+      "properties": {
+        "yes": {
+          "$ref": "#/$defs/slot"
+        },
+        "today": {
+          "$ref": "#/$defs/slot"
+        },
+        "homework": {
+          "$ref": "#/$defs/slot"
+        },
+        "messages": {
+          "$ref": "#/$defs/slot"
+        },
+        "jarvis": {
+          "$ref": "#/$defs/slot"
+        },
+        "parked": {
+          "$ref": "#/$defs/slot"
+        }
+      },
+      "required": [
+        "yes",
+        "today",
+        "homework",
+        "messages",
+        "jarvis",
+        "parked"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "slots"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "item": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "description": "The thing this is about (approval, due item, thread, message, job, file, branch\u2026). One item per ref in the whole Rail."
+        },
+        "slot": {
+          "enum": [
+            "yes",
+            "today",
+            "homework",
+            "messages",
+            "jarvis",
+            "parked"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "approval",
+            "due",
+            "event",
+            "thread",
+            "file",
+            "message",
+            "job",
+            "fact",
+            "branch",
+            "notice"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "at": {
+          "type": "string",
+          "description": "When it was last touched. Idle 7 days: it folds into Parked.",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+        },
+        "state": {
+          "$ref": "common.schema.json#/$defs/glance"
+        },
+        "detail": {
+          "type": "string",
+          "description": "One short line: 'Results \u00b7 paused yesterday'"
+        },
+        "thumb": {
+          "$ref": "common.schema.json#/$defs/thumb"
+        },
+        "tier": {
+          "enum": [
+            1,
+            2
+          ]
+        },
+        "from": {
+          "enum": [
+            "yes",
+            "today",
+            "homework",
+            "messages",
+            "jarvis",
+            "parked"
+          ],
+          "description": "The slot it sat in before it folded into Parked"
+        },
+        "window": {
+          "$ref": "window.schema.json",
+          "description": "The docked window, kept whole so recalling it brings back the same view"
+        }
+      },
+      "required": [
+        "ref",
+        "slot",
+        "kind",
+        "title",
+        "at"
+      ],
+      "additionalProperties": false
+    },
+    "said": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "at": {
+          "type": "string",
+          "description": "ISO 8601 date-time, local time unless it carries an offset",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+        },
+        "kind": {
+          "enum": [
+            "caption",
+            "toast"
+          ]
+        },
+        "source": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/source"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "text",
+        "at",
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "slot": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/item"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "The number on the gauge when it isn't simply items.length"
+        },
+        "done": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Today's share done: the gauge's 270\u00b0 arc"
+        },
+        "worst": {
+          "$ref": "common.schema.json#/$defs/glance"
+        },
+        "said": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/said"
+          },
+          "maxItems": 10,
+          "description": "Jarvis slot only: the last 10 lines Jarvis said or toasted, newest first"
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

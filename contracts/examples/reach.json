@@ -1,0 +1,27 @@
+{
+  "tools": [
+    { "id": "own-data", "name": "Your polled data", "rung": 1, "reads": "Canvas, PAWS, calendar and Class Content, already fetched", "writes": "Nothing", "status": "connected", "on": true, "where": "Laptop B", "last_used": "2026-11-16T15:38:00" },
+    { "id": "gmail", "name": "Gmail", "rung": 2, "reads": "New mail, to flag what matters", "writes": "Drafts only when you ask; sending waits for your yes", "status": "connected", "on": true, "where": "Cloud", "last_used": "2026-11-16T15:31:00" },
+    { "id": "gcal", "name": "Google Calendar", "rung": 2, "reads": "Your events", "writes": "Study blocks and moves, after your yes", "status": "connected", "on": true, "where": "Cloud", "last_used": "2026-11-16T15:36:00" },
+    { "id": "gdrive", "name": "Google Drive and Docs", "rung": 2, "reads": "Files you can open", "writes": "New docs, after your yes", "status": "connected", "on": true, "where": "Cloud", "last_used": "2026-11-15T19:02:00" },
+    { "id": "github", "name": "GitHub", "rung": 2, "reads": "Your repositories", "writes": "Issues and branches, after your yes", "status": "needs_sign_in", "on": false, "where": "Cloud", "last_used": null },
+    { "id": "files-a", "name": "Files on Laptop A", "rung": 3, "reads": "List, read and search in the allowed folders", "writes": "Make folders, write, move, rename; deletes go to the undo bin", "status": "connected", "on": true, "where": "Laptop A", "last_used": "2026-11-15T20:16:00" },
+    { "id": "apps-a", "name": "Apps on Laptop A", "rung": 3, "reads": "Which apps and windows are open", "writes": "Open apps and files, arrange windows", "status": "connected", "on": true, "where": "Laptop A", "last_used": "2026-11-16T09:04:00" },
+    { "id": "files-b", "name": "Files on Laptop B", "rung": 3, "reads": "List, read and search in the allowed folders", "writes": "Make folders, write, move, rename; deletes go to the undo bin", "status": "connected", "on": true, "where": "Laptop B", "last_used": "2026-11-14T16:40:00" },
+    { "id": "fusion-mcp", "name": "Fusion", "rung": 4, "reads": "Designs in Fusion Projects", "writes": "Sketches, bodies and exports (STL, STEP, 3MF), after your yes", "status": "connected", "on": true, "where": "Laptop A", "last_used": "2026-11-12T18:20:00" },
+    { "id": "claude-agent", "name": "Claude agent sessions", "rung": 5, "reads": "Only what a task's brief lets it", "writes": "Through the tools above, each write asked", "status": "connected", "on": true, "where": "Laptop B", "last_used": "2026-11-15T20:16:00" },
+    { "id": "computer-use", "name": "Screen control on Laptop A", "rung": 6, "reads": "Screenshots, only while a task asks", "writes": "Clicks and typing; submit, send, buy and delete still ask", "status": "off", "on": false, "where": "Laptop A", "last_used": null }
+  ],
+  "folders": ["Documents", "Desktop", "OneDrive\\Class Content", "OneDrive\\Class Management", "Jarvis Workspace"],
+  "apps": [
+    { "id": "fusion", "name": "Fusion", "status": "set_up", "scope": "Fusion Projects › Jarvis: sketches, bodies, exports", "tool": "fusion-mcp" },
+    { "id": "office", "name": "Office", "status": "not_set_up", "scope": "Word, Excel and PowerPoint, once it's set up" },
+    { "id": "vscode", "name": "VS Code", "status": "not_set_up", "scope": "Folders you open in it, once it's set up" }
+  ],
+  "caps": { "task_usd": 1, "day_usd": 5, "spent_today_usd": 0 },
+  "catches": [
+    { "id": "c-lab", "line": "Prof: GE 122 lab moved to Thursday", "from": "Prof. Lindqvist", "at": "2026-11-16T09:12:00", "source": { "kind": "gmail", "label": "Gmail · 9:12 am" } },
+    { "id": "c-pps6", "line": "Crowdmark: PPS 6 marks are back", "from": "Crowdmark", "at": "2026-11-16T11:05:00", "source": { "kind": "gmail", "label": "Gmail · 11:05 am" } },
+    { "id": "c-drill", "line": "Residence: fire drill Wednesday at 7 pm", "from": "Maple Hall", "at": "2026-11-16T14:20:00", "source": { "kind": "gmail", "label": "Gmail · 2:20 pm" } }
+  ]
+}

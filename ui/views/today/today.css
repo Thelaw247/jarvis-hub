@@ -1,0 +1,44 @@
+jv-view-today { display: block; }
+.jv-today__done { display: inline-flex; align-items: center; gap: 6px; margin-left: 6px; color: var(--leaf-ink); background: var(--growth-soft); border-radius: var(--r-pill); padding: 1px 12px 1px 8px; vertical-align: 1px; }
+.jv-today__done jv-glance { line-height: 0; }
+:root[data-theme="night"] .jv-today__done { background: transparent; color: var(--cyan-hi); font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); padding: 0; margin-left: 10px; }
+:root[data-theme="night"] .jv-today__done b { font-weight: 400; }
+
+/* the next window: one big thing (the time), a two-line title, the room as a big code */
+.jv-today__next { display: grid; gap: 12px; }
+.jv-today__next-body { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 6px var(--gap-large); }
+.jv-today__next-time { display: flex; align-items: baseline; gap: 6px; line-height: 1; }
+.jv-today__half { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-2); }
+.jv-today__next-what { display: grid; gap: 6px; min-width: 0; flex: 1 1 260px; padding-bottom: 4px; }
+.jv-today__next-what .jv-display { font-size: 28px; line-height: 30px; }
+.jv-today__next-where { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; }
+.jv-today__room { font: 400 18px/24px var(--font-mono); letter-spacing: 0.06em; color: var(--text); }
+.jv-today__next--clear .jv-display { margin-top: 4px; }
+:root[data-theme="night"] .jv-today__next { border-color: var(--frame-on); }
+
+.jv-today__plan .jv-view__kicker { margin-bottom: 0; }
+.jv-today__proposal { display: grid; gap: 8px; margin-bottom: var(--gap); }
+.jv-today__proposal > p { max-width: var(--measure); }
+.jv-today__ptitle { font: 500 17px/24px var(--font-head); }
+:root[data-theme="night"] .jv-today__ptitle { font: var(--display); letter-spacing: var(--display-track); text-transform: var(--display-case); }
+.jv-today__changes { display: grid; gap: 2px; }
+.jv-today__changes li { padding-left: 16px; position: relative; }
+.jv-today__changes li::before { content: "+"; position: absolute; left: 0; color: var(--leaf-ink); font-weight: 700; }
+:root[data-theme="night"] .jv-today__changes li::before { color: var(--text); font-family: var(--font-mono); font-weight: 400; }
+.jv-today__buttons { display: flex; flex-wrap: wrap; gap: var(--gap-small); margin-top: 4px; }
+.jv-today__tweak { display: grid; gap: 6px; }
+.jv-today__ask { font: 500 14px/20px var(--font-head); color: var(--text); }
+.jv-today__tweak input { height: var(--control-height); padding: 0 12px; background: var(--sheet); border: 1px solid var(--control); border-radius: var(--r-control); }
+.jv-today__none { color: var(--muted); max-width: var(--measure); }
+/* moved and missed: quiet dashed rows, never a red miss */
+.jv-today__moved { display: grid; gap: 0; }
+.jv-today__moved-row { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 12px; align-items: center; padding: 10px 0; border-top: 1px dashed var(--rule); }
+.jv-today__moved-row:last-child { border-bottom: 1px dashed var(--rule); }
+.jv-today__moved-row > jv-glance { grid-row: 1 / span 2; align-self: start; padding-top: 3px; }
+.jv-today__moved-row > p { grid-column: 2; }
+/* a free day: one plain card, one quiet action */
+.jv-today__free { display: grid; gap: 6px; justify-items: start; align-self: start; max-width: 640px; }
+.jv-today__free p { max-width: var(--measure); }
+.jv-today__free .jv-btn { margin-top: 10px; }
+:root[data-theme="night"] .jv-today__free h2 { font: var(--display); letter-spacing: var(--display-track); text-transform: var(--display-case); }
+:root[data-size="phone"] .jv-today__next .jv-hero { font-size: 56px; line-height: 56px; }

@@ -1,0 +1,40 @@
+/* The window canvas (stage/canvas.js), on the Stage and (with "On the hub") on the hub's Now view: a 12-column
+   grid whose rows (--rows, set by the window manager) share the screen's height, so it never scrolls. A window
+   whose content doesn't fit goes compact, then an older window steps aside (canvas.js fit()). */
+.jv-canvas { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: repeat(var(--rows, 2), minmax(0, auto)); grid-auto-rows: minmax(0, auto); column-gap: var(--gap-large); row-gap: 28px; align-content: stretch; min-height: 0; padding: var(--gap-small) 0 var(--gap-small); }
+/* every window fills its grid area (a tidy grid of frames); the rows are sized by what the windows hold. The
+   28 px between rows (at every size) is where each window's metadata hangs ("ADDED 3:40 PM"), so nothing
+   below ever covers it. */
+.jv-canvas > jv-window { align-self: stretch; max-height: 100%; }
+/* The canvas is its own stacking layer (F1, his v0.4.1 report): the raised windows inside it (the one Jarvis means
+   at 40, what he works in at 41, a hovered one at 45) stack among themselves only, so anything that opens from the
+   bottom row (the Rail's fan, the command bar), the caption and the toasts are always above every window. */
+.jv-canvas { isolation: isolate; }
+/* while the Rail's fan is open the windows step back one level (static: no transition) and let the pointer pass,
+   so none lifts itself on hover */
+:root:has(#rail[data-open]) .jv-canvas > jv-window { opacity: calc(var(--dim-opacity) * 0.7); pointer-events: none; transition: opacity 200ms var(--ease-out); }
+:root:not([data-size="phone"]) .jv-canvas > jv-window { margin: 0; }
+:root[data-size="laptop"] .jv-canvas { column-gap: var(--gap); }
+/* on the Stage nobody is there to scroll: a window body never scrolls; what can't fit says so (window.css) */
+:root[data-window="stage"] .jv-canvas > jv-window:not([clean]) > .jv-window__body { overflow: hidden; }
+:root[data-size="phone"] .jv-canvas { display: flex; flex-direction: column; gap: var(--gap); padding-bottom: 72px; }
+:root[data-size="phone"] .jv-canvas > jv-window { max-height: none; align-self: stretch; }  /* one full-width column */
+/* the bottom band: windows stop short of the caption's line and of the docked orb (--canvas-reserve, set by canvas.js) */
+:root:not([data-size="phone"]) .jv-canvas:not(.jv-canvas--empty, .jv-canvas--collage) { padding-bottom: var(--canvas-reserve, 52px); }
+
+/* The Stage's aligned cluster (HUD v3 §14.2, canvas.js layoutBoard): each panel is placed absolutely (left, top,
+   its width tier, its own height) on a 16 px gutter, the panels of a row on one top baseline, and stacked by
+   --z: the window Jarvis means comes to the front. The room under each panel holds its one footer item; nothing
+   is over the orb or the bottom row. Panels that sit back only dim: a scale would break the shared edges. */
+.jv-canvas.jv-canvas--collage { display: block; position: relative; padding: 0; min-height: 0; height: 100%; }
+.jv-canvas--collage > jv-window { position: absolute; left: 0; top: 0; z-index: var(--z, 1); max-height: none; margin: 0; align-self: auto; }
+.jv-canvas--collage > jv-window:is([active], [named]) { z-index: 40; }
+:root .jv-canvas--collage:has(> jv-window[active]) > jv-window:not([active], [named], [leaving]) { transform: none; }
+.jv-canvas--collage > jv-window:focus-within { z-index: 41; }  /* what he is working in is never under another */
+
+/* the "next up" window's content (now/widgets.js) */
+.jv-now__next-title { font: 500 18px/26px var(--font-head); }
+.jv-now__next { display: grid; gap: 4px; justify-items: start; }
+
+/* One meaning per mark (HUD v2 §5): the reticle, the wants-you brackets, the "since you looked" notch and the
+   voice's focus cue are all drawn by <jv-window> from its own attributes (components/window/window.css). */

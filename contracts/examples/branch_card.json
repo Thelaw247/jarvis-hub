@@ -1,0 +1,142 @@
+{
+ "branch_id": "ge-122",
+ "status": "Week 11 of 13 · on track; PPS 7 in progress",
+ "next": [
+  {
+   "title": "Lecture 22 · Trusses",
+   "when": "Tue 10:00 am",
+   "where": "ENGR 1A10",
+   "source": {
+    "kind": "paws",
+    "label": "PAWS"
+   }
+  },
+  {
+   "title": "Tutorial",
+   "when": "Wed 2:30 pm",
+   "where": "ENGR 2A20",
+   "source": {
+    "kind": "paws",
+    "label": "PAWS"
+   }
+  },
+  {
+   "title": "Quiz 5",
+   "when": "Thu 10:00 am",
+   "where": "ENGR 1A10",
+   "source": {
+    "kind": "you",
+    "label": "You · Nov 13"
+   }
+  }
+ ],
+ "due": [
+  {
+   "id": "due-pps7",
+   "title": "PPS 7",
+   "due": "2026-11-18T20:00:00",
+   "progress": 0.5,
+   "source": {
+    "kind": "canvas",
+    "label": "Canvas"
+   },
+   "branch_id": "ge-122"
+  },
+  {
+   "id": "due-memo",
+   "title": "Design memo 3",
+   "due": "2026-11-25T23:59:00",
+   "progress": 0,
+   "source": {
+    "kind": "syllabus",
+    "label": "Syllabus GE 122 p.3"
+   },
+   "branch_id": "ge-122"
+  }
+ ],
+ "open_loops": [
+  {
+   "text": "Finish PPS 7 questions 2 and 3",
+   "slot": "Tonight 7:00 to 8:30 pm"
+  }
+ ],
+ "key_facts": [
+  "f-ge-pps7",
+  "f-ge-quiz",
+  "f-ge-late",
+  "f-ge-pace"
+ ],
+ "decisions": [
+  {
+   "text": "Quiz date: Thursday (your call over Canvas)",
+   "date": "Nov 13"
+  }
+ ],
+ "people": [
+  {
+   "name": "Prof. Smith",
+   "role": "Instructor"
+  },
+  {
+   "name": "Maya",
+   "role": "TA, tutorial T05"
+  }
+ ],
+ "files": [
+  {
+   "id": "file-pps7",
+   "name": "PPS 7.pdf",
+   "kind": "pdf",
+   "path": "Class Content/GE 122/Assessments/PPS 7.pdf",
+   "page": "Page 1 of 3",
+   "pages": 3,
+   "branch_id": "ge-122",
+   "preview": [
+    "GE 122 · Problem-Solving Set 7",
+    "1. A beam AB of length 4 m carries a point load…",
+    "2. Find the reactions at supports A and B…",
+    "3. Draw the free-body diagram for the truss…"
+   ]
+  },
+  {
+   "id": "file-pps7-hints",
+   "name": "PPS 7 hints.pdf",
+   "kind": "pdf",
+   "path": "Class Content/GE 122/Lectures/PPS 7 hints.pdf",
+   "page": "Page 1 of 1",
+   "pages": 1,
+   "branch_id": "ge-122",
+   "preview": [
+    "Hints for PPS 7",
+    "Start with the free-body diagram."
+   ]
+  },
+  {
+   "id": "file-l21",
+   "name": "Lecture 21 study pack",
+   "kind": "folder",
+   "path": "Class Content/GE 122/Lectures/L21",
+   "branch_id": "ge-122"
+  }
+ ],
+ "recent": [
+  "a-sync",
+  "a-quiz"
+ ],
+ "gaps": [
+  "No grade yet for PPS 6"
+ ],
+ "story": {
+  "text": "GE 122 is on track. PPS 7 is half done and due Wednesday evening, and the quiz is Thursday by your call.",
+  "sources": [
+   {
+    "kind": "canvas",
+    "label": "Canvas"
+   },
+   {
+    "kind": "you",
+    "label": "You · Nov 13"
+   }
+  ]
+ }
+}

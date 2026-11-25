@@ -1,0 +1,47 @@
+jv-fact-card { display: block; }
+.jv-fact-card { position: relative; display: grid; gap: 6px; padding: 14px 16px; background: var(--card); border: 1px solid var(--line-strong); border-radius: var(--r-card); }
+.jv-fact-card--compact { padding: 0; border: 0; background: none; }
+.jv-fact-card__statement { font: var(--read); }
+.jv-fact-card:not(.jv-fact-card--compact) .jv-fact-card__statement { padding-right: 36px; }
+.jv-fact-card__toggle { position: absolute; top: 8px; right: 8px; width: 36px; min-height: 36px; padding: 0; justify-content: center; }
+.jv-fact-card__toggle[aria-expanded="true"] { background: var(--sunken); color: var(--text); }
+.jv-fact-card__actions .jv-icon { width: 14px; height: 14px; }
+.jv-fact-card__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.jv-fact-card__when { font-size: 13px; }
+.jv-fact-card__pin { display: inline-flex; align-items: center; gap: 4px; font: 500 12px/16px var(--font-head); color: var(--leaf-ink); background: var(--growth-soft); border-radius: var(--r-pill); padding: 3px 9px 3px 6px; }
+.jv-fact-card__pin .jv-icon { width: 13px; height: 13px; }
+.jv-fact-card__basis { color: var(--muted); }
+.jv-fact-card__conflict { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; background: var(--notice-bg); color: var(--notice-ink); border-radius: var(--r-control); padding: 6px 10px; }
+.jv-fact-card__conflict .jv-icon { width: 16px; height: 16px; }
+.jv-fact-card__conflict .jv-link { color: inherit; font-weight: 500; }
+.jv-fact-card__history summary { display: inline-block; cursor: pointer; font-size: 13px; }
+.jv-fact-card__history ul { margin-top: 4px; font-size: 13px; }
+.jv-fact-card__row { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.jv-fact-card__actions { margin: 4px 0 -4px -4px; }
+.jv-fact-card__form { display: grid; gap: 8px; margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--line); }
+.jv-fact-card__form textarea, .jv-fact-card__form select { width: 100%; padding: 8px 10px; background: var(--sheet); border: 1px solid var(--control); border-radius: var(--r-control); font: var(--body); }
+.jv-fact-card__warn { color: var(--error-ink); background: var(--error-bg); border-color: transparent; }
+.jv-fact-card__form { border-top-color: var(--rule); }
+.jv-fact-card__kicker, .jv-fact-card__out { display: none; }
+
+/* Night HUD (N5b): a square window, kicker inside, metadata hanging outside, reading text in Atkinson 15/23 */
+:root[data-theme="night"] .jv-fact-card:not(.jv-fact-card--compact) {
+  border: 1px solid var(--frame); border-radius: var(--r-card); padding: 14px 16px 16px; box-shadow: var(--glow);
+  background: linear-gradient(90deg, transparent, var(--sheen) 18%, var(--sheen) 82%, transparent) top / 100% 1px no-repeat, var(--panel);
+}
+:root[data-theme="night"] .jv-fact-card__kicker { display: flex; padding-right: 34px; margin-bottom: 2px; }
+:root[data-theme="night"] .jv-fact-card--meta { margin-bottom: 24px; }
+:root[data-theme="night"] .jv-fact-card__out { display: block; position: absolute; left: -1px; top: calc(100% + 6px); max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+:root[data-theme="night"] .jv-fact-card__statement { font: var(--body); font-size: 15px; line-height: 23px; color: var(--text); }
+:root[data-theme="night"] .jv-fact-card__toggle { top: 6px; right: 6px; }
+:root[data-theme="night"] .jv-fact-card__pin { background: transparent; color: var(--text-2); font: var(--kicker); letter-spacing: 0.06em; text-transform: var(--kicker-case); box-shadow: inset 0 0 0 1px var(--line-dim); border-radius: var(--r-control); }
+:root[data-theme="night"] .jv-fact-card__basis .jv-label { font: var(--kicker); letter-spacing: var(--kicker-track); color: var(--text-3); }
+:root[data-theme="night"] .jv-fact-card__basis { color: var(--text-2); }
+:root[data-theme="night"] .jv-fact-card__conflict { background: transparent; color: var(--text); border: 1px dashed var(--line-dim); }
+:root[data-theme="night"] .jv-fact-card__conflict .jv-icon { color: var(--text-2); }
+:root[data-theme="night"] .jv-fact-card__when { font: var(--kicker); letter-spacing: 0.06em; text-transform: var(--kicker-case); color: var(--text-3); }
+:root[data-theme="night"] .jv-fact-card__warn { color: var(--crit); background: transparent; border-color: var(--crit); }
+:root[data-theme="night"] .jv-fact-card__form textarea, :root[data-theme="night"] .jv-fact-card__form select { background: var(--bg-0); border-color: var(--line-dim); }
+
+/* HUD v3: dense, small text on the Stage's glass board ([opens]) */
+jv-window[opens] .jv-fact-card__statement { font-size: 14px; line-height: 20px; }

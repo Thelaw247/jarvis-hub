@@ -1,0 +1,141 @@
+{
+ "date": "2026-11-16",
+ "items": [
+  {
+   "id": "d-math",
+   "start": "08:30",
+   "end": "09:20",
+   "title": "MATH 133 lecture",
+   "kind": "class",
+   "where": "ARTS 101",
+   "source": {
+    "kind": "paws",
+    "label": "PAWS"
+   },
+   "state": "done",
+   "branch_id": "math-133"
+  },
+  {
+   "id": "d-ge",
+   "start": "10:00",
+   "end": "11:20",
+   "title": "GE 122 lecture 21 · Frames",
+   "kind": "class",
+   "where": "ENGR 1A10",
+   "source": {
+    "kind": "paws",
+    "label": "PAWS"
+   },
+   "state": "done",
+   "branch_id": "ge-122"
+  },
+  {
+   "id": "d-lunch",
+   "start": "12:00",
+   "end": "12:45",
+   "title": "Lunch with Sam",
+   "kind": "own",
+   "source": {
+    "kind": "you",
+    "label": "You · Nov 15"
+   },
+   "state": "done"
+  },
+  {
+   "id": "d-chem",
+   "start": "13:30",
+   "end": "15:20",
+   "title": "CHEM 142 lab 4",
+   "kind": "lab",
+   "where": "Thorvaldson 173",
+   "source": {
+    "kind": "paws",
+    "label": "PAWS"
+   },
+   "state": "done",
+   "branch_id": "chem-142"
+  },
+  {
+   "id": "d-review",
+   "start": "16:00",
+   "end": "16:45",
+   "title": "Review GE 122 lecture 21",
+   "kind": "block",
+   "source": {
+    "kind": "jarvis",
+    "label": "Jarvis"
+   },
+   "why": "Right after today's lecture, while it's fresh.",
+   "state": "planned",
+   "branch_id": "ge-122"
+  },
+  {
+   "id": "d-pps",
+   "start": "19:00",
+   "end": "20:30",
+   "title": "PPS 7 · questions 2 and 3",
+   "kind": "block",
+   "source": {
+    "kind": "jarvis",
+    "label": "Jarvis"
+   },
+   "why": "Your problem sets run about twice the estimate, so this block is 90 minutes.",
+   "state": "planned",
+   "branch_id": "ge-122"
+  },
+  {
+   "id": "d-chemrev",
+   "start": "08:00",
+   "end": "08:30",
+   "title": "CHEM 142 pre-lab review",
+   "kind": "block",
+   "source": {
+    "kind": "jarvis",
+    "label": "Jarvis"
+   },
+   "state": "moved",
+   "moved_to": "Moved to 4 pm tomorrow. No problem.",
+   "branch_id": "chem-142"
+  }
+ ],
+ "proposals": [
+  {
+   "id": "p-laundry",
+   "text": "Laundry tomorrow at 9:00 am",
+   "why": "The room is quiet on weekday mornings and you're free until 10:00 am.",
+   "changes": [
+    "Adds “Laundry” Tue 9:00 to 10:00 am"
+   ],
+   "sources": [
+    {
+     "kind": "you",
+     "label": "You · Nov 2"
+    },
+    {
+     "kind": "calendar",
+     "label": "Calendar"
+    }
+   ]
+  }
+ ],
+ "dial": [
+  {
+   "id": "dial-review",
+   "kind": "block",
+   "start": "2026-11-16T16:00:00",
+   "end": "2026-11-16T16:45:00",
+   "title": "Review GE 122 lecture 21",
+   "where": "Your desk",
+   "state": "next",
+   "ref": "d-review"
+  },
+  {
+   "id": "dial-pps7",
+   "kind": "due",
+   "start": "2026-11-18T20:00:00",
+   "title": "PPS 7",
+   "state": "upcoming",
+   "ref": "due-pps7"
+  }
+ ]
+}

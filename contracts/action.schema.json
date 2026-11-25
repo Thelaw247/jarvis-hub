@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "action.schema.json",
+  "title": "A receipt: something Jarvis did (or chose not to do)",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+    },
+    "ts": {
+      "type": "string",
+      "description": "ISO 8601 date-time, local time unless it carries an offset",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+    },
+    "kind": {
+      "enum": [
+        "done",
+        "held"
+      ]
+    },
+    "what": {
+      "type": "string"
+    },
+    "why": {
+      "type": "string"
+    },
+    "category": {
+      "enum": [
+        "calendar",
+        "files",
+        "messages",
+        "memory",
+        "tree",
+        "skills",
+        "keys",
+        "agent"
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/source"
+      }
+    },
+    "result": {
+      "type": "string"
+    },
+    "branch_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+    },
+    "undone": {
+      "type": "boolean"
+    },
+    "undo": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "until": {
+              "type": "string",
+              "description": "ISO 8601 date-time, local time unless it carries an offset",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+            },
+            "label": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "until",
+            "label"
+          ],
+          "additionalProperties": false,
+          "description": "Undo window, e.g. label '24 h'. After `until` the row stays and the button goes."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "ts",
+    "kind",
+    "what",
+    "why",
+    "category"
+  ],
+  "additionalProperties": false
+}

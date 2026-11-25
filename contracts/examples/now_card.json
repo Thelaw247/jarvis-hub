@@ -1,0 +1,48 @@
+{
+ "greeting": "Good afternoon",
+ "updated": "2026-11-16T15:38:00",
+ "next_up": {
+  "title": "Review GE 122 lecture 21",
+  "when": "4:00 pm",
+  "where": "Your desk",
+  "source": {
+   "kind": "jarvis",
+   "label": "Jarvis"
+  }
+ },
+ "flag": {
+  "text": "PPS 7 is due Wednesday 8 pm · half done",
+  "why": "It's the closest deadline, and your problem sets run about twice the estimate.",
+  "branch_id": "ge-122",
+  "source": {
+   "kind": "canvas",
+   "label": "Canvas"
+  }
+ },
+ "ready_to_offer": [
+  {
+   "id": "o-week",
+   "text": "A study plan for this week",
+   "path": "/activity"
+  },
+  {
+   "id": "o-hints",
+   "text": "New hints for PPS 7",
+   "path": "/life/ge-122"
+  }
+ ],
+ "gaps": [
+  "Nothing booked for Thursday afternoon. Free?"
+ ],
+ "done_today": [
+  "MATH 133 lecture",
+  "GE 122 lecture 21",
+  "Lunch with Sam",
+  "CHEM 142 lab 4"
+ ],
+ "day": {
+  "done": 4,
+  "total": 6
+ },
+ "moment": "between"
+}

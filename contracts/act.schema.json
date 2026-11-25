@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "act.schema.json",
+  "title": "A UI action (POST /api/act)",
+  "type": "object",
+  "properties": {
+    "action": {
+      "enum": [
+        "approve",
+        "decline",
+        "change",
+        "undo",
+        "pin",
+        "unpin",
+        "close",
+        "close_all",
+        "move",
+        "forget",
+        "confirm",
+        "edit",
+        "pin_rule",
+        "file",
+        "mute",
+        "unmute",
+        "set",
+        "apply",
+        "skip",
+        "keep_mine",
+        "use_theirs",
+        "open",
+        "ask",
+        "revoke",
+        "demo",
+        "save_layout",
+        "resize",
+        "less",
+        "wrong",
+        "dock",
+        "recall",
+        "order",
+        "seen",
+        "archive",
+        "resume_save",
+        "resume_accept",
+        "start",
+        "stop"
+      ]
+    },
+    "target": {
+      "type": "string"
+    },
+    "args": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "action",
+    "target"
+  ],
+  "additionalProperties": false
+}

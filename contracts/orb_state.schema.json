@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "orb_state.schema.json",
+  "title": "Orb state (Jarvis's face)",
+  "type": "object",
+  "properties": {
+    "state": {
+      "enum": [
+        "idle",
+        "listening",
+        "thinking",
+        "speaking",
+        "waiting",
+        "muted",
+        "offline",
+        "standby",
+        "alert"
+      ],
+      "description": "standby: the quiet ambient screen (nobody here). alert: an alert with no other state. A wake is never a state: it is the change to listening, with last_wake"
+    },
+    "level": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Voice or TTS level for listening/speaking"
+    },
+    "countdown_s": {
+      "type": "number",
+      "description": "Seconds left in the answer window (waiting)"
+    },
+    "window_s": {
+      "type": "number",
+      "description": "Length of the answer window"
+    },
+    "message": {
+      "type": "string",
+      "description": "What to do next when offline or there is a problem"
+    },
+    "alert": {
+      "enum": [
+        "warn",
+        "crit"
+      ],
+      "description": "An alert on top of any state: the ring turns amber (warn) or red (crit) with one pulse"
+    },
+    "last_wake": {
+      "anyOf": [
+        {
+          "$ref": "common.schema.json#/$defs/iso"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "On a wake (listening): when he woke Jarvis the time before, or null for the first wake. The first wake of the day, or one after 4 hours away, gets the full wake beat; every other wake the short one"
+    }
+  },
+  "required": [
+    "state"
+  ],
+  "additionalProperties": false
+}

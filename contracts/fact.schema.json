@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fact.schema.json",
+  "title": "One thing Jarvis knows",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+    },
+    "branch_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+    },
+    "statement": {
+      "type": "string"
+    },
+    "source": {
+      "$ref": "common.schema.json#/$defs/source"
+    },
+    "confidence": {
+      "$ref": "common.schema.json#/$defs/confidence"
+    },
+    "basis": {
+      "type": "string",
+      "description": "For guesses: what it was guessed from"
+    },
+    "learned": {
+      "type": "string",
+      "description": "ISO 8601 date-time, local time unless it carries an offset",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+    },
+    "last_confirmed": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "ISO 8601 date-time, local time unless it carries an offset",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "pinned": {
+      "type": "boolean"
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "was": {
+            "type": "string"
+          },
+          "when": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "was",
+          "when"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "conflict": {
+      "type": "object",
+      "properties": {
+        "other_source": {
+          "$ref": "common.schema.json#/$defs/source"
+        },
+        "other_value": {
+          "type": "string"
+        },
+        "kept": {
+          "enum": [
+            "mine",
+            "theirs"
+          ]
+        }
+      },
+      "required": [
+        "other_source",
+        "other_value",
+        "kept"
+      ],
+      "additionalProperties": false,
+      "description": "Shown resolved his way, with one toggle."
+    },
+    "guess_branch_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "description": "Unsorted items only: where Jarvis thinks it belongs"
+    },
+    "derived": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "What else goes if this is forgotten (shown in the Forget preview)"
+    },
+    "tier": {
+      "enum": [
+        1,
+        2
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "branch_id",
+    "statement",
+    "source",
+    "confidence"
+  ],
+  "additionalProperties": false
+}

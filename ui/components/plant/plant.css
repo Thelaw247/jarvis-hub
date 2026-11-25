@@ -1,0 +1,26 @@
+jv-plant { display: inline-block; }
+.jv-plant { display: block; width: 100%; height: 100%; overflow: visible; }
+jv-plant[kind="day"], jv-plant:not([kind]) { width: 72px; height: 330px; }
+jv-plant[kind="potted"] { width: 220px; height: 228px; }
+jv-plant[kind="sprig"] { width: 112px; height: 40px; }
+jv-plant[kind="leaf"] { width: 16px; height: 16px; }
+.jv-leaf__body { fill: var(--leaf); }
+.jv-leaf__light { fill: var(--leaf-light); }
+.jv-leaf__rib { fill: none; stroke: var(--leaf-rib); stroke-width: 0.8; stroke-linecap: round; opacity: 0.8; }
+.jv-plant__frond--deep .jv-leaf__body { fill: var(--leaf-deep); }
+.jv-plant__frond--deep .jv-leaf__light { fill: var(--leaf-deep-light); }
+.jv-plant__stem { fill: none; stroke: var(--stem); stroke-width: 2.4; stroke-linecap: round; }
+.jv-plant__pot { fill: var(--pot); } .jv-plant__pot2 { fill: var(--pot-shade); } .jv-plant__pot3 { fill: var(--pot-rim); }
+.jv-plant__soil { fill: var(--soil); } .jv-plant__wash { fill: var(--wash); } .jv-plant__shade { fill: var(--shade); }
+.jv-plant__petal { fill: var(--bloom); } .jv-plant__eye { fill: var(--bloom-eye); }
+.jv-plant-row { display: flex; align-items: center; gap: var(--gap-large); }
+
+/* Night HUD (N5b): plants become a subtle line-art growth glyph. No fills, thin ice strokes (--line-dim), the pot an
+   outline, the bloom (all done) a cyan-hi outline: done is cyan-hi, never green. Daylight keeps the painted plant.
+   Turning plants off in Controls still hides them in both themes. */
+:root[data-theme="night"] :is(.jv-leaf__body, .jv-plant__pot, .jv-plant__pot3) { fill: none; stroke: var(--line-dim); stroke-width: 1; }
+:root[data-theme="night"] :is(.jv-leaf__light, .jv-leaf__rib, .jv-plant__pot2, .jv-plant__soil, .jv-plant__wash, .jv-plant__shade) { display: none; }
+:root[data-theme="night"] .jv-plant__frond--deep .jv-leaf__body { fill: none; }
+:root[data-theme="night"] .jv-plant__stem { stroke: var(--line-dim); stroke-width: 1.2; }
+:root[data-theme="night"] .jv-plant__petal { fill: none; stroke: var(--cyan-hi); stroke-width: 1.2; }
+:root[data-theme="night"] .jv-plant__eye { fill: var(--cyan-hi); }

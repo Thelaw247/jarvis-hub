@@ -1,0 +1,21 @@
+{
+ "id": "ge-122",
+ "parent": "fall-2026",
+ "name": "GE 122",
+ "glyph": "GE",
+ "kind": "leaf",
+ "status": "active",
+ "tier": 1,
+ "activity": 2,
+ "due": {
+  "label": "2d",
+  "hours": 52
+ },
+ "pending": 0,
+ "counts": {
+  "due": 2,
+  "open_loops": 1,
+  "facts": 9
+ },
+ "summary": "Week 11 of 13 · on track"
+}

@@ -1,0 +1,33 @@
+jv-action-row { display: block; }
+.jv-action-row { display: grid; grid-template-columns: 132px minmax(0, 1fr) auto; gap: 4px var(--gap); align-items: start; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.jv-action-row__when { display: grid; gap: 4px; padding-top: 3px; font: 400 13px/18px var(--font-ui); color: var(--muted); font-variant-numeric: tabular-nums; }
+.jv-action-row__cat { display: inline-flex; align-items: center; gap: 4px; }
+.jv-action-row__cat .jv-icon { width: 13px; height: 13px; }
+.jv-action-row__main { display: grid; gap: 3px; min-width: 0; }
+.jv-action-row__what { font: 500 15px/22px var(--font-head); }
+.jv-action-row__why { color: var(--muted); }
+.jv-action-row__sources { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.jv-action-row__undo { padding-top: 2px; }
+.jv-action-row__state { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; }
+.jv-action-row--undone .jv-action-row__what { text-decoration: line-through; text-decoration-color: var(--control); color: var(--muted); }
+.jv-action-row__tag { font: var(--label); letter-spacing: var(--label-track); text-transform: var(--kicker-case); color: var(--muted); border: 1px dashed var(--control); border-radius: var(--r-pill); padding: 1px 8px; margin-right: 4px; vertical-align: 2px; }
+:root[data-size="phone"] .jv-action-row { grid-template-columns: minmax(0, 1fr); }
+:root[data-size="phone"] .jv-action-row__when { display: flex; gap: var(--gap); }
+.jv-action-row--quiet .jv-action-row__what { color: var(--muted); font-weight: 400; }
+/* Activity moves focus here after Yes or Undo; keyboard users see where they landed */
+.jv-action-row:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; box-shadow: 0 0 0 5px var(--bg-0); border-radius: var(--r-control); }
+.jv-action-row__when jv-glance { margin-top: 2px; }
+
+/* Night HUD (N5b): an instrument log. Time in mono tabular figures, kind as a kicker, state as a glance mark;
+   Undo is a small outlined pill; a "no" is a quiet row (no mark, dashed rule, secondary text). */
+:root[data-theme="night"] .jv-action-row__when { font: 400 13px/18px var(--font-mono); color: var(--text); gap: 6px; }
+:root[data-theme="night"] .jv-action-row__cat { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3); }
+:root[data-theme="night"] .jv-action-row__why { color: var(--text-2); }
+:root[data-theme="night"] .jv-action-row__why .jv-label { font: var(--kicker); letter-spacing: var(--kicker-track); color: var(--text-3); }
+:root[data-theme="night"] .jv-action-row__result { color: var(--text); }
+:root[data-theme="night"] .jv-action-row__undo .jv-btn { font: var(--kicker); letter-spacing: 0.06em; text-transform: var(--kicker-case); background: transparent; border-color: var(--line-dim); color: var(--text); }
+:root[data-theme="night"] .jv-action-row__undo .jv-btn:hover { border-color: var(--frame-on); background: var(--sunken); }
+:root[data-theme="night"] .jv-action-row__state { font: var(--kicker); letter-spacing: 0.06em; text-transform: var(--kicker-case); color: var(--text-3); }
+:root[data-theme="night"] .jv-action-row__tag { font: var(--kicker); letter-spacing: var(--kicker-track); border-color: var(--line-dim); color: var(--text-2); border-radius: var(--r-control); }
+:root[data-theme="night"] .jv-action-row--quiet { border-bottom-style: dashed; }
+:root[data-theme="night"] .jv-action-row--quiet .jv-action-row__what { color: var(--text-2); }

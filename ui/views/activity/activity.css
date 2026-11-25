@@ -1,0 +1,10 @@
+jv-view-activity { display: block; }
+.jv-activity__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--gap-small) var(--gap); margin-bottom: 4px; }
+.jv-activity__list { margin-top: 4px; }
+.jv-activity__list jv-action-row:last-child .jv-action-row { border-bottom: 0; }
+/* the waiting cards use the width: one card spans the row; two or more share it (each at least 520 px) */
+.jv-activity__waiting { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr)); gap: var(--gap-large); align-items: start; }
+.jv-activity__none { max-width: var(--measure); }
+.jv-activity__bar .jv-view__kicker { margin-bottom: 0; }
+:root[data-theme="night"] .jv-activity__none { color: var(--text-2); }
+:root[data-theme="night"] .jv-activity__held .jv-muted { color: var(--text-2); }

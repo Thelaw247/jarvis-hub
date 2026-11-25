@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "window.schema.json",
+  "title": "A HUD window (widget push)",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+    },
+    "type": {
+      "enum": [
+        "branch_card",
+        "countdown",
+        "next_up",
+        "timeline",
+        "file",
+        "fact",
+        "approval",
+        "timer",
+        "chart",
+        "unsorted",
+        "notice",
+        "web",
+        "map",
+        "agent_task"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "ref": {
+      "type": "string",
+      "description": "ID of the branch, file, fact, approval… this window shows"
+    },
+    "size": {
+      "enum": [
+        "1x1",
+        "2x1",
+        "1x2",
+        "2x2",
+        "3x2",
+        "4x2"
+      ]
+    },
+    "pinned": {
+      "type": "boolean"
+    },
+    "pushed": {
+      "type": "string",
+      "description": "ISO 8601 date-time, local time unless it carries an offset",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+    },
+    "data": {
+      "type": "object",
+      "description": "Extra data for types with no stored object (chart, timer, notice)"
+    },
+    "tier": {
+      "enum": [
+        1,
+        2
+      ]
+    },
+    "docked": {
+      "type": "boolean",
+      "description": "True while the window is folded into its Rail slot (it then lives in rail.slots.<slot>.items[].window, not in state.windows)"
+    },
+    "slot": {
+      "enum": [
+        "yes",
+        "today",
+        "homework",
+        "messages",
+        "jarvis",
+        "parked"
+      ],
+      "description": "The Rail slot this window docks into. Left out, the hub picks one from the type; chart and next_up are pure views and just close."
+    },
+    "thumb": {
+      "$ref": "common.schema.json#/$defs/thumb"
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "title"
+  ],
+  "additionalProperties": false
+}

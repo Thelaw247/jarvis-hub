@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "state.schema.json",
+  "title": "Full hub state (GET /api/state)",
+  "type": "object",
+  "properties": {
+    "v": {
+      "const": 2
+    },
+    "mode": {
+      "enum": [
+        "demo",
+        "live",
+        "scene"
+      ]
+    },
+    "now": {
+      "type": "string",
+      "description": "ISO 8601 date-time, local time unless it carries an offset",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+    },
+    "orb": {
+      "$ref": "orb_state.schema.json"
+    },
+    "now_card": {
+      "$ref": "now_card.schema.json"
+    },
+    "branches": {
+      "type": "array",
+      "items": {
+        "$ref": "branch.schema.json"
+      }
+    },
+    "cards": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "branch_card.schema.json"
+      }
+    },
+    "facts": {
+      "type": "array",
+      "items": {
+        "$ref": "fact.schema.json"
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "$ref": "action.schema.json"
+      }
+    },
+    "approvals": {
+      "type": "array",
+      "items": {
+        "$ref": "approval.schema.json"
+      }
+    },
+    "windows": {
+      "type": "array",
+      "items": {
+        "$ref": "window.schema.json"
+      },
+      "description": "Windows on screen, in order. Docked windows are not here: they sit in rail.slots.<slot>.items[].window."
+    },
+    "jobs": {
+      "type": "array",
+      "items": {
+        "$ref": "job.schema.json"
+      }
+    },
+    "day": {
+      "$ref": "day.schema.json"
+    },
+    "settings": {
+      "$ref": "settings.schema.json"
+    },
+    "metrics": {
+      "$ref": "metrics.schema.json"
+    },
+    "presence": {
+      "type": "object",
+      "properties": {
+        "here": {
+          "type": "boolean"
+        },
+        "others": {
+          "type": "boolean"
+        },
+        "idle_s": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "here"
+      ],
+      "additionalProperties": false
+    },
+    "caption": {
+      "anyOf": [
+        {
+          "$ref": "caption.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "toasts": {
+      "type": "array",
+      "items": {
+        "$ref": "toast.schema.json"
+      }
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "$ref": "now_card.schema.json#/$defs/file"
+      }
+    },
+    "learned_today": {
+      "type": "integer"
+    },
+    "rail": {
+      "$ref": "rail.schema.json"
+    },
+    "marks": {
+      "$ref": "marks.schema.json"
+    },
+    "threads": {
+      "type": "array",
+      "items": {
+        "$ref": "thread.schema.json"
+      }
+    },
+    "focus": {
+      "anyOf": [
+        {
+          "$ref": "focus.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "reach": {
+      "$ref": "reach.schema.json",
+      "description": "What Jarvis can do (Controls › Reach). Optional: left out until the hub knows it."
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "$ref": "agent_task.schema.json"
+      },
+      "description": "Claude agent tasks, running and finished, newest first (Activity › Tasks)."
+    }
+  },
+  "required": [
+    "v",
+    "mode",
+    "now",
+    "orb",
+    "now_card",
+    "branches",
+    "cards",
+    "facts",
+    "actions",
+    "approvals",
+    "windows",
+    "jobs",
+    "day",
+    "settings",
+    "metrics",
+    "presence",
+    "rail",
+    "marks",
+    "threads"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "presence": {
+      "type": "object",
+      "properties": {
+        "here": {
+          "type": "boolean"
+        },
+        "others": {
+          "type": "boolean"
+        },
+        "idle_s": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "here"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "common.schema.json",
+  "title": "Shared pieces used by the other contracts",
+  "description": "Contract set v2 (hub v0.3.0, Night HUD). Changes need the overseer and a version bump.",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+    },
+    "iso": {
+      "type": "string",
+      "description": "ISO 8601 date-time, local time unless it carries an offset",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "you",
+            "canvas",
+            "syllabus",
+            "calendar",
+            "paws",
+            "crowdmark",
+            "gmail",
+            "file",
+            "jarvis",
+            "web",
+            "guess"
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "unexpected": {
+          "type": "boolean"
+        },
+        "ref": {
+          "type": "string"
+        },
+        "snippet": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "label"
+      ],
+      "additionalProperties": false,
+      "description": "Where a claim came from. Always shown as icon + word. `unexpected` marks a source he might not expect; `snippet` is the evidence shown on tap."
+    },
+    "confidence": {
+      "enum": [
+        "sure",
+        "likely",
+        "guess"
+      ],
+      "description": "Shown in words. Sure is hidden by default; Guess gets a dotted underline."
+    },
+    "thumb": {
+      "type": "object",
+      "properties": {
+        "src": {
+          "type": "string",
+          "description": "Where the picture is: /api/thumb/<key>.webp, or a path inside ui/"
+        },
+        "kind": {
+          "enum": [
+            "page",
+            "slide",
+            "course",
+            "video",
+            "design",
+            "person",
+            "monogram",
+            "icon"
+          ]
+        },
+        "alt": {
+          "type": "string",
+          "description": "What the picture shows, in words; never empty"
+        }
+      },
+      "required": [
+        "src",
+        "kind",
+        "alt"
+      ],
+      "additionalProperties": false,
+      "description": "A small picture of a thing, always shown with its label. Cached outside git."
+    },
+    "glance": {
+      "enum": [
+        "done",
+        "progress",
+        "jarvis",
+        "soon",
+        "yes",
+        "critical",
+        "parked"
+      ],
+      "description": "The glance code (HUD v2 \u00a75): each has its own shape, colour and word."
+    },
+    "slot": {
+      "enum": [
+        "yes",
+        "today",
+        "homework",
+        "messages",
+        "jarvis",
+        "parked"
+      ],
+      "description": "A Rail slot: Your yes, Today, Homework, Messages, Jarvis, Parked."
+    }
+  }
+}

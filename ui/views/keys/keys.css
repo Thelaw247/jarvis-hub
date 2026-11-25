@@ -1,0 +1,62 @@
+/* Controls › Keys (K2). One sheet of rows: status (glance) · service, last 4, dates · its next step.
+   Tokens only. The status mark is the only amber or red in a row; everything else is near-white and grey. */
+jv-view-keys { display: block; width: 100%; }
+.jv-keys { width: 100%; max-width: 1180px; }
+.jv-keys__sheet .jv-view__kicker { margin-bottom: 4px; }
+.jv-keys__list { display: grid; margin: 0; padding: 0; list-style: none; }
+.jv-keys__row {
+  display: grid; grid-template-columns: 150px minmax(0, 1fr) auto; align-items: start; gap: 6px var(--gap-large);
+  padding: 14px 0; border-bottom: 1px solid var(--rule);
+}
+.jv-keys__row:last-child { border-bottom: 0; }
+.jv-keys__status { padding-top: 3px; min-width: 0; }
+.jv-keys__main { display: grid; gap: 3px; min-width: 0; }
+.jv-keys__name { font: 500 16px/22px var(--font-head); color: var(--text); display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.jv-keys__name:focus { outline: none; }
+.jv-keys__ex { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3); border: 1px dashed var(--line-dim); border-radius: var(--r-control); padding: 1px 6px; }
+.jv-keys__meta { color: var(--text-2); font-size: 14px; line-height: 20px; }
+.jv-keys__mask { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; color: var(--text); }
+.jv-keys__line { color: var(--text-2); font-size: 14px; line-height: 20px; max-width: var(--measure); }
+.jv-keys__note { color: var(--text-3); }
+.jv-keys__revoke { white-space: nowrap; }
+.jv-keys__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: var(--gap-small); min-width: 0; }
+.jv-keys__confirm { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--gap-small); }
+.jv-keys__ask { color: var(--text); font-size: 14px; }
+.jv-keys__locked { color: var(--text-3); font-size: 13px; }
+.jv-keys__primary { border-color: var(--frame-on); color: var(--text); }
+
+/* the secret field: a quiet input, never echoed (type=password) */
+.jv-keys__form { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-small); margin-top: 8px; }
+.jv-keys__label { flex: 1 0 100%; font-size: 13px; color: var(--text-2); }
+.jv-keys__secret, .jv-keys__select {
+  height: var(--control-height); min-width: 0; padding: 0 12px; color: var(--text);
+  background: var(--sunken); border: 1px solid var(--control); border-radius: var(--r-control);
+}
+.jv-keys__secret { flex: 1 1 280px; max-width: 460px; font-family: var(--font-mono); letter-spacing: 0.08em; }
+.jv-keys__select { height: 32px; font-size: 13px; }
+.jv-keys__hint { flex: 1 0 100%; font-size: 13px; color: var(--text-3); }
+
+/* Voice: the one ElevenLabs voice ID (shown back: not a secret) */
+.jv-voice { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-small); padding: 14px 0 4px; }
+.jv-voice__input { letter-spacing: 0.02em; }
+.jv-voice__now { flex: 1 0 100%; }
+
+/* not connected: one calm panel, no amber (nothing is wrong, it just isn't running yet) */
+.jv-keys__banner { display: grid; gap: 4px; padding: var(--pad) var(--gap-large); background: var(--panel); border: 1px dashed var(--line-dim); border-radius: var(--r-card); max-width: 760px; }
+.jv-keys__banner-title { font: 500 20px/26px var(--font-head); color: var(--text); }
+.jv-keys__banner p:last-child { color: var(--text-2); max-width: var(--measure); }
+.jv-keys__viewonly { color: var(--text-2); }
+.jv-voice__hear { grid-column: 1 / -1; margin-top: 8px; }
+.jv-keys__where { color: var(--text-2); font-size: 14px; line-height: 20px; max-width: var(--measure); }
+.jv-keys__both { display: grid; gap: 6px; }
+.jv-keys__also { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: var(--text); cursor: pointer; }
+.jv-keys__also input { width: 18px; height: 18px; accent-color: var(--accent); }
+.jv-keys__foot { font: 400 12px/18px var(--font-mono); color: var(--text-3); }
+
+:root[data-theme="night"] .jv-keys__banner-kicker { color: var(--cyan); }
+:root[data-theme="night"] .jv-keys__banner-title { font-family: var(--font-display, var(--font-head)); text-transform: var(--kicker-case); letter-spacing: 0.02em; }
+
+:root[data-size="laptop"] .jv-keys__row { grid-template-columns: 132px minmax(0, 1fr) auto; gap: 6px var(--gap); }
+:root[data-size="phone"] .jv-keys__row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+:root[data-size="phone"] .jv-keys__actions { justify-content: flex-start; }
+:root[data-size="phone"] .jv-keys__revoke { white-space: normal; }

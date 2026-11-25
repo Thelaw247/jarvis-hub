@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent_task.schema.json",
+  "title": "A Claude agent task (\"call on Claude\", REACH §3 and §5.4)",
+  "description": "A running or finished Claude agent session: the goal, the live step, every step, the files it touched, cost against its cap, its permission asks (approvals with category \"agent\") and its transcript. Parked = waiting on his answer while he is away; never failed for that.",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]*$" },
+    "goal": { "type": "string", "maxLength": 120 },
+    "app": { "type": "string", "description": "The app it works in, if any (\"Fusion\")" },
+    "state": { "enum": ["running", "waiting", "parked", "done", "stopped", "failed", "undone"] },
+    "why": { "type": "string", "description": "Why it stopped or failed, in plain words" },
+    "started": { "$ref": "#/$defs/iso" },
+    "ended": { "$ref": "#/$defs/iso" },
+    "step": {
+      "type": "object",
+      "properties": {
+        "n": { "type": "integer", "minimum": 1 },
+        "of": { "type": "integer", "minimum": 1 },
+        "label": { "type": "string", "maxLength": 80 }
+      },
+      "required": ["n", "of", "label"],
+      "additionalProperties": false
+    },
+    "steps": {
+      "type": "array",
+      "maxItems": 60,
+      "items": {
+        "type": "object",
+        "properties": {
+          "n": { "type": "integer", "minimum": 1 },
+          "label": { "type": "string", "maxLength": 80 },
+          "state": { "enum": ["done", "now", "todo", "skipped"] }
+        },
+        "required": ["n", "label", "state"],
+        "additionalProperties": false
+      }
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string" },
+          "change": { "enum": ["created", "changed", "moved", "deleted", "restored"] },
+          "where": { "type": "string" }
+        },
+        "required": ["path", "change"],
+        "additionalProperties": false
+      }
+    },
+    "cost_usd": { "type": "number", "minimum": 0 },
+    "cap_usd": { "type": "number", "minimum": 0 },
+    "thumb": { "$ref": "common.schema.json#/$defs/thumb" },
+    "asks": {
+      "type": "array",
+      "description": "Its permission asks. `id` is the approval; asks with the same `kind` are similar (the second offers \"Allow for this task\").",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]*$" },
+          "kind": { "type": "string" },
+          "answer": { "enum": ["waiting", "allowed", "allowed_for_task", "denied"] },
+          "similar": { "type": "integer", "minimum": 1, "description": "How many asks of this kind this task has made, this one included" }
+        },
+        "required": ["id", "kind", "answer"],
+        "additionalProperties": false
+      }
+    },
+    "allowed": {
+      "type": "array",
+      "description": "Ask kinds he allowed for the rest of this task",
+      "items": { "type": "string" }
+    },
+    "transcript": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "properties": {
+          "at": { "$ref": "#/$defs/iso" },
+          "who": { "enum": ["claude", "jarvis", "you"] },
+          "text": { "type": "string" }
+        },
+        "required": ["at", "who", "text"],
+        "additionalProperties": false
+      }
+    },
+    "undo": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": { "until": { "$ref": "#/$defs/iso" }, "label": { "type": "string" } },
+          "required": ["until", "label"],
+          "additionalProperties": false
+        },
+        { "type": "null" }
+      ]
+    },
+    "brief": {
+      "type": "object",
+      "properties": {
+        "folders": { "type": "array", "items": { "type": "string" } },
+        "apps": { "type": "array", "items": { "type": "string" } },
+        "done_when": { "type": "string" }
+      },
+      "required": ["done_when"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["id", "goal", "state", "started", "steps", "files", "cost_usd", "cap_usd", "asks", "transcript"],
+  "additionalProperties": false,
+  "$defs": {
+    "iso": { "type": "string", "description": "ISO 8601 date-time, local time unless it carries an offset", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}" }
+  }
+}

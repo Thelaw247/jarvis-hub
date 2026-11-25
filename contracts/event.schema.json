@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "event.schema.json",
+  "title": "Event envelope sent over SSE (/api/events)",
+  "type": "object",
+  "properties": {
+    "v": {
+      "const": 2
+    },
+    "type": {
+      "enum": [
+        "orb.state",
+        "nowcard.updated",
+        "branch.updated",
+        "window.push",
+        "window.close",
+        "caption.show",
+        "approval.pending",
+        "approval.resolved",
+        "activity.added",
+        "job.progress",
+        "toast",
+        "presence.changed",
+        "fact.updated",
+        "day.updated",
+        "settings.updated",
+        "nav.go",
+        "window.dock",
+        "window.order",
+        "rail.updated",
+        "marks.updated",
+        "thread.updated",
+        "ui.focus",
+        "reach.updated",
+        "task.updated",
+        "keys.updated", "metrics.updated"
+      ]
+    },
+    "ts": {
+      "type": "string",
+      "description": "ISO 8601 date-time, local time unless it carries an offset",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+    },
+    "data": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "v",
+    "type",
+    "ts",
+    "data"
+  ],
+  "additionalProperties": false,
+  "description": "data by type: orb.state→orb_state · nowcard.updated→now_card · branch.updated→{branch, card?} · window.push→window · window.close→{id|all} · caption.show→caption · approval.pending→approval · approval.resolved→{id,status} · activity.added→action · job.progress→job · toast→toast · presence.changed→presence · fact.updated→{fact}|{id,forgotten} · day.updated→day · settings.updated→settings · nav.go→{path} · window.dock→{id|all, slot?, reason?} · window.order→{ids} · rail.updated→rail · marks.updated→{marks} · thread.updated→{thread}|{id,archived} · ui.focus→focus · reach.updated→reach · task.updated→{task} · keys.updated→keys.schema.json#/$defs/updated",
+  "$defs": {
+    "window_dock": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+        },
+        "all": {
+          "const": true
+        },
+        "slot": {
+          "enum": [
+            "yes",
+            "today",
+            "homework",
+            "messages",
+            "jarvis",
+            "parked"
+          ]
+        },
+        "reason": {
+          "enum": [
+            "closed",
+            "lifetime",
+            "evicted",
+            "aside",
+            "cleared",
+            "expired"
+          ]
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "id"
+          ]
+        },
+        {
+          "required": [
+            "all"
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "window_order": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+          }
+        }
+      },
+      "required": [
+        "ids"
+      ],
+      "additionalProperties": false
+    },
+    "marks_updated": {
+      "type": "object",
+      "properties": {
+        "marks": {
+          "$ref": "marks.schema.json"
+        }
+      },
+      "required": [
+        "marks"
+      ],
+      "additionalProperties": false
+    },
+    "thread_updated": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "thread": {
+              "$ref": "thread.schema.json"
+            }
+          },
+          "required": [
+            "thread"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+            },
+            "archived": {
+              "const": true
+            }
+          },
+          "required": [
+            "id",
+            "archived"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "task_updated": {
+      "type": "object",
+      "properties": {
+        "task": {
+          "$ref": "agent_task.schema.json"
+        }
+      },
+      "required": [
+        "task"
+      ],
+      "additionalProperties": false
+    },
+    "reach_updated": {
+      "$ref": "reach.schema.json"
+    }
+  }
+}

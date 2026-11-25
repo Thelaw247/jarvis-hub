@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "metrics.schema.json",
+  "title": "Under the hood",
+  "type": "object",
+  "properties": {
+    "latency": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "stage": {
+            "type": "string"
+          },
+          "p50_ms": {
+            "type": "number"
+          },
+          "p95_ms": {
+            "type": "number"
+          },
+          "target_ms": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "stage",
+          "p50_ms",
+          "p95_ms"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "connectors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "stale",
+              "error",
+              "off"
+            ]
+          },
+          "last_sync": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "status"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "spend": {
+      "type": "object",
+      "properties": {
+        "claude_usd": {
+          "type": "number"
+        },
+        "credit_usd": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "claude_usd",
+        "credit_usd"
+      ],
+      "additionalProperties": false
+    },
+    "credits": {
+      "type": "object",
+      "properties": {
+        "elevenlabs_left": {
+          "type": "number"
+        },
+        "elevenlabs_total": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "elevenlabs_left",
+        "elevenlabs_total"
+      ],
+      "additionalProperties": false
+    },
+    "eval": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "week": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "week",
+          "score"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "placement_accuracy": {
+      "type": "number"
+    },
+    "backup": {
+      "type": "object",
+      "properties": {
+        "last": {
+          "type": "string"
+        },
+        "restore_test": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "last",
+        "restore_test"
+      ],
+      "additionalProperties": false
+    },
+    "self_report": {
+      "type": "object",
+      "properties": {
+        "learned": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "got_wrong": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "learned",
+        "got_wrong"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "latency"
+  ],
+  "additionalProperties": false
+}

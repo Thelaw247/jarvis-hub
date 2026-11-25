@@ -1,0 +1,27 @@
+/* jv-file-tile: picture + big label, then the kind (icon + words), the name and "Open it". */
+jv-file-tile { display: block; min-width: 0; container-type: inline-size; }
+.jv-file-tile { display: grid; gap: var(--gap); margin: 0; }
+.jv-file-tile__thumb { width: min(100%, 320px); }  /* pictures are 320 px wide: never blown up past that */
+@container (min-width: 520px) {
+  .jv-file-tile:has(> .jv-file-tile__thumb) { grid-template-columns: minmax(0, 320px) minmax(0, 1fr); align-items: start; }
+}
+/* no picture yet: the first lines on the light reading sheet (its own inks, readable in both themes) */
+.jv-file-tile__page { border: 1px solid var(--frame); padding: 14px 16px; min-height: 140px; display: grid; align-content: start; gap: 6px; overflow: hidden; }
+.jv-file-tile__page:not(.jv-paper) { background: var(--bg-0); border-radius: var(--r-control); }
+.jv-file-tile__line { font-size: 13px; line-height: 19px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jv-file-tile__line--title { font: 600 14px/20px var(--font-ui); color: var(--text); margin-bottom: 4px; }
+.jv-file-tile__glyph { place-self: center; color: var(--muted); }
+.jv-file-tile__glyph .jv-icon { width: 44px; height: 44px; stroke-width: 1.2; }
+.jv-file-tile__meta { display: grid; gap: 2px; justify-items: start; min-width: 0; }
+.jv-file-tile__info {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3);
+}
+.jv-file-tile__info .jv-icon { width: 16px; height: 16px; stroke-width: 1.75; }
+.jv-file-tile__name {
+  font: var(--display); letter-spacing: var(--display-track); text-transform: var(--display-case); color: var(--text);
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.jv-file-tile--compact .jv-file-tile__name { font: 500 15px/22px var(--font-head); letter-spacing: 0; text-transform: none; }
+.jv-file-tile__path { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.jv-file-tile__meta .jv-btn { margin-top: 6px; }

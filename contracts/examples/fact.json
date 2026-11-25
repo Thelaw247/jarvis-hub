@@ -1,0 +1,25 @@
+{
+ "id": "f-ge-quiz",
+ "branch_id": "ge-122",
+ "statement": "The next quiz is Thursday, not Friday.",
+ "source": {
+  "kind": "you",
+  "label": "You · Nov 13"
+ },
+ "confidence": "sure",
+ "learned": "2026-11-13T16:20:00",
+ "conflict": {
+  "other_source": {
+   "kind": "canvas",
+   "label": "Canvas"
+  },
+  "other_value": "Friday",
+  "kept": "mine"
+ },
+ "history": [
+  {
+   "was": "Friday",
+   "when": "until Nov 13"
+  }
+ ]
+}

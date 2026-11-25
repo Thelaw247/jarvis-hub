@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "approval.schema.json",
+  "title": "A write waiting for his yes",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "consequences": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "maxItems": 4
+    },
+    "read_back": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "pending",
+        "approved",
+        "declined",
+        "changed",
+        "expired"
+      ]
+    },
+    "asked": {
+      "type": "string",
+      "description": "ISO 8601 date-time, local time unless it carries an offset",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+    },
+    "branch_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/source"
+      }
+    },
+    "answer_window_s": {
+      "type": "number"
+    },
+    "expires": {
+      "type": "string",
+      "description": "ISO 8601 date-time, local time unless it carries an offset",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+    },
+    "reversible": {
+      "type": "boolean"
+    },
+    "category": {
+      "type": "string"
+    },
+    "thumb": {
+      "$ref": "common.schema.json#/$defs/thumb"
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "consequences",
+    "read_back",
+    "status",
+    "asked"
+  ],
+  "additionalProperties": false,
+  "description": "Consequences come first. `read_back` is what Jarvis says out loud."
+}

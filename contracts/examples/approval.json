@@ -1,0 +1,31 @@
+{
+ "id": "ap-week",
+ "title": "Book this week's study plan",
+ "status": "pending",
+ "asked": "2026-11-16T15:41:00",
+ "consequences": [
+  "Adds 9 blocks to your Google Calendar, Mon to Fri",
+  "Moves 1 block you made: CHEM review, Tue 4 pm to Wed 10 am",
+  "Can be undone for 24 hours"
+ ],
+ "read_back": "I'd like to add nine study blocks to your calendar this week and move your CHEM review to Wednesday at ten. Shall I book it?",
+ "branch_id": "fall-2026",
+ "sources": [
+  {
+   "kind": "canvas",
+   "label": "Canvas"
+  },
+  {
+   "kind": "paws",
+   "label": "PAWS"
+  },
+  {
+   "kind": "calendar",
+   "label": "Calendar"
+  }
+ ],
+ "answer_window_s": 10,
+ "expires": "2026-11-16T21:00:00",
+ "reversible": true,
+ "category": "calendar"
+}

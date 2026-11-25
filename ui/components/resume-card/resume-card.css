@@ -1,0 +1,35 @@
+/* <jv-resume-card>: where he stopped, over a reopened work thread (HUD v2 §6.4, §10.1).
+   A HUD window (.jv-frame) with the page thumbnail, a kicker ("PPS 7 · Q7 · TUE") with the in-progress
+   glance shape (open ring + arc), one line, and the answers. It lifts (opacity + transform, 200 ms) when
+   answered or ignored; under reduced motion it just goes. Tokens only. */
+jv-resume-card { display: block; max-width: 540px; }
+.jv-resume-card { display: grid; gap: var(--gap); padding: 16px 18px; }
+.jv-resume-card--lifted { opacity: 0; transform: translateY(-8px); pointer-events: none;
+  transition: opacity var(--t-move) var(--ease-mech), transform var(--t-move) var(--ease-mech); }
+.jv-resume-card__main { display: flex; gap: 14px; align-items: center; min-width: 0; }
+.jv-resume-card__thumb, .jv-resume-card__mono {
+  flex: none; width: 64px; height: 83px; object-fit: cover; object-position: top;
+  border: 1px solid var(--line-dim); background: var(--paper);
+}
+.jv-resume-card__mono {
+  display: grid; place-items: center; color: var(--ink-muted); font: var(--kicker); letter-spacing: var(--kicker-track);
+}
+.jv-resume-card__mono[hidden] { display: none; }
+.jv-resume-card__text { display: grid; gap: 6px; min-width: 0; }
+.jv-resume-card__kicker { display: flex; align-items: center; gap: 8px; color: var(--text-2); }
+.jv-resume-card__kicker span { overflow: hidden; text-overflow: ellipsis; }
+/* in progress (glance code): an open ring with a progress arc, in the line colour; never colour alone */
+.jv-resume-card__ring { width: 16px; height: 16px; flex: none; transform: rotate(-90deg); }
+.jv-resume-card__ring circle { fill: none; stroke: var(--line-dim); stroke-width: 1.5; }
+.jv-resume-card__ring .jv-resume-card__arc { stroke: var(--line); stroke-width: 2; }
+.jv-resume-card__line { font: var(--read); color: var(--text); }
+.jv-resume-card__acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-small); }
+.jv-resume-card__why { margin-left: auto; font: var(--body); color: var(--text-2); min-height: 32px; }
+.jv-resume-card__picks { display: flex; flex-wrap: wrap; gap: 6px; }
+.jv-resume-card__done { display: inline-grid; place-items: center; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--cyan-hi); color: var(--bg-0); }
+.jv-resume-card__done .jv-icon { width: 10px; height: 10px; stroke-width: 3; }
+.jv-resume-card__whybox { display: grid; gap: 4px; padding-top: var(--gap-small); border-top: 1px solid var(--rule);
+  font: var(--body); color: var(--text-2); }
+:root[data-size="phone"] jv-resume-card { max-width: none; }
+:root[data-size="phone"] .jv-resume-card__why { margin-left: 0; }

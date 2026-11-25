@@ -1,0 +1,38 @@
+jv-timeline { display: block; }
+/* the instrument: hour ticks, the day's blocks, the now hand. Static (nothing moves); tokens only. */
+.jv-timeline__ruler { padding: 40px 18px 8px; margin-bottom: 4px; }
+.jv-timeline__track { position: relative; height: 30px; border-bottom: 1px solid var(--line-dim); }
+.jv-timeline__hour { position: absolute; bottom: -1px; width: 1px; height: 6px; background: var(--line-dim); }
+.jv-timeline__hour--major { height: 11px; background: var(--line); }
+.jv-timeline__label { position: absolute; bottom: calc(100% + 22px); transform: translateX(-50%); font: var(--kicker); letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.jv-timeline__block { position: absolute; top: 6px; height: 12px; border: 1.5px solid var(--line-dim); background: transparent; border-radius: 1px; }
+.jv-timeline__block--done { background: var(--cyan-hi); border-color: var(--cyan-hi); }
+.jv-timeline__block--now { border-color: var(--line); background: linear-gradient(90deg, var(--line) 0 50%, transparent 50%); }
+.jv-timeline__block--next { border-color: var(--cyan); border-width: 2px; }
+.jv-timeline__hand { position: absolute; top: -8px; bottom: -6px; width: 2px; margin-left: -1px; background: var(--text); }
+.jv-timeline__hand::before { content: ""; position: absolute; top: -4px; left: -3px; width: 8px; height: 4px; background: var(--text); clip-path: polygon(0 0, 100% 0, 50% 100%); }
+
+.jv-timeline { display: grid; }
+.jv-timeline__item { display: grid; grid-template-columns: 92px minmax(0, 1fr) auto; gap: var(--gap); padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.jv-timeline__item:last-child { border-bottom: 0; }
+.jv-timeline__time { font: 400 14px/22px var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text); white-space: nowrap; }
+.jv-timeline__to { display: block; font-size: 12px; line-height: 18px; color: var(--text-3); }
+.jv-timeline__body { display: grid; gap: 3px; min-width: 0; }
+.jv-timeline__title { font: 500 15px/22px var(--font-head); }
+.jv-timeline__item--done .jv-timeline__title, .jv-timeline__item--done .jv-timeline__time { color: var(--muted); }
+.jv-timeline__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; color: var(--muted); font-size: 14px; }
+.jv-timeline__kind { display: inline-flex; align-items: center; gap: 4px; }
+.jv-timeline__kind .jv-icon { width: 14px; height: 14px; }
+.jv-timeline__where { font: 400 13px/18px var(--font-mono); letter-spacing: 0.04em; color: var(--text-2); }
+.jv-timeline__mark { padding-top: 2px; min-width: 0; }
+.jv-timeline__next { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--cyan); white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
+.jv-timeline__next::before { content: ""; width: 14px; height: 6px; border: 2px solid var(--cyan); }
+.jv-timeline__why summary { display: inline-block; cursor: pointer; font-size: 13px; }
+.jv-timeline__now { display: flex; align-items: center; gap: var(--gap-small); padding: 4px 0; }
+.jv-timeline__now .jv-kicker { color: var(--text); }
+.jv-timeline__now::after { content: ""; flex: 1; height: 0; border-top: 2px solid var(--text); opacity: 0.85; }
+:root[data-theme="day"] .jv-timeline__now::after, :root:not([data-theme]) .jv-timeline__now::after { border-top: 1.5px dashed var(--control); opacity: 1; }
+:root[data-theme="night"] .jv-timeline__item--live { box-shadow: inset 2px 0 0 var(--line); padding-left: 10px; margin-left: -10px; }
+:root[data-size="phone"] .jv-timeline__item { grid-template-columns: 74px minmax(0, 1fr); }
+:root[data-size="phone"] .jv-timeline__mark { grid-column: 2; padding-top: 0; }
+:root[data-size="phone"] .jv-timeline__ruler { display: none; }

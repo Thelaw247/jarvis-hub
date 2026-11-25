@@ -1,0 +1,88 @@
+{
+ "slots": {
+  "yes": {
+   "items": [
+    {
+     "ref": "ap-week",
+     "slot": "yes",
+     "kind": "approval",
+     "title": "Book this week's study plan",
+     "at": "2026-11-16T15:41:30",
+     "state": "yes",
+     "window": {
+      "id": "w-ap-week",
+      "type": "approval",
+      "title": "Waiting for your yes",
+      "ref": "ap-week",
+      "size": "2x2",
+      "docked": true,
+      "slot": "yes"
+     }
+    }
+   ]
+  },
+  "today": {
+   "items": [],
+   "done": 0.67
+  },
+  "homework": {
+   "items": [
+    {
+     "ref": "due-pps7",
+     "slot": "homework",
+     "kind": "due",
+     "title": "PPS 7",
+     "at": "2026-11-16T15:40:00",
+     "state": "soon",
+     "detail": "Due Wednesday 8 pm · half done",
+     "thumb": {
+      "src": "/api/thumb/file-pps7-p3.webp",
+      "kind": "page",
+      "alt": "Page 3 of PPS 7, question 7"
+     }
+    }
+   ],
+   "worst": "soon"
+  },
+  "messages": {
+   "items": []
+  },
+  "jarvis": {
+   "items": [
+    {
+     "ref": "j-sync",
+     "slot": "jarvis",
+     "kind": "job",
+     "title": "Checking Canvas",
+     "at": "2026-11-16T15:38:00",
+     "state": "done"
+    }
+   ],
+   "said": [
+    {
+     "text": "On track. PPS 7 is half done and due Wednesday at 8.",
+     "at": "2026-11-16T15:40:40",
+     "kind": "caption",
+     "source": {
+      "kind": "canvas",
+      "label": "Canvas"
+     }
+    }
+   ]
+  },
+  "parked": {
+   "items": [
+    {
+     "ref": "ge-122",
+     "slot": "parked",
+     "kind": "branch",
+     "title": "GE 122",
+     "at": "2026-11-08T20:10:00",
+     "state": "parked",
+     "from": "jarvis"
+    }
+   ],
+   "count": 1
+  }
+ }
+}

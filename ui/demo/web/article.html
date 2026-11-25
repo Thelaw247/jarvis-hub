@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>The method of joints, step by step</title><link rel="stylesheet" href="page.css"></head>
+<body>
+<header><span class="brand">Statics Notes</span></header>
+<article>
+  <h1>The method of joints, step by step</h1>
+  <p class="byline">Statics Notes &middot; demo page, served by the hub</p>
+  <p>A truss is a set of two-force members joined at pins. Because each member only pushes or pulls along its own
+    line, every joint is a particle in equilibrium: the forces on it add up to zero in x and in y.</p>
+  <h2>The steps</h2>
+  <ol>
+    <li>Find the support reactions from the whole truss (sum of moments about one support first).</li>
+    <li>Pick a joint with at most two unknown member forces.</li>
+    <li>Draw its free body. Assume every unknown member is in tension (pulling away from the joint).</li>
+    <li>Solve &Sigma;F<sub>x</sub> = 0 and &Sigma;F<sub>y</sub> = 0. A negative answer means compression.</li>
+    <li>Move to the next joint, carrying the forces you found.</li>
+  </ol>
+  <h2>Check yourself</h2>
+  <p>The last joint has no unknowns left: its equations should balance on their own. If they don't, an earlier
+    sign is wrong.</p>
+</article>
+</body>
+</html>

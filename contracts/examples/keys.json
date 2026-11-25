@@ -1,0 +1,131 @@
+{
+  "v": 2,
+  "can_write": true,
+  "rows": [
+    {
+      "id": "anthropic",
+      "label": "Claude (Anthropic API)",
+      "kind": "token",
+      "checkable": true,
+      "console_url": "https://console.anthropic.com/settings/keys",
+      "status": "live",
+      "live": {
+        "last4": "Q7xD",
+        "added": "2026-11-16T15:30:00",
+        "checked": "2026-11-16T15:30:01",
+        "check": "ok"
+      },
+      "next": null,
+      "previous": {
+        "last4": "m2Ka",
+        "added": "2026-10-02T19:12:00",
+        "checked": "2026-11-16T15:30:01",
+        "check": "ok",
+        "until": "2026-11-16T15:45:00"
+      },
+      "used": "2026-11-16T15:38:12"
+    },
+    {
+      "id": "elevenlabs",
+      "label": "ElevenLabs (voice)",
+      "kind": "token",
+      "checkable": true,
+      "console_url": "https://elevenlabs.io/app/settings/api-keys",
+      "status": "next_waiting",
+      "detail": "A new key passed its check. Make it live when you're ready.",
+      "live": {
+        "last4": "9fE2",
+        "added": "2026-10-02T19:15:00",
+        "checked": "2026-11-16T07:00:00",
+        "check": "ok"
+      },
+      "next": {
+        "last4": "Lw4c",
+        "added": "2026-11-16T15:36:00",
+        "checked": "2026-11-16T15:36:01",
+        "check": "ok"
+      },
+      "previous": null,
+      "used": "2026-11-16T15:37:40"
+    },
+    {
+      "id": "composio",
+      "label": "Composio (app connections)",
+      "kind": "token",
+      "checkable": true,
+      "console_url": "https://platform.composio.dev",
+      "status": "failed_check",
+      "detail": "Composio refused the new key. The live key is still in use.",
+      "live": {
+        "last4": "t8Rn",
+        "added": "2026-10-03T10:00:00",
+        "checked": "2026-11-16T07:00:00",
+        "check": "ok"
+      },
+      "next": {
+        "last4": "0x0x",
+        "added": "2026-11-16T15:20:00",
+        "checked": "2026-11-16T15:20:02",
+        "check": "failed",
+        "reason": "rejected"
+      },
+      "previous": null,
+      "used": "2026-11-16T14:02:00"
+    },
+    {
+      "id": "restic",
+      "label": "Backup password (restic)",
+      "kind": "password",
+      "checkable": false,
+      "status": "live",
+      "live": {
+        "last4": null,
+        "added": "2026-10-03T10:05:00",
+        "checked": "2026-10-03T10:05:00",
+        "check": "shape_only"
+      },
+      "next": null,
+      "previous": null,
+      "used": "2026-11-16T03:00:00"
+    }
+  ],
+  "addable": [
+    {
+      "id": "google-oauth",
+      "label": "Google OAuth client",
+      "kind": "client_json",
+      "checkable": true,
+      "console_url": "https://console.cloud.google.com/apis/credentials"
+    },
+    {
+      "id": "openweather",
+      "label": "OpenWeather",
+      "kind": "token",
+      "checkable": true,
+      "console_url": "https://home.openweathermap.org/api_keys"
+    }
+  ],
+  "audit": [
+    {
+      "id": "keys-0007",
+      "ts": "2026-11-16T15:36:01",
+      "provider": "elevenlabs",
+      "what": "added",
+      "text": "New ElevenLabs key added and checked"
+    },
+    {
+      "id": "keys-0006",
+      "ts": "2026-11-16T15:30:01",
+      "provider": "anthropic",
+      "what": "replaced",
+      "text": "Claude key replaced"
+    },
+    {
+      "id": "keys-0005",
+      "ts": "2026-11-16T15:20:02",
+      "provider": "composio",
+      "what": "failed_check",
+      "text": "New Composio key failed its check"
+    }
+  ]
+}

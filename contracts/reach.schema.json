@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reach.schema.json",
+  "title": "What Jarvis can do (Controls › Reach, REACH §5.3)",
+  "description": "Every tool on the reach ladder (REACH §1) with what it can read and write, its status and last use; the allowed folders; app scopes; cost caps for agent tasks; and the emails Jarvis flagged (read only). Standing permissions stay in settings.standing_permissions.",
+  "type": "object",
+  "properties": {
+    "tools": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/tool" }
+    },
+    "folders": {
+      "type": "array",
+      "description": "Allowed roots for the local file tools, as he reads them (\"OneDrive\\\\Class Content\"). Nothing outside them, ever.",
+      "items": { "type": "string", "minLength": 1, "maxLength": 260 },
+      "maxItems": 20
+    },
+    "apps": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/app" }
+    },
+    "caps": { "$ref": "#/$defs/caps" },
+    "catches": {
+      "type": "array",
+      "description": "Emails Jarvis flagged, newest first. Reading only: they reach the Rail's Messages slot as one line each.",
+      "items": { "$ref": "#/$defs/catch" },
+      "maxItems": 20
+    }
+  },
+  "required": ["tools", "folders", "apps", "caps"],
+  "additionalProperties": false,
+  "$defs": {
+    "tool": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]*$" },
+        "name": { "type": "string" },
+        "rung": { "type": "integer", "minimum": 1, "maximum": 6, "description": "1 his own data · 2 app APIs (Composio) · 3 local tools · 4 app automation (MCP) · 5 Claude agent sessions · 6 computer use" },
+        "reads": { "type": "string" },
+        "writes": { "type": "string", "description": "What it can change. Every write still waits for his yes." },
+        "status": { "enum": ["connected", "needs_sign_in", "paused", "off"], "description": "paused = paused in game mode (Laptop A tools while a game runs)" },
+        "on": { "type": "boolean" },
+        "where": { "enum": ["Laptop A", "Laptop B", "Cloud"] },
+        "last_used": {
+          "anyOf": [
+            { "type": "string", "description": "ISO 8601 date-time, local time unless it carries an offset", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}" },
+            { "type": "null" }
+          ]
+        }
+      },
+      "required": ["id", "name", "rung", "reads", "writes", "status", "on"],
+      "additionalProperties": false
+    },
+    "app": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]*$" },
+        "name": { "type": "string" },
+        "status": { "enum": ["set_up", "not_set_up"] },
+        "scope": { "type": "string", "description": "What an agent may touch in the app" },
+        "tool": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]*$", "description": "The tool (above) that drives it" }
+      },
+      "required": ["id", "name", "status", "scope"],
+      "additionalProperties": false
+    },
+    "caps": {
+      "type": "object",
+      "properties": {
+        "task_usd": { "type": "number", "minimum": 0.1, "maximum": 50 },
+        "day_usd": { "type": "number", "minimum": 0.1, "maximum": 200 },
+        "spent_today_usd": { "type": "number", "minimum": 0 }
+      },
+      "required": ["task_usd", "day_usd", "spent_today_usd"],
+      "additionalProperties": false
+    },
+    "catch": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]*$" },
+        "line": { "type": "string", "maxLength": 90, "description": "The one line with the reason, e.g. \"Prof: lab moved to Thursday\"" },
+        "from": { "type": "string" },
+        "at": { "type": "string", "description": "ISO 8601 date-time, local time unless it carries an offset", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}" },
+        "source": { "$ref": "common.schema.json#/$defs/source" }
+      },
+      "required": ["id", "line", "from", "at", "source"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,26 @@
+jv-view-controls { display: block; }
+.jv-controls__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-large); align-items: start; }
+.jv-controls__grid .jv-sheet { padding: var(--pad) var(--gap-large) 8px; }
+.jv-controls__list { display: grid; gap: 6px; margin-top: 8px; }
+.jv-controls__list li { display: flex; align-items: center; justify-content: space-between; gap: var(--gap); }
+.jv-controls__src, .jv-controls__never { font: 500 13px/1 var(--font-head); color: var(--muted); border: 1px solid var(--line-strong); border-radius: var(--r-pill); padding: 6px 12px; white-space: nowrap; }
+.jv-controls__foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap); }
+.jv-controls__demo { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--gap); margin-left: auto; color: var(--notice-ink); background: var(--notice-bg); border: 1px solid var(--notice-border); border-radius: var(--r-card); padding: 8px 14px; }
+:root[data-size="laptop"] .jv-controls__grid { gap: var(--gap); }
+:root[data-size="phone"] .jv-controls__grid { grid-template-columns: minmax(0, 1fr); }
+:root[data-size="phone"] .jv-controls__grid .jv-seg { display: flex; flex-wrap: wrap; width: 100%; border-radius: var(--r-control); }
+:root[data-size="phone"] .jv-controls__grid .jv-seg button { flex: 1 1 auto; padding: 0 8px; border-radius: calc(var(--r-control) - 3px); }
+/* the chosen option is told apart by an outline, not only a fill (A4); --muted is ≥ 3:1 on --card and --sunken */
+.jv-controls__grid .jv-seg button[aria-checked="true"] { box-shadow: var(--shadow-small), inset 0 0 0 1px var(--muted); }
+.jv-controls__more { margin-top: 8px; }
+.jv-controls__more > summary { list-style: none; display: inline-flex; width: max-content; }
+.jv-controls__more > summary::-webkit-details-marker { display: none; }
+.jv-controls__more[open] > summary { margin-bottom: 2px; }
+.jv-row[data-setting] { scroll-margin: var(--gap-large); }
+.jv-controls__grid .jv-view__kicker { margin-bottom: 4px; }
+/* Night HUD (N5b) */
+:root[data-theme="night"] .jv-controls__never, :root[data-theme="night"] .jv-controls__src { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); border-color: var(--line-dim); border-radius: var(--r-control); color: var(--text-2); }
+:root[data-theme="night"] .jv-controls__demo { color: var(--text); background: var(--panel); border: 1px dashed var(--line-dim); border-radius: var(--r-card); }
+:root[data-theme="night"] .jv-controls__list li { padding: 4px 0; border-bottom: 1px solid var(--rule); }
+:root[data-theme="night"] .jv-controls__list li:last-child { border-bottom: 0; }
+:root[data-theme="night"] .jv-controls__list .jv-muted { color: var(--text-2); }

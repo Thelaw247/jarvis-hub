@@ -1,0 +1,13 @@
+{
+  "about": "Demo places for the map window (R2). Coordinates are APPROXIMATE (hand-placed, to within about 100-200 m); check them on the live map before relying on them. `match` finds the place for a day item's `where`; `order` is the day's route: the place it starts from, then the day items that have a place, in time order (an entry may name the place for an item with no room, like a study block at his desk).",
+  "places": {
+    "maple": {"name": "Maple Hall", "short": "Maple Hall", "lat": 52.1281, "lon": -106.6405, "home": true, "match": ["maple", "your desk", "residence", "home"]},
+    "arts": {"name": "Arts Building", "short": "Arts", "lat": 52.1292, "lon": -106.6334, "match": ["arts"]},
+    "engineering": {"name": "Engineering Building", "short": "Engineering", "lat": 52.1326, "lon": -106.6284, "match": ["engr", "engineering"]},
+    "thorvaldson": {"name": "Thorvaldson Building", "short": "Thorvaldson", "lat": 52.1323, "lon": -106.6339, "match": ["thorvaldson", "thorv"]}
+  },
+  "order": {
+    "start": "maple",
+    "items": ["d-math", "d-ge", "d-chem", {"ref": "d-review", "place": "maple"}]
+  }
+}

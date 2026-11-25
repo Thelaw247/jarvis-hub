@@ -1,0 +1,36 @@
+/* The home's centre (views/now/ambient.js; HUD v3 §14 decisions 1, 6, 7). Huw's screen: the orb alone in the
+   middle of the grid; resting, a small particle sphere with a small mono clock and a tiny tracked date under
+   it. No frames, no dial, no lines of text, no decoration in Night; nothing moves but the orb.
+   The orb keeps one box and one centre awake and at rest (waking never moves it). The box (--amb-orb, handed to
+   the orb as --jv-orb-size) follows the v3 orb's own default so its outer ornaments come to about 1/6 of the
+   screen's width (Huw's proportion), measured on the free area and never taller than it allows. The clock hangs
+   just under the standby sphere, whose radius is --amb-sphere of the box (the v3 sphere: 0.209 × 1.6 ≈ 0.335). */
+.jv-now .jv-now__ambient { position: relative; min-height: 0; height: 100%; container-type: size; }
+.jv-now__ambient .jv-amb.jv-now__centre {
+  --amb-orb: clamp(160px, min(22cqw, 40cqh), 480px);
+  position: absolute; left: calc(50% - var(--amb-orb) / 2); top: calc(47% - var(--amb-orb) / 2);
+  width: var(--amb-orb); height: var(--amb-orb); display: block; padding: 0;
+}
+:root .jv-now .jv-now__ambient jv-orb.jv-amb__orb { --jv-orb-size: var(--amb-orb); display: block; width: 100%; height: 100%; margin: 0; }
+
+/* the small clock and the tiny date, centred under the sphere */
+.jv-amb__time {
+  --jv-clock-size: max(32px, calc(var(--amb-orb) * 0.13));  /* the small clock (jv-clock small) never dominates */
+  position: absolute; left: 50%; top: calc(50% + var(--amb-orb) * var(--amb-sphere, 0.335) + 14px); transform: translateX(-50%); white-space: nowrap;
+}
+.jv-amb__time[hidden] { display: none; }
+/* the look is jv-clock's own `small` variant (components/clock); the home only sets its size, above */
+:root .jv-now__ambient .jv-amb__clock .jv-clock__time { font-size: var(--jv-clock-size); line-height: 1; }
+:root .jv-now__ambient .jv-amb__clock .jv-clock__half { font-size: max(12px, 0.2em); }  /* never under the 12 px floor (as jv-clock small) */
+
+/* Daylight may keep a small day plant; Night has no plant or decoration */
+.jv-now .jv-now__ambient > .jv-amb__plant { position: absolute; left: max(3vw, 20px); bottom: 12px; width: 56px; height: 250px; }
+:root[data-theme="night"] .jv-now__ambient > .jv-amb__plant { display: none; }
+
+/* the ambient screen read from across the room (Laptop B, size=ambient): a little larger, same layout */
+:root[data-size="ambient"] .jv-now__ambient .jv-amb.jv-now__centre { --amb-orb: clamp(200px, min(24cqw, 44cqh), 520px); }
+
+/* what's next, under the orb (under the clock and date while resting): one quiet line, never a second focus */
+.jv-amb__next { position: absolute; left: 50%; top: calc(100% + 20px); transform: translateX(-50%); margin: 0; font: var(--kicker); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); white-space: nowrap; max-width: 90vw; overflow: hidden; text-overflow: ellipsis; }
+.jv-now__ambient[data-standby] .jv-amb__next { top: calc(50% + var(--amb-orb) * var(--amb-sphere, 0.335) + max(32px, calc(var(--amb-orb) * 0.13)) + 64px); }
+.jv-amb__next[hidden] { display: none; }

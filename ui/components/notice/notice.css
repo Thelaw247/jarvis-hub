@@ -1,0 +1,52 @@
+jv-notice, jv-toast { display: block; }
+.jv-notice { display: flex; gap: var(--gap); align-items: flex-start; padding: 14px 16px; border-radius: var(--r-card); border: 1px solid var(--line); background: var(--sheet); max-width: var(--measure); }
+.jv-notice__icon { display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r-pill); background: var(--sunken); color: var(--muted); flex: none; }
+.jv-notice__text { display: grid; gap: 4px; min-width: 0; }
+.jv-notice__action { justify-self: start; margin-top: 6px; }
+.jv-notice--notice { background: var(--notice-bg); border-color: var(--notice-border); color: var(--notice-ink); }
+.jv-notice--notice .jv-notice__icon, .jv-notice--error .jv-notice__icon { background: transparent; color: inherit; }
+.jv-notice--error { background: var(--error-bg); border-color: transparent; color: var(--error-ink); }
+/* empty: a plain card with one action; inside a card, sheet or window it drops its own box (no box in a box) */
+.jv-notice--empty { flex-direction: column; align-items: center; text-align: center; padding: var(--gap-large); margin-inline: auto; background: var(--card); color: var(--muted); }
+:is(.jv-card, .jv-sheet, jv-window, .jv-approval-card) .jv-notice--empty { background: transparent; border: 0; padding: var(--gap) 0; }
+.jv-notice--empty .jv-notice__icon { width: 44px; height: 44px; background: var(--growth-soft); color: var(--leaf-ink); }
+.jv-notice--empty .jv-notice__heading { color: var(--text); }
+.jv-notice--empty .jv-notice__text { justify-items: center; }
+.jv-notice--empty .jv-notice__action { justify-self: center; }
+
+.jv-toasts { display: grid; gap: var(--gap-small); justify-items: center; }
+.jv-toasts:empty { display: none; }
+.jv-toast { display: inline-flex; align-items: center; gap: 10px; padding: 8px 8px 8px 14px; background: var(--card); border: 1px solid var(--line-strong); border-radius: var(--r-pill); box-shadow: var(--shadow); animation: jv-toast-in var(--t-move) var(--ease); max-width: min(560px, 92vw); }
+.jv-toast > .jv-link { white-space: nowrap; flex: none; }  /* "Undo (24 h)" stays whole when a long receipt wraps */
+.jv-toast > .jv-icon { color: var(--muted); }
+.jv-toast--success > .jv-icon { color: var(--leaf-ink); }
+.jv-toast--error { background: var(--error-bg); color: var(--error-ink); border-color: transparent; }
+.jv-toast--error > .jv-icon { color: inherit; }
+.jv-toast__close { width: 32px; height: 32px; display: grid; place-items: center; border: 0; background: none; color: inherit; border-radius: var(--r-pill); cursor: pointer; opacity: 0.8; }
+.jv-toast__close:hover { background: var(--sunken); opacity: 1; }
+@keyframes jv-toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* Night HUD (N5b): notices are square HUD windows. Empty: a quiet ice ring and a condensed title. Notice (needs
+   you) is amber, error is the critical colour, each with its icon and words, never colour alone. Toasts are small
+   square frames; done shows the cyan-hi check. Frames and glows are static. */
+:root[data-theme="night"] .jv-notice {
+  border: 1px solid var(--frame); border-radius: var(--r-card); box-shadow: var(--glow);
+  background: linear-gradient(90deg, transparent, var(--sheen) 18%, var(--sheen) 82%, transparent) top / 100% 1px no-repeat, var(--panel);
+}
+:root[data-theme="night"] .jv-notice__icon { border-radius: 50%; background: transparent; border: 1.5px solid var(--line); color: var(--text-2); }
+:root[data-theme="night"] .jv-notice__heading { font: var(--display); font-size: 20px; line-height: 24px; letter-spacing: var(--display-track); text-transform: var(--display-case); }
+:root[data-theme="night"] .jv-notice__text p { color: var(--text-2); }
+:root[data-theme="night"] .jv-notice--notice { border-color: var(--warn); color: var(--text); }
+:root[data-theme="night"] .jv-notice--notice .jv-notice__icon { border: 0; color: var(--warn); }
+:root[data-theme="night"] .jv-notice--notice .jv-notice__heading { color: var(--warn); }
+:root[data-theme="night"] .jv-notice--error { border-color: var(--crit); color: var(--text); }
+:root[data-theme="night"] .jv-notice--error .jv-notice__icon { border: 0; color: var(--crit); }
+:root[data-theme="night"] .jv-notice--error .jv-notice__heading { color: var(--crit); }
+:root[data-theme="night"] .jv-notice--empty { color: var(--text-2); }
+:root[data-theme="night"] .jv-notice--empty .jv-notice__icon { background: transparent; color: var(--text-2); }
+:root[data-theme="night"] :is(.jv-card, .jv-sheet, jv-window, .jv-approval-card, .jv-frame) .jv-notice--empty { background: transparent; border: 0; box-shadow: none; }
+:root[data-theme="night"] .jv-toast { border-radius: var(--r-card); border-color: var(--frame); background: var(--bg-0); box-shadow: var(--glow); }
+:root[data-theme="night"] .jv-toast--success > .jv-icon { color: var(--cyan-hi); }
+:root[data-theme="night"] .jv-toast--error { background: var(--bg-0); color: var(--text); border-color: var(--crit); }
+:root[data-theme="night"] .jv-toast--error > .jv-icon { color: var(--crit); }
+:root[data-theme="night"] .jv-toast__close { border-radius: var(--r-control); }

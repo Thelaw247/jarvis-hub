@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "day.schema.json",
+  "title": "Today's plan",
+  "type": "object",
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+          },
+          "start": {
+            "type": "string",
+            "pattern": "^\\d{2}:\\d{2}$"
+          },
+          "end": {
+            "type": "string",
+            "pattern": "^\\d{2}:\\d{2}$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "class",
+              "lab",
+              "block",
+              "own",
+              "laundry"
+            ]
+          },
+          "source": {
+            "$ref": "common.schema.json#/$defs/source"
+          },
+          "where": {
+            "type": "string"
+          },
+          "why": {
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "planned",
+              "done",
+              "missed",
+              "moved"
+            ]
+          },
+          "branch_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+          },
+          "moved_to": {
+            "type": "string"
+          },
+          "thumb": {
+            "$ref": "common.schema.json#/$defs/thumb"
+          }
+        },
+        "required": [
+          "id",
+          "start",
+          "end",
+          "title",
+          "kind",
+          "source"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "proposals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+          },
+          "text": {
+            "type": "string"
+          },
+          "why": {
+            "type": "string"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 4
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "common.schema.json#/$defs/source"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "why",
+          "changes"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "dial": {
+      "type": "array",
+      "description": "The day dial around the orb: an hour ago to 11 hours ahead, in full ISO times so it crosses midnight. Rebuilt by the server.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+          },
+          "kind": {
+            "enum": [
+              "class",
+              "lab",
+              "block",
+              "own",
+              "laundry",
+              "exam",
+              "due"
+            ]
+          },
+          "start": {
+            "type": "string",
+            "description": "Start of the arc; for a due item, when it is due",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+          },
+          "end": {
+            "type": "string",
+            "description": "End of the arc; left out for due items",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+          },
+          "title": {
+            "type": "string"
+          },
+          "where": {
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "upcoming",
+              "next",
+              "now",
+              "done",
+              "moved",
+              "missed",
+              "overdue"
+            ]
+          },
+          "ref": {
+            "type": "string",
+            "description": "The day item, due item or thread behind it"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "start",
+          "title"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "date",
+    "items"
+  ],
+  "additionalProperties": false
+}

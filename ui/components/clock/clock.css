@@ -1,0 +1,25 @@
+jv-clock { display: block; }
+.jv-clock { display: grid; justify-items: center; gap: 4px; text-align: center; }
+.jv-clock__time { font: 300 clamp(64px, 11vw, 132px)/1 var(--font-head); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; color: var(--text); }
+.jv-clock__half { font-size: 0.26em; font-weight: 400; letter-spacing: 0.04em; margin-left: 0.3em; color: var(--muted); }
+.jv-clock__date { font: 400 18px/26px var(--font-head); color: var(--muted); }
+.jv-clock__next { margin-top: 10px; font-size: 16px; line-height: 24px; }
+.jv-clock__next .jv-label { margin-right: 6px; }
+:root[data-size="phone"] .jv-clock__time { font-size: 72px; }
+
+/* Night HUD (N5b, HUD v2 §8): large JetBrains Mono digits, light (the face's lightest cut is 400, so it is drawn
+   thin by size and colour, no synthetic bold), the date in tiny tracked caps under it. */
+:root[data-theme="night"] .jv-clock__time { font: 300 clamp(64px, 10vw, 124px)/1 var(--font-mono); font-synthesis: none; letter-spacing: -0.04em; text-shadow: var(--text-glow); }
+:root[data-theme="night"] .jv-clock__half { font: var(--kicker); font-size: 0.16em; letter-spacing: var(--kicker-track); text-transform: uppercase; color: var(--text-3); margin-left: 0.4em; }
+:root[data-theme="night"] .jv-clock__date { font: 400 12px/16px var(--font-mono); letter-spacing: 0.32em; text-transform: uppercase; color: var(--text-2); margin-top: 6px; }
+:root[data-theme="night"] .jv-clock__next { color: var(--text); }
+:root[data-theme="night"] .jv-clock__next .jv-label { font: var(--kicker); letter-spacing: var(--kicker-track); color: var(--text-3); }
+
+/* Small (HUD v3 §14): Huw's standby clock under the particle sphere. A small mono time, then a tiny tracked date;
+   the host can size it with --jv-clock-size (the digits' font size). Same in both themes, by tokens. */
+.jv-clock--small { gap: 0; --jv-clock-default: clamp(36px, 3.3vw, 64px); }
+:root .jv-clock--small .jv-clock__time { font: 400 var(--jv-clock-size, var(--jv-clock-default))/1 var(--font-mono); font-synthesis: none; letter-spacing: 0.02em; color: var(--text); text-shadow: none; }
+:root .jv-clock--small .jv-clock__half { font: var(--kicker); font-size: max(12px, 0.2em); letter-spacing: var(--kicker-track); text-transform: uppercase; color: var(--text-3); margin-left: 0.5em; }
+:root .jv-clock--small .jv-clock__date { font: 400 12px/16px var(--font-mono); letter-spacing: 0.28em; text-transform: uppercase; color: var(--text-2); margin-top: 8px; }
+:root[data-size="phone"] .jv-clock--small .jv-clock__time { font-size: var(--jv-clock-size, 36px); }
+:root[data-theme="night"] .jv-clock--small .jv-clock__time { text-shadow: var(--text-glow); }

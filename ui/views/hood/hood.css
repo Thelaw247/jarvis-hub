@@ -1,0 +1,58 @@
+jv-view-hood { display: block; }
+.jv-hood__panel { min-width: 0; }
+.jv-hood__title { margin-bottom: 10px; }
+.jv-hood__tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap-large); }
+.jv-hood__tiles .jv-big-number__value { font-size: 30px; line-height: 36px; white-space: normal; }
+.jv-hood__verdict { margin-bottom: 10px; }
+.jv-hood__ok, .jv-hood__warn { display: inline-flex; align-items: center; gap: 4px; text-transform: none; letter-spacing: 0; font: 500 13px/1 var(--font-head); border-radius: var(--r-pill); padding: 4px 10px 4px 6px; }
+.jv-hood__ok { color: var(--leaf-ink); background: var(--growth-soft); }
+.jv-hood__warn { color: var(--notice-ink); background: var(--notice-bg); }
+.jv-hood__ok .jv-icon, .jv-hood__warn .jv-icon { width: 14px; height: 14px; }
+.jv-hood__report { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-large); }
+.jv-hood__report ul { display: grid; gap: 4px; margin-top: 4px; max-width: var(--measure); }
+.jv-hood__status { display: inline-flex; align-items: center; gap: 6px; font: 500 13px/1 var(--font-head); border: 1px solid var(--line-strong); border-radius: var(--r-pill); padding: 6px 12px 6px 8px; }
+.jv-hood__status .jv-icon { width: 14px; height: 14px; }
+.jv-hood__status--ok { color: var(--leaf-ink); border-color: var(--leaf-ink); }
+.jv-hood__status--stale, .jv-hood__status--error { color: var(--notice-ink); background: var(--notice-bg); border-color: var(--notice-border); }
+.jv-hood__foot { padding-top: 10px; }
+:root[data-size="laptop"] .jv-hood__tiles { gap: var(--gap); }
+:root[data-size="phone"] .jv-hood__tiles, :root[data-size="phone"] .jv-hood__report { grid-template-columns: minmax(0, 1fr); }
+:root[data-size="laptop"] .jv-hood__gauges { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.jv-hood__title { margin-bottom: 12px; }
+/* latency readouts: a big mono number (tabular), the stage in words, a gauge, the slow tail and target in mono */
+.jv-hood__gauge { display: grid; gap: 4px; min-width: 0; align-content: start; }
+.jv-hood__read { display: flex; align-items: baseline; gap: 6px; }
+.jv-hood__num { font: 400 40px/44px var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; color: var(--text); }
+.jv-hood__unit { font: var(--kicker); color: var(--text-3); }
+.jv-hood__stage { color: var(--muted); font-size: 14px; }
+.jv-hood__bar { position: relative; height: 10px; margin: 8px 0 2px; border-bottom: 1px solid var(--line-dim); }
+.jv-hood__fill { position: absolute; left: 0; bottom: 3px; height: 4px; background: var(--line); }
+.jv-hood__p95 { position: absolute; bottom: 0; width: 2px; height: 10px; margin-left: -1px; background: var(--text-2); }
+.jv-hood__target { position: absolute; bottom: -4px; width: 0; height: 14px; border-left: 1.5px dashed var(--text-3); }
+.jv-hood__gauge--over .jv-hood__p95 { background: var(--warn); }
+.jv-hood__sub { font: 400 12px/18px var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-3); }
+.jv-hood__over { color: var(--warn); }
+/* connections: name, sync age in mono, health as shape + colour + word */
+.jv-hood__con { flex-wrap: nowrap; }
+.jv-hood__age { font: 400 13px/18px var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-2); white-space: nowrap; min-width: 112px; text-align: right; }
+
+/* Night HUD (N5b): green only here, for health. Status marks are shapes: a disc (working), a diamond (out of date),
+   a triangle (needs attention), a dashed ring (off). */
+:root[data-theme="night"] .jv-hood__ok, :root[data-theme="night"] .jv-hood__warn { background: transparent; padding: 0; font: var(--kicker); letter-spacing: 0.06em; text-transform: var(--kicker-case); }
+:root[data-theme="night"] .jv-hood__ok { color: var(--ok); }
+:root[data-theme="night"] .jv-hood__warn { color: var(--warn); }
+:root[data-theme="night"] .jv-hood__status { border: 0; padding: 0; min-width: 150px; font: var(--kicker); letter-spacing: 0.06em; text-transform: var(--kicker-case); gap: 8px; }
+:root[data-theme="night"] .jv-hood__status .jv-icon { display: none; }
+:root[data-theme="night"] .jv-hood__status::before { content: ""; width: 10px; height: 10px; flex: none; }
+:root[data-theme="night"] .jv-hood__status--ok { color: var(--ok); }
+:root[data-theme="night"] .jv-hood__status--ok::before { border-radius: 50%; background: var(--ok); }
+:root[data-theme="night"] .jv-hood__status--stale { color: var(--warn); background: transparent; }
+:root[data-theme="night"] .jv-hood__status--stale::before { width: 8px; height: 8px; margin: 0 1px; border: 1.5px solid var(--warn); transform: rotate(45deg); }
+:root[data-theme="night"] .jv-hood__status--error { color: var(--crit); background: transparent; }
+:root[data-theme="night"] .jv-hood__status--error::before { background: var(--crit); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+:root[data-theme="night"] .jv-hood__status--off { color: var(--text-3); }
+:root[data-theme="night"] .jv-hood__status--off::before { border-radius: 50%; border: 1.5px dashed var(--text-3); }
+:root[data-theme="night"] .jv-hood__report .jv-label { font: var(--kicker); letter-spacing: var(--kicker-track); color: var(--text-3); }
+:root[data-theme="night"] .jv-hood__report li { padding: 4px 0; border-bottom: 1px solid var(--rule); }
+:root[data-theme="night"] .jv-hood__tiles .jv-big-number__value { font-family: var(--font-mono); font-weight: 400; font-variant-numeric: tabular-nums; }
+:root[data-size="phone"] .jv-hood__con { flex-wrap: wrap; }

@@ -1,0 +1,132 @@
+name: Build installer
+
+# Builds JarvisHub-Setup.exe on a Windows machine and publishes it as a GitHub Release.
+# To ship a version: follow .claude/skills/jarvis-release (it changes the VERSION file and pushes to main).
+# The release is tagged v<VERSION>. If that release already exists, the build still runs and the
+# installer is kept as a downloadable artifact, but nothing is published twice.
+# It can also be run by hand from the Actions tab.
+on:
+  push:
+    branches: [main]
+    paths: ["VERSION", ".github/workflows/release.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install what the app needs
+        run: python -m pip install ".[desktop]" pytest httpx jsonschema pyinstaller
+
+      - name: Run the hub's tests
+        run: python -m pytest -q --ignore=tests/e2e --ignore=tests/core --ignore=tests/memory --ignore=tests/voice
+
+      # jarvis-core isn't in the installer (it runs from the repo on Laptop B), so this never blocks a hub release;
+      # it shows how the core's tests do on Windows. CI (Linux) is where they must pass.
+      - name: Run the core's tests on Windows (for information)
+        continue-on-error: true
+        run: |
+          python -m pip install ".[core]"
+          python -m pytest -q tests/core tests/memory tests/voice
+
+      - name: Build the app folder
+        run: >
+          python -m PyInstaller --noconfirm --clean --windowed --name JarvisHub
+          --icon ui/icons/app.ico --add-data "ui;ui" --add-data "contracts;contracts" --add-data "VERSION;."
+          --add-data "jarvis_hub/demo/places.json;jarvis_hub/demo"
+          --collect-submodules uvicorn --collect-submodules jarvis_hub --collect-all pymupdf
+          --hidden-import PIL.Image --hidden-import PIL.WebPImagePlugin app.py
+
+      - name: Check the built app starts and serves the hub
+        shell: pwsh
+        run: |
+          $app = Start-Process -FilePath "dist\JarvisHub\JarvisHub.exe" -ArgumentList "--no-window","--port","8765" -PassThru
+          $ok = $false
+          foreach ($i in 1..40) {
+            Start-Sleep -Milliseconds 500
+            try { $r = Invoke-RestMethod "http://127.0.0.1:8765/api/health" -TimeoutSec 2; if ($r.ok) { $ok = $true; break } } catch { }
+          }
+          $page = if ($ok) { (Invoke-WebRequest "http://127.0.0.1:8765/" -UseBasicParsing).StatusCode } else { 0 }
+          # the reader needs PyMuPDF (the question index) and Pillow (page pictures) inside the built app
+          $questions = 0; $pictures = 0; $thumb = 0
+          if ($ok) {
+            try {
+              $index = Invoke-RestMethod "http://127.0.0.1:8765/api/file/file-pps7.qindex.json" -TimeoutSec 60
+              $questions = @($index.questions).Count
+              $pictures = @($index.thumbs.PSObject.Properties).Count
+            } catch { Write-Host "Question index: $_" }
+            try { $thumb = (Invoke-WebRequest "http://127.0.0.1:8765/api/thumb/file-pps7-p3.webp" -UseBasicParsing -TimeoutSec 30).StatusCode } catch { Write-Host "Thumbnail: $_" }
+          }
+          # v0.5.0: the map's places and the demo web pages must be inside the built app
+          $map = ""; $web = 0
+          if ($ok) {
+            try { $web = (Invoke-WebRequest "http://127.0.0.1:8765/demo/web/article.html" -UseBasicParsing -TimeoutSec 10).StatusCode } catch { Write-Host "Demo web page: $_" }
+            try {
+              $body = @{ action = "ask"; target = "jarvis"; args = @{ text = "show me the map" } } | ConvertTo-Json
+              Invoke-RestMethod "http://127.0.0.1:8765/api/act" -Method Post -ContentType "application/json" -Body $body -TimeoutSec 10 | Out-Null
+              $map = @((Invoke-RestMethod "http://127.0.0.1:8765/api/state" -TimeoutSec 10).windows | Where-Object { $_.type -eq "map" }).Count
+            } catch { Write-Host "Map window: $_" }
+          }
+          Stop-Process -Id $app.Id -Force -ErrorAction SilentlyContinue
+          if (-not $ok -or $page -ne 200) { Write-Error "The built app did not answer on /api/health and /."; exit 1 }
+          if ($web -ne 200 -or "$map" -ne "1") { Write-Error "The built app is missing the demo web pages or the map's places (web page: $web, map windows: $map)."; exit 1 }
+          if ($questions -lt 1 -or $pictures -lt 1 -or $thumb -ne 200) { Write-Error "The built app can't read PDFs (questions: $questions, page pictures: $pictures, thumbnail: $thumb). PyMuPDF or Pillow is missing from the build."; exit 1 }
+          Write-Host "Built app answered: version $($r.version), mode $($r.mode), $questions questions and $pictures page pictures made from the demo PDF"
+
+      - name: Build the installer
+        shell: pwsh
+        run: |
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) { choco install innosetup -y --no-progress }
+          $version = (Get-Content VERSION -Raw).Trim()
+          "APP_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
+          & $iscc "/DAppVersion=$version" installer\JarvisHub.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: JarvisHub-Setup
+          path: dist/JarvisHub-Setup.exe
+          if-no-files-found: error
+
+      - name: Publish the release
+        if: github.ref == 'refs/heads/main'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "v$env:APP_VERSION"
+          gh release view $tag --repo $env:GITHUB_REPOSITORY *> $null
+          if ($LASTEXITCODE -eq 0) { Write-Host "Release $tag already exists. Change VERSION to publish a new one."; exit 0 }
+          # "What's new": the top section of CHANGELOG.md (the jarvis-release skill writes it)
+          $lines = Get-Content CHANGELOG.md
+          $start = ($lines | Select-String -Pattern "^## $([regex]::Escape($env:APP_VERSION))" | Select-Object -First 1).LineNumber
+          $new = @()
+          if ($start) {
+            foreach ($line in $lines[$start..($lines.Count - 1)]) {
+              if ($line -match "^## ") { break }
+              if ($line -match "^- ") { $new += $line }
+            }
+          }
+          if ($new.Count -eq 0) { $new = @("- See CHANGELOG.md") }
+          $notes = @(
+            "Download **JarvisHub-Setup.exe** and run it. Python is not needed.",
+            "Windows may warn that the installer is from an unknown publisher (it isn't code-signed): choose",
+            "**More info → Run anyway**.",
+            "",
+            "What's new in $($env:APP_VERSION):"
+          ) + ($new | Select-Object -First 6)
+          $notes -join "`n" | Out-File -FilePath notes.md -Encoding utf8
+          gh release create $tag dist/JarvisHub-Setup.exe --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --title "Jarvis Hub $env:APP_VERSION" --notes-file notes.md
+          exit $LASTEXITCODE

@@ -1,0 +1,36 @@
+/* The strip (Laptop A, 360 × 96): a still orb, its word, the Rail's worst state + "N new", the next thing, and
+   after game mode one recap line. Nothing here moves: base.css turns every animation and transition off at
+   size=strip, and nothing in this file adds one. Tokens only. */
+jv-view-strip { display: block; height: 100%; }
+.jv-strip {
+  height: 100%; display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; grid-auto-rows: min-content;
+  align-content: center; align-items: center; column-gap: 10px; row-gap: 4px; padding: 8px 14px;
+  background: var(--sheet); border: 1px solid var(--frame); color: var(--text);
+}
+.jv-strip > jv-orb { grid-column: 1; grid-row: 1 / span 2; width: 28px; height: 28px; align-self: center; }
+.jv-strip__state { grid-column: 2; grid-row: 1; min-width: 0; font: 500 14px/18px var(--font-head); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jv-strip__rail { grid-column: 3; grid-row: 1; display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+.jv-strip__new { display: inline-flex; align-items: center; gap: 5px; font: var(--kicker); letter-spacing: 0.04em; color: var(--text); font-variant-numeric: tabular-nums; }
+/* "since you looked": the Rail's static cyan notch, never a red badge */
+.jv-strip__notch { display: inline-block; width: 4px; height: 9px; background: var(--cyan); }
+.jv-strip__next, .jv-strip__recap {
+  grid-column: 2 / span 2; min-width: 0; font: 400 13px/18px var(--font-ui); color: var(--text-2);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.jv-strip__next { grid-row: 2; }
+.jv-strip__next b { color: var(--text); font-weight: 500; }
+.jv-strip__next .jv-glance { margin-right: 2px; }
+.jv-strip__label { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3); }
+.jv-strip__recap { grid-row: 3; grid-column: 1 / -1; color: var(--text); }  /* the full width, under the orb too */
+.jv-strip--hidden { background: transparent; border: 0; }
+
+/* very narrow: the worst state keeps its shape (the word goes to screen readers) */
+@media (max-width: 339.98px) { .jv-strip__rail .jv-glance__word { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); } }
+/* a one-line strip (under 72 px tall): orb · word · the next thing (or the recap, which replaces it) · the Rail */
+@media (max-height: 71.98px) {
+  .jv-strip { grid-template-columns: 20px auto minmax(0, 1fr) auto; padding: 0 12px; }
+  .jv-strip > jv-orb { grid-row: 1; width: 20px; height: 20px; }
+  .jv-strip__next, .jv-strip__recap { grid-column: 3; grid-row: 1; }
+  .jv-strip__rail { grid-column: 4; }
+  .jv-strip--recap .jv-strip__next { display: none; }
+}

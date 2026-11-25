@@ -1,0 +1,145 @@
+jv-view-life { display: block; height: 100%; }
+.jv-life { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: var(--gap); height: 100%; min-height: 560px; max-width: 1680px; margin: 0 auto; }
+.jv-life__top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--gap-small) var(--gap-large); }
+.jv-life__bar { min-width: 0; }
+.jv-life__tools { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-small); padding-bottom: 2px; }
+.jv-life__tools .jv-seg button { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; }
+.jv-life__tools .jv-icon { width: 15px; height: 15px; }
+.jv-life__link { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+.jv-life__body { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: var(--gap-large); min-height: 0; }
+.jv-life__tree { position: relative; min-height: 0; min-width: 0; }
+.jv-life__body--list .jv-life__tree { overflow: auto; }
+.jv-life__page { min-height: 0; min-width: 0; overflow: auto; padding: 2px 6px 72px 2px; }
+.jv-life__back { position: absolute; left: 0; top: 0; z-index: 1; }
+/* Night: the crumbs are a mono kicker like every other label ("LIFE › SCHOOL"), not sans sentence case (film S10) */
+:root[data-theme="night"] .jv-life__bar .jv-crumbs { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3); }
+:root[data-theme="night"] .jv-life__bar .jv-crumbs a { color: var(--text-2); }
+:root[data-theme="night"] .jv-life__bar .jv-crumbs [aria-current] { font-weight: 400; }
+.jv-life__also, .jv-life__archived { position: absolute; bottom: 6px; font: 400 13px/18px var(--font-head); color: var(--muted); }
+.jv-life__also { left: 0; right: 40%; }
+.jv-life__also a { color: var(--text); }
+:root[data-theme="night"] .jv-life__also, :root[data-theme="night"] .jv-life__archived { color: var(--text-2); }
+.jv-life__archived { right: 0; }
+.jv-life__loops { display: grid; gap: 8px; margin-top: 8px; }
+
+/* the Life Map, drawn as a plant: the focus is a pot, branches are leaves on stems growing out of it */
+.jv-map { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; touch-action: none; cursor: grab; }
+.jv-map__world { transform-origin: 0 0; transform-box: view-box; }
+.jv-map__stem { fill: none; stroke: var(--stem); stroke-width: 3; stroke-linecap: round; }
+.jv-map__leaflet { fill: var(--leaf-deep); }
+.jv-map__dot:nth-child(odd) .jv-map__leaflet { fill: var(--leaf-deep-light); }
+.jv-map__pot { fill: var(--pot); } .jv-map__pot2 { fill: var(--pot-shade); } .jv-map__pot3 { fill: var(--pot-rim); }
+.jv-map__soil { fill: var(--soil); } .jv-map__shade { fill: var(--shade); }
+.jv-map__node { cursor: pointer; text-decoration: none; outline: none; pointer-events: bounding-box; }  /* the gap between leaf and name clicks too */
+.jv-map__leaf-body { fill: var(--leaf); } .jv-map__leaf-light { fill: var(--leaf-light); }
+.jv-map__leaf-rib { fill: none; stroke: var(--leaf-rib); stroke-width: 1; stroke-linecap: round; opacity: 0.8; }
+.jv-map__leaf-ring { fill: none; stroke: transparent; stroke-width: 7; stroke-linejoin: round; }
+.jv-map__disc { fill: var(--growth-soft); stroke: var(--leaf-deep); stroke-width: 1.5; }
+.jv-map__lock { fill: none; stroke: var(--leaf-rib); stroke-width: 1.8; stroke-linejoin: round; }
+.jv-map__name { font: 500 13px var(--font-head); fill: var(--text); paint-order: stroke; stroke: var(--canvas); stroke-width: 5px; stroke-linejoin: round; }
+.jv-map__centre-name { font: 500 16px var(--font-head); }
+.jv-map__pill rect { stroke-width: 1; }
+.jv-map__pill text { font: 600 12px var(--font-head); font-variant-numeric: tabular-nums; }
+.jv-map__pill--soon rect { fill: var(--notice-bg); stroke: var(--notice-border); } .jv-map__pill--soon text { fill: var(--notice-ink); }
+.jv-map__pill--yes rect { fill: var(--honey); stroke: var(--notice-border); } .jv-map__pill--yes text { fill: var(--honey-ink); }
+.jv-map__pill--quiet rect { fill: var(--canvas); stroke: var(--control); stroke-dasharray: 3 3; } .jv-map__pill--quiet text { fill: var(--muted); font-weight: 500; }
+.jv-map__due-track { fill: none; stroke: var(--line-strong); stroke-width: 2.5; }
+.jv-map__due { fill: none; stroke: var(--control); stroke-width: 2.5; stroke-linecap: round; }
+.jv-map__node--soon .jv-map__due { stroke: var(--notice-ink); }
+.jv-map__node--proposed .jv-map__leaf-body, .jv-map__node--more .jv-map__leaf-body { fill: var(--canvas); stroke: var(--leaf-deep); stroke-width: 1.8; stroke-dasharray: 3 4; stroke-linecap: round; }
+.jv-map__node--proposed .jv-map__leaf-light, .jv-map__node--proposed .jv-map__leaf-rib,
+.jv-map__node--more .jv-map__leaf-light, .jv-map__node--more .jv-map__leaf-rib { display: none; }
+.jv-map__node--more .jv-map__name { fill: var(--muted); }
+.jv-map__node--archived { opacity: 0.5; }
+.jv-map__node--selected .jv-map__leaf-ring { stroke: var(--text); }
+.jv-map__node--selected .jv-map__name { font-weight: 600; }
+.jv-map__node:hover .jv-map__leaf-ring { stroke: var(--control); }
+.jv-map__node:focus-visible .jv-map__leaf-ring { stroke: var(--text); stroke-width: 9; }
+.jv-map__node:hover .jv-map__name, .jv-map__node:focus-visible .jv-map__name { text-decoration: underline; }
+
+/* Night HUD (N5b): the same plant drawn as a luminous constellation. Leaves, pot and soil step aside; each node
+   is an ice ring (bigger with activity) with a circular due arc, the pot is a set of concentric rings, stems are
+   thin ice lines, the leaflets are line-art. Cyan only for the branch Jarvis is on and the path to it.
+   Selected = brighter, thicker ring in text colour; focus = the same white ring, never cyan. Glows are static. */
+.jv-map__mark, .jv-map__core, .jv-map__pill-mark { display: none; }
+.jv-map__pill--jarvis rect { fill: var(--canvas); stroke: var(--cyan); } .jv-map__pill--jarvis text { fill: var(--cyan); }
+.jv-map__stem--jarvis { stroke: var(--cyan); }
+:root[data-theme="night"] .jv-map__mark, :root[data-theme="night"] .jv-map__core, :root[data-theme="night"] .jv-map__pill-mark { display: inline; }
+:root[data-theme="night"] :is(.jv-map__leaf, .jv-map__disc, .jv-map__due-track, .jv-map__due),
+:root[data-theme="night"] .jv-map__centre > :not(.jv-map__core, .jv-map__tag) { display: none; }
+:root[data-theme="night"] .jv-map__stem { stroke: var(--line-dim); stroke-width: 1.5; }
+:root[data-theme="night"] .jv-map__stem--jarvis { stroke: var(--cyan); stroke-width: 2; filter: drop-shadow(0 0 4px var(--orb-glow)); }
+/* Night is a quiet line-art growth mark: no leaflets on the stems (film review S8) */
+:root[data-theme="night"] .jv-map__dot { display: none; }
+/* inside each ring: the due count (big, condensed) or the branch's glyph (small mono caps); never empty */
+.jv-map__mark-word { fill: var(--text); font: var(--kicker); font-size: 13px; letter-spacing: 0.06em; pointer-events: none; }
+.jv-map__mark-word--count { font: 600 22px var(--font-display); letter-spacing: 0; font-variant-numeric: tabular-nums; }
+:root[data-theme="night"] .jv-map__node--soon .jv-map__mark-word--count { fill: var(--warn); }
+:root[data-theme="night"] .jv-map__node--proposed .jv-map__mark-word, :root[data-theme="night"] .jv-map__node--more .jv-map__mark-word { fill: var(--text-2); }
+:root[data-theme="night"] .jv-map__mark-ring { fill: var(--bg-0); stroke: var(--line); stroke-width: 1.5; filter: drop-shadow(0 0 5px var(--sheen)); }
+:root[data-theme="night"] .jv-map__mark-core { fill: var(--accent-soft); stroke: var(--line-dim); stroke-width: 1; }
+:root[data-theme="night"] .jv-map__mark-due { fill: none; stroke: var(--line); stroke-width: 3.5; stroke-linecap: butt; }
+:root[data-theme="night"] .jv-map__node--soon .jv-map__mark-due { stroke: var(--warn); }
+:root[data-theme="night"] .jv-map__node--soon .jv-map__mark-ring { stroke: var(--line-dim); }
+:root[data-theme="night"] .jv-map__node--jarvis .jv-map__mark-ring { stroke: var(--cyan); stroke-width: 2; }
+:root[data-theme="night"] .jv-map__node--jarvis .jv-map__mark-core { stroke: var(--cyan); }
+:root[data-theme="night"] .jv-map__reticle { fill: none; stroke: var(--cyan); stroke-width: 2; stroke-linecap: butt; }
+:root[data-theme="night"] .jv-map__node--proposed .jv-map__mark-ring, :root[data-theme="night"] .jv-map__node--more .jv-map__mark-ring { stroke: var(--line-dim); stroke-dasharray: 3 4; filter: none; }
+:root[data-theme="night"] .jv-map__node--proposed .jv-map__mark-core, :root[data-theme="night"] .jv-map__node--more .jv-map__mark-core { fill: none; stroke: none; }
+:root[data-theme="night"] .jv-map__node--selected .jv-map__mark-ring { stroke: var(--text); stroke-width: 2.5; }
+:root[data-theme="night"] .jv-map__node:hover .jv-map__mark-ring { stroke: var(--text); }
+:root[data-theme="night"] .jv-map__node:focus-visible .jv-map__mark-ring { stroke: var(--text); stroke-width: 3.5; }
+:root[data-theme="night"] .jv-map__lock { stroke: var(--text-2); }
+:root[data-theme="night"] .jv-map__name { fill: var(--text); stroke: var(--bg-1); stroke-width: 6px; font-size: 14px; letter-spacing: 0.08em; text-transform: var(--kicker-case); }
+:root[data-theme="night"] .jv-map__node--more .jv-map__name { fill: var(--text-2); }
+:root[data-theme="night"] .jv-map__centre-name { font-size: 16px; letter-spacing: 0.14em; }
+:root[data-theme="night"] .jv-map__pill rect { rx: 2px; ry: 2px; fill: var(--bg-0); stroke-width: 1.2; }
+:root[data-theme="night"] .jv-map__pill text { font: var(--kicker); letter-spacing: 0.04em; text-transform: var(--kicker-case); }
+:root[data-theme="night"] .jv-map__pill-mark { fill: none; stroke-width: 1.5; }
+:root[data-theme="night"] :is(.jv-map__pill--soon, .jv-map__pill--yes) rect { stroke: var(--warn); }
+:root[data-theme="night"] :is(.jv-map__pill--soon, .jv-map__pill--yes) text { fill: var(--warn); }
+:root[data-theme="night"] :is(.jv-map__pill--soon, .jv-map__pill--yes) .jv-map__pill-mark { stroke: var(--warn); }
+:root[data-theme="night"] .jv-map__pill--quiet rect { stroke: var(--line-dim); }
+:root[data-theme="night"] .jv-map__pill--quiet text { fill: var(--text-2); }
+:root[data-theme="night"] .jv-map__pill--quiet .jv-map__pill-mark { stroke: var(--text-3); stroke-dasharray: 2 2; }
+:root[data-theme="night"] .jv-map__pill--jarvis rect { stroke: var(--cyan); }
+:root[data-theme="night"] .jv-map__pill--jarvis text { fill: var(--cyan); }
+:root[data-theme="night"] .jv-map__pill--jarvis .jv-map__pill-mark { stroke: var(--cyan); }
+:root[data-theme="night"] .jv-map__core-halo { fill: var(--accent-soft); opacity: 0.55; }
+:root[data-theme="night"] .jv-map__core-ring { fill: none; stroke: var(--line); stroke-width: 1.5; filter: drop-shadow(0 0 6px var(--sheen)); }
+:root[data-theme="night"] .jv-map__core-dots { fill: none; stroke: var(--line-dim); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 0 7.5; }
+:root[data-theme="night"] .jv-map__core-in { fill: var(--bg-0); stroke: var(--line-dim); stroke-width: 1; }
+:root[data-theme="night"] .jv-map__core-ticks { fill: none; stroke: var(--line); stroke-width: 1.5; }
+
+/* the outline */
+.jv-outline { display: grid; gap: 2px; padding: 4px; }
+.jv-outline__row { display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 4px 10px 4px calc(6px + (var(--level) - 1) * 22px); border-radius: var(--r-control); cursor: pointer; }
+.jv-outline__row:hover { background: var(--sunken); }
+.jv-outline__row[aria-selected="true"] { background: var(--card); box-shadow: inset 3px 0 0 var(--control), var(--shadow-small); }
+.jv-outline__twist { width: 20px; height: 20px; display: grid; place-items: center; color: var(--muted); flex: none; }
+.jv-outline__twist .jv-icon { width: 14px; height: 14px; transition: transform var(--t-fast) var(--ease); }
+.jv-outline__row[aria-expanded="true"] > .jv-outline__twist .jv-icon { transform: rotate(90deg); }
+.jv-outline__glyph { width: 30px; height: 30px; flex: none; display: grid; place-items: center; border-radius: var(--r-pill); background: var(--growth-soft); color: var(--leaf-ink); }
+.jv-outline__glyph .jv-icon { width: 16px; height: 16px; }
+.jv-outline__name { font: 500 15px/22px var(--font-head); }
+.jv-outline__words { margin-left: auto; color: var(--muted); font-size: 13px; white-space: nowrap; }
+.jv-outline__words--soon { color: var(--notice-ink); font-weight: 500; }
+.jv-outline__row--archived .jv-outline__name, .jv-outline__row--archived .jv-outline__glyph { opacity: 0.6; }
+.jv-outline__row--proposed .jv-outline__glyph { background: none; border: 1.5px dotted var(--control); color: var(--muted); }
+/* Night: rows on quiet rules, ring glyphs, the chosen row a brighter edge (never cyan), due soon with its diamond */
+:root[data-theme="night"] .jv-outline { gap: 0; }
+:root[data-theme="night"] .jv-outline__row { border-radius: var(--r-card); border-bottom: 1px solid var(--rule); }
+:root[data-theme="night"] .jv-outline__row[aria-selected="true"] { background: var(--sunken); box-shadow: inset 2px 0 0 var(--text); }
+:root[data-theme="night"] .jv-outline__glyph { background: transparent; border: 1.5px solid var(--line); color: var(--text-2); }
+:root[data-theme="night"] .jv-outline__words { color: var(--text-2); font: var(--kicker); letter-spacing: 0.06em; text-transform: var(--kicker-case); }
+:root[data-theme="night"] .jv-outline__words--soon { font-weight: 400; }
+:root[data-theme="night"] .jv-outline__word--soon, :root[data-theme="night"] .jv-outline__word--yes { color: var(--warn); display: inline-flex; align-items: center; gap: 7px; }
+:root[data-theme="night"] .jv-outline__word--soon::before, :root[data-theme="night"] .jv-outline__word--yes::before { content: ""; width: 8px; height: 8px; border: 1.5px solid var(--warn); flex: none; }
+:root[data-theme="night"] .jv-outline__word--soon::before { transform: rotate(45deg); }
+
+:root[data-size="laptop"] .jv-life__body { gap: var(--gap); }
+:root[data-size="phone"] .jv-life { height: auto; min-height: 0; }
+:root[data-size="phone"] .jv-life__body { grid-template-columns: minmax(0, 1fr); }
+:root[data-size="phone"] .jv-life__tools .jv-seg { display: none; }
+:root[data-size="phone"] .jv-life__page { overflow: visible; padding-bottom: 12px; }
+:root[data-size="phone"] .jv-outline__words { white-space: normal; text-align: right; }

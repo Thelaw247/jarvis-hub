@@ -1,0 +1,40 @@
+/* The reader (N6): a PDF on the light reading sheet inside a HUD window (HUD v2 §1, §10.1).
+   The frame is the HUD's; the sheet (.jv-paper) swaps in the dark inks, in both themes. PDF.js needs its
+   scroll container absolutely positioned. Motion: the brackets' 250 ms lock and fade only (transform/opacity),
+   none under reduced motion (base.css). Tokens only. */
+jv-view-reader { display: block; height: 100%; }
+.jv-reader { height: 100%; max-width: 1320px; margin: 0 auto; padding: var(--gap-small) 0 var(--gap-large); }
+.jv-reader__frame { position: relative; height: calc(100% - 24px);  /* room for the metadata under the frame */
+  display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 10px; padding: 12px 14px 14px; }
+.jv-reader__bar { min-height: 32px; align-items: center; }
+.jv-reader__right { display: inline-flex; align-items: center; gap: var(--gap); }
+.jv-reader__sheet { position: relative; min-height: 0; overflow: hidden; border-radius: var(--r-control); }
+.jv-reader__scroll {
+  position: absolute; inset: 0; overflow: auto; scroll-behavior: auto; background: var(--paper);
+  scrollbar-color: var(--ink-muted) transparent;
+}
+.jv-reader__scroll:focus-visible { outline-offset: -4px; box-shadow: none; }
+/* PDF.js pages: centred, a hairline between them, no drop shadows (the sheet is already the paper) */
+.jv-reader__scroll .pdfViewer { padding: 12px 0 40vh; }
+.jv-reader__scroll .pdfViewer .page { margin: 0 auto 12px; border: 0; box-shadow: 0 0 0 1px var(--rule); }
+.jv-reader__status { position: absolute; left: 50%; top: 40%; transform: translateX(-50%); font: var(--read); color: var(--ink-muted); text-align: center; max-width: 36ch; }
+.jv-reader__status:empty { display: none; }
+
+/* the resume card sits over the sheet, top centre: the PDF is already at the question behind it */
+.jv-reader__card { position: absolute; z-index: 3; top: 58px; left: 50%; transform: translateX(-50%); width: min(540px, calc(100% - 32px)); }
+.jv-reader__card:empty { display: none; }
+
+/* brackets that lock onto a question's heading: four corners, snap in 250 ms, hold, fade */
+.jv-reader__lock { position: absolute; z-index: 2; pointer-events: none; opacity: 0; transform: scale(1.06); }
+.jv-reader__lock i { position: absolute; width: 14px; height: 14px; border: 0 solid var(--ink-cyan); }
+.jv-reader__lock i:nth-child(1) { left: 0; top: 0; border-left-width: 2px; border-top-width: 2px; }
+.jv-reader__lock i:nth-child(2) { right: 0; top: 0; border-right-width: 2px; border-top-width: 2px; }
+.jv-reader__lock i:nth-child(3) { left: 0; bottom: 0; border-left-width: 2px; border-bottom-width: 2px; }
+.jv-reader__lock i:nth-child(4) { right: 0; bottom: 0; border-right-width: 2px; border-bottom-width: 2px; }
+.jv-reader__lock--on { opacity: 1; transform: none; transition: opacity calc(var(--t-fly) * 5 / 6) var(--ease-mech), transform calc(var(--t-fly) * 5 / 6) var(--ease-mech); }
+.jv-reader__lock--fade { opacity: 0; transition: opacity var(--t-fly) var(--ease); }
+
+:root[data-size="phone"] .jv-reader { padding: 0; }
+:root[data-size="phone"] .jv-reader__frame { padding: 8px; height: 100%; margin-bottom: 0; }
+:root[data-size="phone"] .jv-reader__frame > .jv-meta { display: none; }
+:root[data-size="phone"] .jv-reader__card { top: auto; bottom: 12px; }

@@ -1,0 +1,28 @@
+jv-view-now { display: block; height: 100%; }
+.jv-now { height: 100%; min-height: 100%; display: grid; grid-template-rows: minmax(0, 1fr); }
+.jv-now__ambient, .jv-now__canvas { grid-area: 1 / 1; }
+.jv-now:not(.jv-now--ambient) .jv-now__ambient, .jv-now.jv-now--ambient .jv-now__canvas.jv-now__canvas { display: none; }  /* stronger than the board's own display (canvas.css): resting never shows the board under the orb */
+/* The home's centre itself (the orb; resting, the small clock and date) is ambient.css. The calm home (Stage
+   window on) is that layout whether or not windows are up. */
+
+/* The calm home (N9, HUD v2 §6.5): the big orb is in the view, so the shell's corner orb steps aside (one orb) */
+:root[data-home="calm"] .jv-dock #orb { display: none; }
+
+/* waking (On the hub): the big orb slides to the corner over the canvas (canvas.js slideOrbToDock); only the
+   orb is drawn, nothing on that layer takes a click, and the canvas underneath keeps its own layout */
+.jv-now.jv-now--docking .jv-now__ambient {
+  display: grid; position: fixed; left: var(--dock-x, 0); top: var(--dock-y, 0); width: var(--dock-w, 100%); height: var(--dock-h, 100%);
+  min-height: 0; z-index: 25; pointer-events: none;  /* fixed: the stage's scroll box must not clip the orb on its way to the corner */
+}
+.jv-now--docking .jv-now__ambient > :not(.jv-now__centre), .jv-now--docking .jv-now__centre > :not(jv-orb) { visibility: hidden; }
+
+/* On the hub (the old behaviour): the canvas (stage/canvas.css) with the now card as one of its panels.
+   Nothing pushed: the now card sits centred under a quiet clock instead of alone in a corner */
+.jv-now__canvas > .jv-now__clock { display: none; }
+.jv-now__canvas.jv-canvas--empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--gap-large); padding-bottom: 8vh; }
+.jv-now__canvas.jv-canvas--empty > .jv-now__clock:not([hidden]) { display: block; }
+.jv-now__canvas.jv-canvas--empty > jv-window { align-self: center; width: min(480px, 100%); }
+.jv-now__clock .jv-clock__time { font-size: clamp(56px, 7vw, 96px); color: var(--muted); }
+.jv-now__clock .jv-clock__date { font-size: 16px; line-height: 24px; }
+
+:root[data-size="phone"] jv-view-now, :root[data-size="phone"] .jv-now { height: auto; }

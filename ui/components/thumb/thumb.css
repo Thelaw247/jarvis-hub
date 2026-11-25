@@ -1,0 +1,48 @@
+/* jv-thumb: picture + big label (HUD v2 §5). A fixed aspect ratio so nothing shifts when the picture lands. */
+jv-thumb { display: block; min-width: 0; }
+.jv-thumb {
+  position: relative; overflow: hidden; margin: 0; width: 100%; aspect-ratio: 1 / 1;
+  background: var(--bg-0); border: 1px solid var(--frame); border-radius: var(--r-control);
+}
+.jv-thumb--wide { aspect-ratio: 16 / 9; }
+.jv-thumb--page { aspect-ratio: 4 / 3; }
+.jv-thumb--small { width: 48px; aspect-ratio: 1 / 1; flex: none; }
+/* a small one beside a label keeps its size in a flex row (it used to be squeezed under the label in narrow panels) */
+jv-thumb[size="small"] { flex: none; }
+.jv-thumb--small.jv-thumb--wide { width: 80px; aspect-ratio: 16 / 9; }
+.jv-thumb--small.jv-thumb--page { width: 64px; aspect-ratio: 4 / 3; }
+.jv-thumb__img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+/* the big label sits on a solid band over the bottom of the picture, so it reads on any image */
+.jv-thumb__label {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 6px 10px 5px;
+  font: var(--display); letter-spacing: var(--display-track); text-transform: var(--display-case); color: var(--text);
+  background: var(--panel); border-top: 1px solid var(--rule);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* fallbacks: a course monogram, initials, a big room code (all real words, drawn in type) */
+.jv-thumb__mono {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0; padding-bottom: 18%; color: var(--text); line-height: 0.9;
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 16px 16px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 16px 16px,
+    var(--bg-1);
+}
+.jv-thumb:not(:has(.jv-thumb__label)) .jv-thumb__mono { padding-bottom: 0; }
+.jv-thumb__code, .jv-thumb__initials, .jv-thumb__num {
+  font-family: var(--font-display); font-weight: 600; text-transform: var(--kicker-case); letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.jv-thumb__code { font-size: clamp(28px, 22cqi, 64px); color: var(--text); }
+.jv-thumb__num { font-size: clamp(22px, 16cqi, 48px); color: var(--text-2); }
+.jv-thumb__initials { font-size: clamp(28px, 30cqi, 80px); color: var(--text); }
+.jv-thumb { container-type: inline-size; }
+.jv-thumb--small .jv-thumb__code, .jv-thumb--small .jv-thumb__initials { font-size: 18px; }
+.jv-thumb--small .jv-thumb__num { font-size: 13px; }
+.jv-thumb__mono--room .jv-thumb__code { color: var(--text-2); font-size: clamp(20px, 13cqi, 40px); }
+.jv-thumb__mono--room .jv-thumb__num { color: var(--text); font-size: clamp(32px, 26cqi, 84px); }
+.jv-thumb--small .jv-thumb__mono--room .jv-thumb__code { font-size: 12px; }
+.jv-thumb--small .jv-thumb__mono--room .jv-thumb__num { font-size: 16px; }
+
+.jv-thumb-demo { display: flex; gap: 12px; align-items: center; }

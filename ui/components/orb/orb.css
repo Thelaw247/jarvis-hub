@@ -1,0 +1,281 @@
+/* <jv-orb>: the Core (HUD v2 §4, v3 §14). Layers bottom → top: halo · standby sphere · glow · energy ring · core ·
+   inner arcs (a, b) · outer arc · dotted ring (+ thinking chase, + yes drain) · bare ticks · hash marks · day dial
+   slot · motes. Each moving layer is its own <div> with its own small <svg>; motion is transform/opacity only (the
+   yes drain steps a stroke-dashoffset). Colours come from tokens; the state lives in data-look / data-alert.
+   v3 (Huw): the lines are near-white (--orb-line); the deep blue (--orb) only fills the energy ring while he or
+   Jarvis speaks; at rest there is only a faint, soft blue halo; docked, the rings are white only. */
+
+/* Size: the host decides (--jv-orb-size on the element or any parent). The default makes the outer ornaments
+   (ticks and hash marks, ~0.76 of the box) about 1/6 of the screen's width and the core's radius about 1/28 of it,
+   as in Huw's reels; capped by height so a short window still fits it. */
+jv-orb { --jv-orb-default: clamp(160px, min(22vw, 40vh), 480px);
+  display: inline-block; position: relative; flex: none; width: var(--jv-orb-size, var(--jv-orb-default)); height: var(--jv-orb-size, var(--jv-orb-default));
+  --orb-spark: var(--orb-line); }
+jv-orb[size="corner"] { width: 120px; height: 120px; }                     /* the docked mini rings */
+:root[data-size="laptop"] jv-orb[size="corner"] { width: 64px; height: 64px; }
+jv-orb[size="strip"] { width: 16px; height: 16px; }
+
+.jv-orb__stage { position: absolute; inset: 0; container-type: size; transform-origin: 50% 50%; }
+jv-orb[size="corner"] .jv-orb__stage { transform: scale(1.507); }           /* 220 / 146: the dotted ring fills the box */
+/* v0.11: the rings come out of the standby sphere and go back into it over 500 ms, eased at both ends (his ask:
+   smooth, not a snap); the glow and the energy ring keep their own quick fades, so "heard you" still shows at once */
+.jv-orb__L { position: absolute; transform-origin: 50% 50%; transition: opacity var(--t-orb) var(--ease-orb), transform var(--t-orb) var(--ease-orb); }
+.jv-orb__L--energy { transition-duration: var(--t-move); }
+.jv-orb__spin, .jv-orb__spin2, .jv-orb__lvl, .jv-orb__field, .jv-orb__twinkle { position: absolute; inset: 0; }
+.jv-orb__svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+/* ── continuous motion: every spinner is its own composited layer ─────────────────────────────────────── */
+.jv-orb__spin { will-change: transform; animation: jv-orb-turn var(--turn, 30s) linear infinite; }
+.jv-orb__spin2 { will-change: transform; }  /* the extra speed: turned by orb.js (eased, follows Jarvis's voice), never a CSS animation */
+.jv-orb__lvl { will-change: opacity; }                                              /* the level loop's target: the glow's opacity, nothing else */
+.jv-orb__L--arcs-a { --turn: 18s; --turn2: 12s; }                                   /* 20°/s cw, +30°/s */
+.jv-orb__L--arcs-b .jv-orb__spin { animation-direction: reverse; }
+.jv-orb__L--arcs-b { --turn: 30s; --turn2: 20s; }                                   /* 12°/s ccw, +18°/s */
+.jv-orb__L--outer { --turn: 60s; }                                                  /* 6°/s drift (+ Jarvis's voice, orb.js) */
+.jv-orb__L--dots { --turn: 45s; }                                                   /* 8°/s, opposite */
+.jv-orb__L--dots .jv-orb__spin { animation-direction: reverse; }
+.jv-orb__L--chase .jv-orb__spin { animation: jv-orb-turn 2.4s steps(48) infinite paused; }  /* hops dot to dot */
+.jv-orb__twinkle { animation: jv-orb-twinkle 2.8s ease-in-out infinite alternate; }
+.jv-orb__twinkle--1 { animation-duration: 3.7s; animation-delay: -1.3s; }
+.jv-orb__field { will-change: transform; animation: jv-orb-field-0 46s linear infinite paused; }
+.jv-orb__field--1 { animation-name: jv-orb-field-1; animation-duration: 58s; }
+.jv-orb__field--2 { animation-name: jv-orb-field-2; animation-duration: 70s; }
+
+/* ── strokes and fills ──────────────────────────────────────────────────────────────────────────────────── */
+.jv-orb__stop { stop-color: var(--orb-light, var(--orb)); }  /* v0.6.1: the glow is a muted steel blue */
+.jv-orb__en-ring { fill: none; stroke: var(--orb-band); stroke-width: 9.72; }   /* the band, 1.15–1.42 R (orb-parts EN_W) */
+/* Huw's glow on the blue ring (listening, speaking): a shade toward the band's inner edge and a lighter line on
+   its outer edge, both static; shown only on the blue ring (never on amber, red, grey or the docked white ring) */
+.jv-orb__stop-deep { stop-color: var(--orb-deep); }
+.jv-orb__en-shade { fill: none; stroke-width: 9.72; opacity: 0; }
+.jv-orb__en-hi { fill: none; stroke: var(--orb-edge); stroke-width: 1.4; opacity: 0; }
+/* the light source (v0.5.4): a thin bright line and a soft blurred core around it, drawn only while listening or
+   speaking on the big orb; the band and its edges go, so the light has a start and no border */
+.jv-orb__en-src { fill: none; stroke: var(--cyan-hi); stroke-width: 1.3; opacity: 0; }
+.jv-orb__en-soft { fill: none; stroke: var(--orb-halo); stroke-width: 7; opacity: 0; }
+jv-orb:not([data-alert]):is([data-look="listening"], [data-look="speaking"]) .jv-orb__en-shade { opacity: 1; }
+jv-orb:not([data-alert]):is([data-look="listening"], [data-look="speaking"]) .jv-orb__en-hi { opacity: 0.95; }
+/* v0.5.2: the blue ring is light, not paint. The band is see-through (the glow behind it shows), a bright thin
+   line runs round its outer edge, and that line has its own soft bloom (Night) */
+/* The blue band never shows on the big orb (v0.6.1): not while listening or speaking, not while it slides (v0.5.7),
+   and not while the layer fades out after he or Jarvis stops (it flashed solid blue on the way to thinking or idle).
+   Only the states that are meant to draw a band keep it: waiting, an alert, muted/offline, the reduced-motion
+   "thinking" ring, and the white ring of the docked or corner orb. */
+:is(:root:not([data-still]) jv-orb, :root[data-still] jv-orb:not([data-look="thinking"])):not([data-alert]):not([data-dock="docked"]):not([size="corner"]):not([data-look="waiting"], [data-look="muted"], [data-look="offline"]) :is(.jv-orb__en-ring, .jv-orb__en-shade, .jv-orb__en-hi, .jv-orb__en-edge) { opacity: 0; }
+/* v0.5.5: no ring of light at all: the glow layer (behind every ring) carries the light out from the core's edge */
+.jv-orb__en-edge { fill: none; stroke: var(--orb-line); stroke-width: 0.9; stroke-opacity: 0.35; }
+jv-orb:not([data-alert]):is([data-look="listening"], [data-look="speaking"]) .jv-orb__en-edge { opacity: 0; }  /* the band's inner edge is its darkest */
+.jv-orb__core { fill: var(--bg-1); fill-opacity: 0.94; stroke: var(--orb-line); stroke-width: 1.5; stroke-opacity: 0.95; }
+.jv-orb__core-bloom { fill: none; stroke: var(--orb); stroke-width: 5; opacity: 0; }   /* v0.6.2: no blue rim hugging the core; the glow behind it is the light */
+.jv-orb__mark { font: 400 12px var(--font-head); letter-spacing: 3px; fill: var(--orb-line); }   /* units: 12 px on a 220 px orb */
+.jv-orb__yes { display: none; }
+.jv-orb__yes-1 { font: 400 8.4px var(--font-mono); letter-spacing: 1px; fill: var(--warn); }  /* 12 px on a 315 px orb */
+.jv-orb__yes-2 { font: 600 14px var(--font-display); letter-spacing: 3.2px; fill: var(--warn); }
+.jv-orb__glyph { display: none; fill: none; stroke: var(--text-2); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.jv-orb__arc { fill: none; stroke: var(--orb-line); stroke-width: 1.4; stroke-opacity: 0.8; stroke-linecap: round; }
+.jv-orb__arc--hi { stroke-width: 2.8; stroke-opacity: 1; }
+.jv-orb__arc--faint { stroke-width: 0.9; stroke-opacity: 0.4; }
+.jv-orb__outer { fill: none; stroke: var(--orb-line); stroke-width: 0.9; stroke-opacity: 0.4; }
+.jv-orb__dots { fill: none; stroke: var(--orb-line); stroke-width: 1.8; stroke-linecap: round; stroke-dasharray: 0 1; stroke-opacity: 0.6; }
+.jv-orb__dots--drain { stroke: var(--warn); stroke-opacity: 0.5; }
+.jv-orb__chase { fill: none; stroke: var(--orb-spark); stroke-width: 3.2; stroke-linecap: round; }
+.jv-orb__chase--tail { stroke-width: 2.6; stroke-opacity: 0.6; }
+/* the mask only needs luminance: white keeps a dot, nothing hides it (not a visible colour) */
+.jv-orb__drain-mask { fill: none; stroke: white; stroke-width: 9; stroke-dasharray: 48 48; stroke-dashoffset: 0;
+  animation: jv-orb-drain var(--win, 10s) steps(48, end) var(--ago, 0s) 1 forwards paused; }
+.jv-orb__ticks { fill: none; stroke: var(--orb-line); stroke-width: 1.4; stroke-opacity: 0.85; }
+.jv-orb__ticks-bloom { fill: none; stroke: var(--orb); stroke-width: 3.2; opacity: 0.35; }
+.jv-orb__hash { fill: none; stroke: var(--orb-line); stroke-width: 1.4; }
+.jv-orb__motes { fill: none; stroke: var(--orb-spark); stroke-width: 2.4; stroke-linecap: round; }
+/* the sphere is drawn at 1.6× in standby, so its particles and rim are drawn fine */
+.jv-orb__particles { fill: none; stroke: var(--orb-spark); stroke-width: 1.1; stroke-linecap: round; stroke-opacity: 0.85; }
+.jv-orb__field--1 .jv-orb__particles { stroke-width: 0.9; stroke-opacity: 0.65; }
+.jv-orb__field--2 .jv-orb__particles { stroke-width: 0.7; stroke-opacity: 0.45; }
+.jv-orb__field--0 .jv-orb__particles { stroke-width: 1.3; stroke-opacity: 0.95; }
+.jv-orb__sphere-glow { fill: none; stroke: var(--orb); stroke-width: 3.2; opacity: 0.6; }
+.jv-orb__sphere-edge { fill: none; stroke: var(--orb); stroke-width: 1.4; }
+/* the smaller circles glow too (Night, v0.5.2): each ring's own soft light, a tight bloom and a faint wider one.
+   The filter sits on the svg inside the spinner, so it is drawn once and only turned (no per-frame filter). */
+:root[data-theme="night"] jv-orb:not([size="strip"]) :is(.jv-orb__L--arcs-a, .jv-orb__L--arcs-b, .jv-orb__L--outer, .jv-orb__L--dots, .jv-orb__L--core) .jv-orb__svg {
+  filter: drop-shadow(0 0 4px var(--orb-glow)); }  /* v0.6.1: one soft bloom, no sharp blue edge */
+/* light is added, never painted: the baked bloom is a Night thing */
+:root:not([data-theme="night"]) .jv-orb__core-bloom, :root:not([data-theme="night"]) .jv-orb__ticks-bloom { display: none; }
+
+/* the state word: HTML, so the type stays 12 px whatever the orb's size (the cardinal ticks are bare) */
+.jv-orb__word {
+  position: absolute; translate: -50% -50%; white-space: nowrap; pointer-events: none;
+  font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: uppercase; font-variant-numeric: tabular-nums;
+}
+/* the state word sits in the band between the energy ring and the hash groups, on a small plate of the
+   background so the dotted ring never runs through it; tracked a little tighter so it clears the hash marks */
+.jv-orb__word { display: none; left: 50%; top: 76.8%; color: var(--text-2); padding: 0 5px; background: var(--bg-1); letter-spacing: 0.08em; }
+jv-orb[data-alert="warn"] .jv-orb__word { color: var(--warn); }
+jv-orb[data-alert="crit"] .jv-orb__word { color: var(--crit); }
+/* the day dial is drawn only when the host asks for it (attribute dial; HUD v3 §14 took it off the home screen) */
+jv-orb:not([dial]) .jv-orb__dial { display: none; }
+/* text in the core never drops under 12 px: a small or docked orb shows none (the amber ring, the status
+   line and the Rail carry the state) */
+@container (max-width: 314px) { .jv-orb__yes-1 { display: none; } .jv-orb__yes-2 { transform: translateY(-7px); } }
+@container (max-width: 219px) { .jv-orb__mark { display: none; } }
+@container (max-width: 160px) { .jv-orb__mark, .jv-orb__yes { display: none !important; } }
+jv-orb[data-dock] :is(.jv-orb__mark, .jv-orb__yes) { display: none !important; }
+
+/* the docked orb as a button (attribute openable): brings back the full view */
+.jv-orb__open { position: absolute; inset: 8%; border: 0; border-radius: 50%; background: transparent; cursor: pointer; padding: 0; }
+
+/* ── states (data-look; alerts in data-alert) ─────────────────────────────────────────────────────────────
+   idle (and thinking): white rings, slow rotation, only a faint soft blue halo; no energy ring at all */
+.jv-orb__L--halo { opacity: 0; }  /* v0.5.6: the glow layer is the resting light now */
+.jv-orb__L--energy { opacity: 0; }
+/* the glow (v0.5.6): always on, small, from behind the core; it grows while he speaks to Jarvis and grows more while
+   Jarvis speaks. Only this one layer's scale and opacity change (a static picture: composited, no repaint). */
+.jv-orb__L--glow { opacity: 0.5; transition: opacity 300ms var(--ease-out); will-change: opacity; }  /* v0.6.1: brighter, never bigger */
+jv-orb[data-look="listening"] .jv-orb__L--glow { opacity: 0.8; }
+jv-orb[data-look="speaking"] .jv-orb__L--glow { opacity: 1; }
+jv-orb:is([data-look="muted"], [data-look="offline"]) .jv-orb__L--glow { opacity: 0; }
+.jv-orb__L--hash { opacity: 0.45; }
+.jv-orb__L--sphere, .jv-orb__L--chase, .jv-orb__L--drain { opacity: 0; }
+
+/* standby (ambient, quiet): the rings fade into a small translucent sphere of drifting particles, about as wide
+   as the awake orb's hash ring, with the wordmark on it; motes stay. No clock here: the host puts a small
+   <jv-clock small> under it (HUD v3 §14). */
+jv-orb[data-look="standby"] :is(.jv-orb__L--energy, .jv-orb__L--arcs-a, .jv-orb__L--arcs-b, .jv-orb__L--outer, .jv-orb__L--dots, .jv-orb__L--ticks, .jv-orb__L--hash) { opacity: 0; transform: scale(0.86); }
+jv-orb[data-look="standby"] :is(.jv-orb__L--energy, .jv-orb__L--arcs-a, .jv-orb__L--arcs-b, .jv-orb__L--outer, .jv-orb__L--dots) .jv-orb__spin { animation-play-state: paused; }
+jv-orb[data-look="standby"] :is(.jv-orb__core, .jv-orb__core-bloom) { opacity: 0; }   /* the wordmark stays, on the sphere */
+jv-orb[data-look="standby"] .jv-orb__L--sphere { opacity: 1; transform: scale(1.6); }
+jv-orb[data-look="standby"] .jv-orb__field { animation-play-state: running; }
+jv-orb[data-look="standby"] .jv-orb__L--halo { opacity: 0.3; transform: scale(1.3); }
+
+/* listening: the energy ring fills with the deep blue; its tight glow follows his voice (opacity only); the dots
+   brighten. No wide halo here: the glow hugs the band and is gone within 0.25 R. Nothing breathes or scales. */
+jv-orb[data-look="listening"] .jv-orb__L--energy { opacity: 1; }
+jv-orb[data-look="listening"] .jv-orb__L--halo { opacity: 0; }
+jv-orb[data-look="listening"] .jv-orb__dots { stroke-opacity: 0.85; }
+
+/* thinking: white rings (no blue ring), arcs ~2.5× faster, a white chase runs round the dotted ring */
+jv-orb[data-look="thinking"] .jv-orb__L--dots .jv-orb__spin { animation-play-state: paused; }
+jv-orb[data-look="thinking"] .jv-orb__L--chase { opacity: 1; }
+jv-orb[data-look="thinking"] .jv-orb__L--chase .jv-orb__spin { animation-play-state: running; }
+jv-orb[data-look="thinking"] .jv-orb__L--hash { opacity: 0.6; }
+
+/* speaking: no pulsing (his decision, v0.4.1). The rings simply turn faster (the extra spinner runs: the angle
+   never jumps), the blue ring is steady and its tight glow brightens with Jarvis's voice (opacity only, the
+   loop); the hash marks step with it */
+jv-orb[data-look="speaking"] .jv-orb__twinkle { animation-play-state: paused; }  /* the motes hold while the outer rings spin up (8 animations at most, plan §3) */
+jv-orb[data-look="speaking"] .jv-orb__L--energy { opacity: 1; }
+jv-orb[data-look="speaking"] .jv-orb__L--halo { opacity: 0; }
+jv-orb[data-look="speaking"] .jv-orb__L--hash { opacity: 1; }
+
+/* waiting for your yes: a steady amber ring + AWAITING YES; only the dim dotted ring drains */
+jv-orb:is([data-look="waiting"], [data-alert]) .jv-orb__en-ring { stroke-width: 6; }
+jv-orb[data-look="waiting"] :is(.jv-orb__en-ring, .jv-orb__en-edge) { stroke: var(--warn); }
+jv-orb[data-look="waiting"] .jv-orb__stop { stop-color: var(--warn); }
+jv-orb[data-look="waiting"] :is(.jv-orb__L--energy, .jv-orb__L--glow) { opacity: 0.9; }
+jv-orb[data-look="waiting"] .jv-orb__L--halo { opacity: 0.3; }
+jv-orb[data-look="waiting"] .jv-orb__L--dots { opacity: 0; }
+jv-orb[data-look="waiting"] .jv-orb__L--dots .jv-orb__spin { animation-play-state: paused; }
+jv-orb[data-look="waiting"] .jv-orb__L--drain { opacity: 1; }
+jv-orb[data-look="waiting"] .jv-orb__drain-mask { animation-play-state: running; }
+jv-orb[data-look="waiting"] .jv-orb__mark { display: none; }
+jv-orb[data-look="waiting"] .jv-orb__yes { display: inline; }
+jv-orb[data-look="waiting"] .jv-orb__L--hash { opacity: 0.25; }
+
+/* alert: amber or red, one 600 ms pulse (data-pulse), never a strobe */
+jv-orb[data-alert="warn"] :is(.jv-orb__en-ring, .jv-orb__en-edge) { stroke: var(--warn); }
+jv-orb[data-alert="warn"] .jv-orb__stop { stop-color: var(--warn); }
+jv-orb[data-alert="crit"] :is(.jv-orb__en-ring, .jv-orb__en-edge) { stroke: var(--crit); }
+jv-orb[data-alert="crit"] .jv-orb__stop { stop-color: var(--crit); }
+jv-orb[data-alert] :is(.jv-orb__L--energy, .jv-orb__L--glow) { opacity: 1; }
+jv-orb[data-alert] .jv-orb__L--halo { opacity: 0.5; }
+jv-orb[data-alert] .jv-orb__word { display: block; }
+
+/* muted / offline: a grey ring with a gap at the top, the glyph in the core, the word below; nothing turns */
+jv-orb:is([data-look="muted"], [data-look="offline"]) .jv-orb__en-bloom { opacity: 0; }
+jv-orb:is([data-look="muted"], [data-look="offline"]) .jv-orb__en-ring { stroke: var(--text-3); stroke-width: 4; stroke-dasharray: 86 14; stroke-dashoffset: -82; }
+jv-orb:is([data-look="muted"], [data-look="offline"]) .jv-orb__en-edge { display: none; }
+jv-orb:is([data-look="muted"], [data-look="offline"]) .jv-orb__stop { stop-color: var(--text-3); }
+jv-orb:is([data-look="muted"], [data-look="offline"]) .jv-orb__L--energy { opacity: 0.9; }
+jv-orb:is([data-look="muted"], [data-look="offline"]) .jv-orb__L--halo { opacity: 0; }
+jv-orb:is([data-look="muted"], [data-look="offline"]) :is(.jv-orb__L--arcs-a, .jv-orb__L--arcs-b, .jv-orb__L--outer, .jv-orb__L--dots, .jv-orb__L--hash) { opacity: 0.35; }
+jv-orb:is([data-look="muted"], [data-look="offline"]) .jv-orb__spin { animation-play-state: paused; }
+jv-orb:is([data-look="muted"], [data-look="offline"]) .jv-orb__mark { display: none; }
+jv-orb:is([data-look="muted"], [data-look="offline"]) .jv-orb__word { display: block; }
+jv-orb[data-look="muted"] .jv-orb__glyph--muted, jv-orb[data-look="offline"] .jv-orb__glyph--offline { display: inline; }
+
+/* ── beats ──────────────────────────────────────────────────────────────────────────────────────────────
+   full wake (first of the day, or after ≥ 4 h): the rings wind out from the centre, flat, one after another
+   (1.2 s): each starts a little small and turned back, and settles. Never 3D (v0.5.1: the old 70° tilt on a
+   diagonal axle, played while the orb slid to the corner, looked like the rings spinning on the wrong axis).
+   The core and the energy ring never move: Listening reads from the first frame. */
+jv-orb[data-wake="full"] .jv-orb__tilt { animation: jv-orb-wake 1.2s cubic-bezier(0.55, 0, 0.15, 1) var(--wd, 0ms) backwards; }
+/* every other wake: the dotted ring tightens 1.9 → 1.8 R and back (250 ms) */
+jv-orb[data-wake="tighten"] .jv-orb__L--dots { animation: jv-orb-tighten 250ms var(--ease); }
+/* (no 3D separation while speaking: tilting the rings under the stage's perspective threw them up to 6 px off
+   centre, the "spin breaks" he saw; v0.4.1) */
+/* alert: one pulse of the ring's opacity (nothing scales) */
+jv-orb[data-pulse] .jv-orb__L--energy { animation: jv-orb-pulse 600ms var(--ease); }
+
+/* ── docked (the corner mini rings, or a centre orb docked among the windows): white rings only, no blue.
+   Listening and speaking still show, as a thin white energy ring that follows the voice; amber, red and grey
+   keep their colours (waiting, alerts, muted, offline). */
+jv-orb:is([size="corner"], [data-dock]) .jv-orb__L--halo { opacity: 0 !important; }
+jv-orb:is([size="corner"], [data-dock]) .jv-orb__core-bloom { opacity: 0; }
+jv-orb:is([size="corner"], [data-dock]):not([data-alert]):is([data-look="listening"], [data-look="speaking"], [data-look="thinking"], [data-look="idle"]) .jv-orb__en-ring { stroke: var(--orb-line); stroke-width: 2.4; }
+jv-orb:is([size="corner"], [data-dock]):not([data-alert]):is([data-look="listening"], [data-look="speaking"], [data-look="thinking"], [data-look="idle"]) :is(.jv-orb__en-bloom, .jv-orb__en-edge, .jv-orb__en-shade, .jv-orb__en-hi) { opacity: 0; }
+
+/* ── docking: outer layers retract (200 ms), then the stage slides and scales to the dock (700 ms) ──────── */
+.jv-orb__outerL { transition: opacity 200ms var(--ease), transform 200ms var(--ease); }
+jv-orb:not([data-dock]) .jv-orb__outerL { transition: opacity var(--t-orb) var(--ease-orb), transform var(--t-orb) var(--ease-orb); }  /* in and out of standby: 500 ms */
+/* while it moves, the orb is drawn once and slid as a picture (v0.5.3: re-drawing every ring each frame was the lag) */
+jv-orb:not([size="strip"]) :is(.jv-orb__stage, .jv-orb__outerL) { will-change: transform; }  /* v0.6.3: always its own layer, so a slide starts and ends without a re-draw hitch */
+jv-orb[data-dock] .jv-orb__outerL { opacity: 0; transform: scale(0.6); }
+jv-orb:is([data-dock="slide"], [data-dock="return"]) .jv-orb__stage { transition: transform 450ms var(--ease-out); }  /* serious mode: quick and settled */
+jv-orb[data-instant] *, jv-orb[data-instant] .jv-orb__stage { transition: none !important; }
+jv-orb[data-dock] .jv-orb__word { display: none !important; }
+
+/* paused: off screen or in a game; hidden pages pause through base.css (data-hidden) */
+jv-orb[data-paused] * { animation-play-state: paused !important; }
+/* hidden by its view (the Stage's centre orb while windows are up): no animations at all */
+jv-orb[data-offstage] * { animation: none !important; }
+
+/* ── still (reduced motion, Controls › Motion, the strip): one pose per state, colour + word ──────────── */
+:root[data-still] jv-orb *, :root[data-motion="reduced"] jv-orb *, :root[data-motion="off"] jv-orb * { animation: none !important; transition: none !important; }
+:root[data-still] jv-orb .jv-orb__word:not(:empty) { display: block; }
+:root[data-still] jv-orb[data-look="thinking"] .jv-orb__L--energy { opacity: 1; }  /* dashed white ring + "Thinking" */
+:root[data-still] jv-orb[data-look="thinking"] .jv-orb__en-ring { stroke: var(--orb-line); stroke-width: 2.4; stroke-dasharray: 2.2 1.4; }
+:root[data-still] jv-orb[data-look="thinking"] :is(.jv-orb__en-bloom, .jv-orb__en-edge, .jv-orb__en-shade, .jv-orb__en-hi) { opacity: 0; }
+:root[data-still] jv-orb[data-look="thinking"] .jv-orb__L--chase { opacity: 0; }
+:root[data-still] jv-orb[data-look="waiting"] .jv-orb__drain-mask { stroke-dashoffset: var(--left, 0); }  /* what's left, held */
+jv-orb:is([size="corner"], [size="strip"]) .jv-orb__word { display: none !important; }
+
+/* ── the strip (Laptop A): one still SVG; never animates ─────────────────────────────────────────────── */
+.jv-orb__strip-core { fill: var(--bg-1); stroke: var(--orb-line); stroke-width: 5; }
+/* v3: white rings at rest (idle, standby, thinking dashed), the deep blue only while listening or speaking */
+.jv-orb__strip-ring { fill: none; stroke: var(--orb-line); stroke-width: 10; opacity: 0.45; }
+jv-orb[size="strip"]:is([data-look="listening"], [data-look="speaking"]) .jv-orb__strip-ring { opacity: 1; stroke: var(--orb); stroke-width: 14; }
+jv-orb[size="strip"][data-look="thinking"] .jv-orb__strip-ring { opacity: 1; stroke-dasharray: 9 6; }
+jv-orb[size="strip"][data-look="waiting"] .jv-orb__strip-ring { opacity: 1; stroke: var(--warn); stroke-width: 14; }
+jv-orb[size="strip"][data-alert="warn"] .jv-orb__strip-ring { opacity: 1; stroke: var(--warn); stroke-width: 14; }
+jv-orb[size="strip"][data-alert="crit"] .jv-orb__strip-ring { opacity: 1; stroke: var(--crit); stroke-width: 14; }
+jv-orb[size="strip"]:is([data-look="muted"], [data-look="offline"]) .jv-orb__strip-ring { opacity: 1; stroke: var(--text-3); stroke-dasharray: 86 14; stroke-dashoffset: -82; }
+jv-orb[size="strip"] .jv-orb__glyph { stroke-width: 5; }
+
+/* scenes */
+.jv-orb-row { display: flex; gap: var(--gap-large); align-items: center; flex-wrap: wrap; }
+.jv-orb-scene { display: grid; justify-items: center; align-content: center; gap: var(--gap); min-height: 100%; position: relative; }
+.jv-orb-scene__cap { color: var(--text-3); }
+.jv-orb-strip-scene { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 10px; padding: 8px 10px; }
+.jv-orb-strip-scene__item { display: flex; align-items: center; gap: 6px; font: 500 12px/16px var(--font-head); color: var(--text); white-space: nowrap; overflow: hidden; }
+
+@keyframes jv-orb-turn { to { transform: rotate(360deg); } }
+@keyframes jv-orb-twinkle { from { opacity: 0.25; } to { opacity: 1; } }
+@keyframes jv-orb-field-0 { to { transform: rotate(360deg); } }
+@keyframes jv-orb-field-1 { from { transform: rotate(40deg); } to { transform: rotate(-320deg); } }
+@keyframes jv-orb-field-2 { 0% { transform: rotate(0deg) scale(0.92); } 50% { transform: rotate(180deg) scale(1.04); } 100% { transform: rotate(360deg) scale(0.92); } }
+@keyframes jv-orb-drain { to { stroke-dashoffset: -48; } }
+@keyframes jv-orb-wake {
+  from { transform: rotate(calc(var(--k, 0) * 24deg)) scale(0.86); opacity: 0; }
+  to { transform: none; }
+}
+@keyframes jv-orb-tighten { 50% { transform: scale(0.947); } }
+@keyframes jv-orb-pulse { 0% { opacity: 0.55; } 35% { opacity: 1; } }

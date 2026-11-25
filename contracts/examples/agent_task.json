@@ -1,0 +1,34 @@
+{
+  "id": "task-tidy",
+  "goal": "Sort Jarvis Workspace into folders by course",
+  "state": "done",
+  "started": "2026-11-15T20:12:00",
+  "ended": "2026-11-15T20:16:00",
+  "step": { "n": 4, "of": 4, "label": "Moved 14 files into 4 folders" },
+  "steps": [
+    { "n": 1, "label": "Reading the brief", "state": "done" },
+    { "n": 2, "label": "Listing Jarvis Workspace", "state": "done" },
+    { "n": 3, "label": "Making 4 course folders", "state": "done" },
+    { "n": 4, "label": "Moving 14 files", "state": "done" }
+  ],
+  "files": [
+    { "path": "Jarvis Workspace\\GE 122", "change": "created" },
+    { "path": "Jarvis Workspace\\MATH 133", "change": "created" },
+    { "path": "Jarvis Workspace\\CHEM 142", "change": "created" },
+    { "path": "Jarvis Workspace\\CMPT 141", "change": "created" },
+    { "path": "Jarvis Workspace\\GE 122\\Truss notes.docx", "change": "moved", "where": "from Jarvis Workspace" }
+  ],
+  "cost_usd": 0.21,
+  "cap_usd": 1,
+  "asks": [],
+  "allowed": [],
+  "transcript": [
+    { "at": "2026-11-15T20:12:00", "who": "you", "text": "Sort my Jarvis Workspace into folders by course." },
+    { "at": "2026-11-15T20:12:00", "who": "jarvis", "text": "On it. Making folders there is already allowed, so it won't need to ask." },
+    { "at": "2026-11-15T20:13:00", "who": "claude", "text": "Found 14 loose files. Four courses: GE 122, MATH 133, CHEM 142, CMPT 141." },
+    { "at": "2026-11-15T20:14:00", "who": "claude", "text": "Made the four course folders." },
+    { "at": "2026-11-15T20:16:00", "who": "claude", "text": "Moved all 14 files. Nothing was deleted." }
+  ],
+  "undo": { "until": "2026-11-16T20:16:00", "label": "24 h" },
+  "brief": { "folders": ["Jarvis Workspace"], "apps": [], "done_when": "Every loose file is in its course folder" }
+}

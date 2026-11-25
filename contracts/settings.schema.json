@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "settings.schema.json",
+  "title": "Controls",
+  "type": "object",
+  "properties": {
+    "interruption": {
+      "enum": [
+        "quiet",
+        "balanced",
+        "chatty"
+      ]
+    },
+    "theme": {
+      "enum": [
+        "night",
+        "day",
+        "evening",
+        "system",
+        "sunset"
+      ]
+    },
+    "motion": {
+      "enum": [
+        "full",
+        "always",
+        "reduced",
+        "off"
+      ],
+      "description": "full follows Windows' animation setting; always keeps full motion even when Windows asks for less (v0.12.3)."
+    },
+    "earcons": {
+      "enum": [
+        "off",
+        "minimal",
+        "full"
+      ],
+      "description": "Jarvis's own sounds: off, minimal (the default: the wake rise and the 'heard you' tick) or full (also the low tone with a critical alert)"
+    },
+    "address": {
+      "enum": [
+        "name",
+        "sir",
+        "none"
+      ],
+      "description": "How Jarvis addresses him: by name (the default), 'sir' (opt-in) or not at all. At most once per exchange either way"
+    },
+    "stage": {
+      "enum": [
+        "window",
+        "hub"
+      ],
+      "description": "Where Jarvis shows the windows he pulls up: on the hub itself (one window; the default since v0.17.0, also when unset), or on the Stage, a second borderless window. With the hub, a window he drags off its edge moves to a plain holder window on that laptop"
+    },
+    "quiet_hours": {
+      "type": "object",
+      "properties": {
+        "on": {
+          "type": "boolean"
+        },
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "on",
+        "from",
+        "to"
+      ],
+      "additionalProperties": false
+    },
+    "focus": {
+      "type": "boolean"
+    },
+    "game_mode": {
+      "enum": [
+        "auto",
+        "on",
+        "off"
+      ]
+    },
+    "plants": {
+      "type": "boolean"
+    },
+    "ambient": {
+      "type": "boolean"
+    },
+    "muted": {
+      "type": "boolean"
+    },
+    "voice_brain": {
+      "description": "Which Claude model answers when he talks (v0.15.0). quick = Haiku 5.5, deep = Sonnet 5.5. Takes effect on his next sentence.",
+      "type": "string",
+      "enum": [
+        "quick",
+        "deep"
+      ]
+    },
+    "cloud_hearing": {
+      "description": "Who writes down what he says (v0.25.0). true = ElevenLabs' live speech-to-text (fast on a busy laptop; the sound of what he says to Jarvis leaves the laptop). false or absent = the laptop's own model (nothing leaves). Falls back to the laptop by itself when ElevenLabs can't be used.",
+      "type": "boolean"
+    },
+    "memory_paused": {
+      "type": "boolean"
+    },
+    "off_record": {
+      "type": "boolean"
+    },
+    "standing_permissions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+          },
+          "text": {
+            "type": "string"
+          },
+          "granted": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "granted"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "never": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "on": {
+            "type": "boolean"
+          },
+          "last_sync": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "stale",
+              "error",
+              "off"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "on"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "tiers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "branch_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+          },
+          "tier": {
+            "enum": [
+              1,
+              2
+            ]
+          }
+        },
+        "required": [
+          "branch_id",
+          "tier"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "interruption",
+    "theme",
+    "motion"
+  ],
+  "additionalProperties": false
+}

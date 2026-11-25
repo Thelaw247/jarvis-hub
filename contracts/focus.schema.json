@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "focus.schema.json",
+  "title": "The focus cue: what Jarvis means right now (ui.focus)",
+  "description": "Sent as he names a thing; the screen lights it until `until` (600 ms after the sentence). ref null lets go at once.",
+  "type": "object",
+  "properties": {
+    "ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "A window id, or the ref of the thing"
+    },
+    "until": {
+      "type": "string",
+      "description": "ISO 8601 date-time, local time unless it carries an offset",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+    }
+  },
+  "required": [
+    "ref"
+  ],
+  "additionalProperties": false
+}

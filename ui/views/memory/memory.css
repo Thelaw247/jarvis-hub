@@ -1,0 +1,10 @@
+jv-view-memory, jv-view-unsorted { display: block; }
+.jv-memory__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--gap-small) var(--gap); }
+.jv-memory__filters { display: flex; flex-wrap: wrap; gap: var(--gap-small); }
+.jv-memory__filters select { height: 34px; padding: 0 10px; background: var(--card); border: 1px solid var(--control); border-radius: var(--r-control); }
+.jv-memory__foot { padding: 8px var(--gap-large); max-width: 720px; }
+.jv-unsorted { display: grid; gap: var(--gap); }
+.jv-unsorted .jv-card { display: grid; gap: var(--gap); }
+.jv-unsorted__file { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-small) var(--gap); padding-top: 12px; border-top: 1px solid var(--line); }
+.jv-unsorted__file p { display: inline-flex; align-items: center; gap: 6px; margin-right: auto; }
+.jv-unsorted__file .jv-icon { width: 15px; height: 15px; color: var(--leaf-ink); }

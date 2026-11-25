@@ -1,0 +1,176 @@
+/* Jarvis hub tokens. This is the ONLY file that may contain hex colours (tools/hexlint.py enforces it).
+   Two looks, same token names (docs/design/JARVIS_DESIGN_HUD_V2.md §1–§2, §8):
+     Night    :root[data-theme="night"]  the default everywhere: Huw's palette, ice-cyan lines on deep navy
+     Daylight :root                      the Earth HUD (Pen Reader's paper, sand and terracotta) for bright rooms
+   Sunset picks between them by Saskatoon's real sunset (ui/core/theme.js). Evening is retired (now Night).
+   :root holds every token with its Daylight value, including the HUD-only ones (--bg-0, --cyan, --warn…),
+   so a component can use any token in either theme. A hex with two extra digits is a colour with alpha
+   (#a8e6ff80 = 50%); tools/contrast.py composites those over the surfaces they sit on. */
+
+@font-face { font-family: "Atkinson Next"; src: url("fonts/atkinson-hyperlegible-next-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Atkinson Next"; src: url("fonts/atkinson-hyperlegible-next-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Atkinson Next"; src: url("fonts/atkinson-hyperlegible-next-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Lexend"; src: url("fonts/lexend-latin-300-normal.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Lexend"; src: url("fonts/lexend-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Lexend"; src: url("fonts/lexend-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Lexend"; src: url("fonts/lexend-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("fonts/jetbrains-mono-latin-300-normal.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Barlow Condensed"; src: url("fonts/barlow-condensed-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+
+/* Daylight: the Earth HUD. Values: HUB_TRUST §5.2–5.3. */
+:root {
+  color-scheme: light;
+  /* surfaces: warm paper, never pure white or black */
+  --canvas: #f3ecdf; --sheet: #fbf5e6; --card: #fffbf3; --sunken: #ede4d3;
+  --line: #e6dcc9;   --line-strong: #d6c9b1; --control: #8f826d;
+  --text: #2b2622;   --muted: #6b6258;
+  /* the one accent: the thing to do, and the orb */
+  --accent: #b4512a; --accent-hover: #9d4420; --on-accent: #ffffff;
+  --accent-soft: #f6dfd2; --accent-ink: #8c3a1b;
+  /* growth: progress, done, "Your call", Life Map stems */
+  --growth-soft: #e3efe0; --leaf-ink: #2f6a4a;
+  --notice-bg: #fff3cf; --notice-ink: #6f4a06; --notice-border: #ecd28a;
+  --error-bg: #fbe3dc;  --error-ink: #8a2a17;  --negative: #b3361c;
+  --honey: #ffe7a3; --honey-ink: #2b2622;
+  --shadow: 0 1px 2px rgba(96, 70, 30, 0.06), 0 8px 24px rgba(96, 70, 30, 0.08);
+  --shadow-small: 0 1px 2px rgba(96, 70, 30, 0.10), 0 2px 6px rgba(96, 70, 30, 0.06);
+  --scrim: rgba(43, 38, 34, 0.28);
+
+  /* plants: one family of greens, a clay pot, one flower */
+  --leaf: #5c9471; --leaf-light: #8dba99; --leaf-deep: #3f7355; --leaf-deep-light: #62977a;
+  --leaf-rib: #e3efe1; --stem: #4f7a60;
+  --pot: #cf9670; --pot-shade: #b97d58; --pot-rim: #dcab8a; --soil: #5a4636;
+  --wash: #e6efdc; --shade: rgba(70, 58, 34, 0.12); --bloom: #f2b655; --bloom-eye: #c57a2f;
+
+  /* HUD touches, in earth tones */
+  --grid-dot: #d6c9b1; --grid-size: 24px; --grid-cell: 64px;
+  --bracket: #8f826d;
+  --orb-light: #b4512a; --orb-ring: #b4512a; --orb-glow: rgba(180, 81, 42, 0.22); --orb-halo: #5c9471; --orb-muted: #8f826d;
+  --orb-line: #3d342a; --orb-line-dim: #3d342a99;
+  --orb-edge: #c56d47; --orb-deep: #8c3a1b; --orb-band: #a84a25;
+  --glass: #fffbf3e0; --glass-strong: #fffbf3f2; --glass-edge: #8a7d68; --glass-edge-rest: #8a7d68; --glass-ghost: #8a7d6859; --glass-ghost-2: #8a7d6833;
+  --title-plate: #b4512a; --on-title-plate: #fffbf3; --plate-tick: #b4512a; --glass-top: #ffffff00;
+  --grain-opacity: 0; --vignette: #ede4d300;
+  --edge-light: #ffffff00; --pane-shadow: 0 12px 28px -16px #3d342a59;
+  --chart-bar: #3d342a; --media-tint: #2b262214;  /* clean windows (HUD v2 §14.2), flat one-colour charts and a static tint over bright media */
+
+  /* HUD tokens (HUD v2 §2). Night gives them Huw's values; here they are the nearest Earth equivalents.
+     backgrounds: bg-0 edges (vignette) · bg-1 base · bg-2 raised centre · grid lines · panel = window fill */
+  --bg-0: #ede4d3; --bg-1: #f3ecdf; --bg-2: #fbf5e6; --grid: #8f826d14; --panel: #fffbf3;
+  /* strokes: line = HUD strokes and ticks · line-dim = inactive strokes, upcoming arcs (≥ 3:1)
+     frame / frame-on = a window's border at rest / when Jarvis means it */
+  --line-dim: #8a7d68; --frame: #d6c9b1; --frame-on: #8a7d68;
+  --rule: #e6dcc9;   /* quiet dividers between rows inside a window (decoration, not a boundary) */
+  /* states: orb · cyan = Jarvis (what he means, links) · cyan-hi = done · warn = needs you · crit · ok = health */
+  --orb: #b4512a; --cyan: #8c3a1b; --cyan-hi: #2f6a4a;
+  --text-2: #6b6258; --text-3: #6b6258;
+  --warn: #6f4a06; --crit: #8a2a17; --ok: #2f6a4a;
+  /* the light reading sheet (PDFs, notes) and its inks: state colours dark enough for a light page */
+  --paper: #f5f8fc; --ink-text: #14202e; --ink-muted: #46566a;
+  --ink-warn: #8a5300; --ink-ok: #1d6b45; --ink-cyan: #0b5fa5; --ink-crit: #b3261e;
+  /* light is added, never painted: static glow behind frames, a faint top-edge sheen, glow on big text only */
+  --glow: 0 1px 2px rgba(96, 70, 30, 0.10), 0 2px 6px rgba(96, 70, 30, 0.06);
+  --glow-on: 0 0 0 0.5px #8a7d68, 0 1px 2px rgba(96, 70, 30, 0.10), 0 8px 24px rgba(96, 70, 30, 0.10);
+  --sheen: rgba(255, 255, 255, 0.85);
+  --text-glow: none;
+  --hud-cell: 64px;
+  --dim-opacity: 1;  /* windows Jarvis isn't talking about: opacity (Daylight keeps text at full strength) */
+
+  /* shape and space */
+  --r-control: 12px; --r-card: 18px; --r-sheet: 24px; --r-pill: 999px;
+  --pad: 20px; --gap: 12px; --gap-small: 8px; --gap-large: 24px;
+  --control-height: 40px; --hit: 44px;
+
+  /* type */
+  --font-ui: "Atkinson Next", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --font-head: "Lexend", "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Mono", Consolas, ui-monospace, monospace;
+  /* condensed HUD face: window titles (caps, ≤ 2 lines) and hero numbers (tabular) */
+  --font-display: "Barlow Condensed", "Bahnschrift SemiCondensed", "Arial Narrow", "Lexend", sans-serif;
+  --body: 400 15px/23px var(--font-ui);   /* 1.53: reading rule is ≥ 1.5 */
+  --read: 400 16px/26px var(--font-ui);
+  --label: 500 12px/16px var(--font-head);          /* small caps: ≤ 2-word panel titles only */
+  --title: 500 16px/24px var(--font-head);          /* longer panel titles: sentence case */
+  --crumb: 400 14px/20px var(--font-head);
+  --label-track: 0.06em;
+  --telemetry: 400 12px/16px var(--font-mono);      /* mono: tiny telemetry only (paths, ms, logs) */
+  --measure: 66ch;                                  /* max line length for reading blocks */
+  /* serious mode (v0.6.0, research: JARVIS_RESEARCH_SERIOUS_UI): quiet type. Labels are small mono in normal case
+     with light tracking; window titles and hero numbers use the clean sans, sentence case (no loud condensed caps) */
+  --kicker: 500 12px/16px var(--font-mono);         /* HUD kicker and metadata: ≤ 4 words, real data (12 px: the audit floor) */
+  --kicker-track: 0.03em; --kicker-case: none;
+  --display: 600 22px/28px var(--font-head);        /* window title: sentence case, two lines at most */
+  --display-track: -0.01em; --display-case: none;
+  --hero: 500 60px/60px var(--font-head);           /* hero number: tabular figures */
+
+  /* motion: only for state; short and functional (serious mode: 160–280 ms, one standard ease, no flights,
+     staggers or bounces) */
+  --t-fast: 120ms; --t-move: 200ms; --t-fly: 240ms; --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-snap: 80ms; --t-draw: 120ms; --ease-mech: cubic-bezier(0.2, 0, 0, 1);
+  --t-orb: 500ms; --ease-orb: cubic-bezier(0.65, 0, 0.35, 1);  /* the orb's rings in and out of standby (v0.11) */
+  --ease-out: cubic-bezier(0.2, 0, 0, 1); --ease-in: cubic-bezier(0.3, 0, 1, 1); --t-open: 240ms; --t-close: 160ms;
+  --breathe: 6s; --spin: 1.5s;
+  --r-pane: 8px;  /* serious mode: windows and menus are softly rounded, like the desktop apps around them */
+}
+
+/* Night: Huw's palette (HUD v2 §2), sampled from his reels and checked with the WCAG formula.
+   Existing names get Night values so every component switches with no renaming:
+   canvas = base, card = panel, muted = text-2, accent = cyan, leaf-ink (done) = cyan-hi, notice = warn. */
+:root[data-theme="night"] {
+  color-scheme: dark;
+  --canvas: #0e141c; --sheet: #121a24; --card: #0e141cf2; --sunken: #16202a;
+  --line: #b9d3e6;   --line-strong: #9aa7b480; --control: #8592a0;
+  --text: #e6ebf0;   --muted: #a9b4bf;
+  --accent: #8fb3cf; --accent-hover: #b9d3e6; --on-accent: #0a0e14;
+  --accent-soft: #1a2633; --accent-ink: #8fb3cf;
+  --growth-soft: #16242a; --leaf-ink: #b9d3e6;
+  --notice-bg: #2a2110; --notice-ink: #d9a75b; --notice-border: #8a6a24;
+  --error-bg: #2e0f16;  --error-ink: #ff7a86;  --negative: #ff4d5e;
+  --honey: #d9a75b; --honey-ink: #0e141c;
+  --shadow: 0 0 0 1px rgba(255, 255, 255, 0.04), 0 10px 30px rgba(0, 0, 0, 0.45);
+  --shadow-small: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --scrim: rgba(3, 6, 12, 0.62);
+  --leaf: #5f9f79; --leaf-light: #8cc49d; --leaf-deep: #4a8a66; --leaf-deep-light: #5d9876;
+  --leaf-rib: #d6ead9; --stem: #6e9b80;
+  --pot: #b9805c; --pot-shade: #9c6747; --pot-rim: #c9916d; --soil: #2b211a;
+  --wash: #12283a; --shade: rgba(0, 0, 0, 0.4); --bloom: #ffc24a; --bloom-eye: #b96f2a;
+  --grid-dot: #ffffff14; --bracket: #b9d3e6b3;
+  --orb-ring: #1670e8; --orb-glow: rgba(22, 112, 232, 0.20); --orb-halo: #2a8fd8; --orb-muted: #7fa3bc;
+  /* HUD v3 (§14): the rings are near-white lines; the deep blue only fills the energy ring while he or Jarvis speaks */
+  --orb-line: #dbe6f0; --orb-line-dim: #dbe6f099;  /* v0.6.1: the rings a softer off-white */
+  --orb-light: #3a86e8;  /* v0.6.2: the light behind the core: a clear blue that stays blue as it fades (softer than the orb blue) */
+  /* the energy ring's glow (Huw): a lighter line on the band's outer edge, a shade toward its inner edge */
+  --orb-edge: #2f8fe0; --orb-deep: #124f98; --orb-band: #1467d8;  /* the band is one step under the orb blue (the ring is the brightest thing on screen, not a haze) */
+  /* HUD v3 glass windows: see-through dark fill, a bright thin edge, ghost edges stacked behind for depth */
+  /* v0.5.3 (less cartoon): edges are dim, cyan-tinted hairlines rather than bright white outlines; a faint light
+     falls on the top of each pane (material, not a flat sticker); the title plate is a tinted glass strip with a
+     bright cyan tick, not a solid neon block */
+  /* serious mode (v0.6.0): quiet neutral panes with a faint top light and a real shadow; the title plate is gone
+     (the window Jarvis means gets an accent edge instead); no grain, a soft vignette */
+  --glass: #121921d9; --glass-strong: #121921f2; --glass-edge: #8fb3cfcc; --glass-edge-rest: #9aa7b499; --glass-ghost: #ffffff00; --glass-ghost-2: #ffffff00;
+  --glass-top: #ffffff08; --title-plate: #00000000; --on-title-plate: #e6ebf0; --plate-tick: #00000000;
+  --grain-opacity: 0; --vignette: #00000080;
+  --edge-light: #ffffff1f; --pane-shadow: 0 16px 40px -18px #000000cc, 0 1px 3px #00000059;  /* a lit top edge and a real shadow, instead of the stacked ghost outlines */
+  /* clean windows (§14.2), flat near-white chart bars and a static dark tint over bright media (a white page), so
+     media sit under text in the brightness order */
+  --chart-bar: #c9d6e2; --media-tint: #0a0e14b0;
+
+  /* serious mode (v0.6.0): neutral near-black with a cool cast, a fainter grid, ONE muted steel-blue accent
+     (saturated neon vibrates on dark), off-white text, amber and red only for real warnings */
+  --kicker-case: none; --display-case: none;
+  --bg-0: #0a0e14; --bg-1: #0e141c; --bg-2: #121a24; --grid: #ffffff09; --panel: #0e141cf2;
+  --line-dim: #9aa7b4a6; --frame: #9aa7b499; --frame-on: #b9d3e6;
+  --rule: #ffffff1a;
+  --orb: #1670e8; --cyan: #8fb3cf; --cyan-hi: #b9d3e6;
+  --text-2: #a9b4bf; --text-3: #8e9aa7;
+  --warn: #d9a75b; --crit: #e5737d; --ok: #7fc4a0;
+  --glow: 0 0 0 1px rgba(255, 255, 255, 0.03), 0 12px 32px -16px rgba(0, 0, 0, 0.7);  /* v0.6.3: a quiet shadow, no blue halo (serious mode) */
+  --glow-on: 0 0 0 1px #8fb3cf40;  /* serious mode: a quiet accent edge, no glow */
+  --sheen: rgba(168, 230, 255, 0.22);
+  --text-glow: none;
+  --dim-opacity: 0.88;  /* the lowest that keeps the metadata outside a dimmed window ≥ 4.5:1 and its frame ≥ 3:1 (tools/contrast.py) */
+
+  /* square windows, near-square controls; tabs and buttons stay pills */
+  --r-control: 6px; --r-card: 8px; --r-sheet: 10px;  /* v0.6.3: softly rounded everywhere (his pick) */
+}

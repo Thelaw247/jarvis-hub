@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "marks.schema.json",
+  "title": "'Since you looked' marks, kept on the server: one per thing, by ref",
+  "description": "Made by real changes, what Jarvis said or toasted, finished jobs and approvals that ran out. Cleared by the `seen` action, never by being shown.",
+  "type": "object",
+  "additionalProperties": {
+    "$ref": "#/$defs/mark"
+  },
+  "$defs": {
+    "mark": {
+      "type": "object",
+      "properties": {
+        "what": {
+          "type": "string",
+          "description": "The change itself, in words: 'Due moved Wed 8 pm \u2192 Thu 11:59 pm'"
+        },
+        "at": {
+          "type": "string",
+          "description": "ISO 8601 date-time, local time unless it carries an offset",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+        }
+      },
+      "required": [
+        "what",
+        "at"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "caption.schema.json",
+  "title": "One spoken line shown near the orb",
+  "type": "object",
+  "properties": {
+    "text": {
+      "type": "string"
+    },
+    "source": {
+      "anyOf": [
+        {
+          "$ref": "common.schema.json#/$defs/source"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ttl_ms": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "text"
+  ],
+  "additionalProperties": false
+}

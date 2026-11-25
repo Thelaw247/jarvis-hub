@@ -1,0 +1,316 @@
+/* jv-window: a HUD window as a slab of glass (HUD v2 §3, v3 §14 decision 3). The element carries .jv-frame
+   (ui/base.css); here it becomes glass: square corners, a see-through dark fill, a bright thin edge and two ghost
+   edges stacked behind it, offset down-right. No backdrop blur (too costly in WebView2): the panel paints the
+   page's own backdrop (the grid and the vignette, fixed to the screen, so they line up with the page around it)
+   under its glass tint. So the grid shows through, but another window behind never does, and text on the glass
+   always sits on the same, measured colours (tools/contrast.py: glass over every backdrop, and a dimmed panel
+   over a white page). */
+jv-window {
+  --jv-window-ease: var(--ease-mech);  /* mechanical: a hard stop, no springs (film review S2) */
+  --jv-pad: 14px;
+  --jv-glass: var(--glass-strong);     /* text-heavy panels; [sheer] and [media] use the lighter --glass */
+  /* the page's backdrop (base.css body), fixed to the screen so it lines up with the page around the panel */
+  --jv-backdrop:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / var(--grid-cell) var(--grid-cell) fixed,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / var(--grid-cell) var(--grid-cell) fixed,
+    radial-gradient(ellipse 75% 70% at 50% 45%, var(--bg-2) 0%, var(--bg-1) 55%, var(--bg-0) 100%) fixed,
+    var(--canvas);
+  position: relative; display: flex; flex-direction: column; min-width: 0; min-height: 0;
+  transform-origin: 50% 50%;
+}
+jv-window:is([sheer], [media]) { --jv-glass: var(--glass); }
+jv-window.jv-frame {
+  padding: 10px var(--jv-pad) var(--jv-pad);
+  border: 1px solid var(--glass-edge-rest); border-radius: var(--r-pane, 0); box-shadow: none;
+  background: linear-gradient(90deg, transparent, var(--edge-light) 50%, transparent) top / 100% 1px no-repeat,
+    linear-gradient(180deg, var(--glass-top), transparent 45%), linear-gradient(var(--jv-glass), var(--jv-glass)), var(--jv-backdrop);
+  box-shadow: var(--pane-shadow);
+}
+/* the ghost edges: the same frame twice more behind, down-right (only their right and bottom edges, which fall
+   outside the panel), fading back; they make each window read as a slab of glass */
+.jv-window__ghost {
+  position: absolute; inset: -1px; pointer-events: none;
+  border: 0 solid var(--glass-ghost); border-right-width: 1px; border-bottom-width: 1px; transform: translate(4px, 4px);
+}
+.jv-window__ghost--2 { border-color: var(--glass-ghost-2); transform: translate(8px, 8px); }
+/* v0.5.4: no stacked ghost outlines (they read as a cartoon); depth is a real soft shadow and a lit top edge */
+.jv-window__ghost { display: none; }
+/* metadata hangs under the ghosts (base.css puts it 6 px under the frame) */
+jv-window.jv-frame > .jv-meta:not(.jv-meta--above) { top: calc(100% + 12px); }
+jv-window[docked] { display: none; }
+jv-window[leaving] { opacity: 0; transform: translateY(6px); transition: opacity var(--t-move) var(--ease), transform var(--t-move) var(--ease); }
+
+/* the window Jarvis means: the bright edge and a glow (--glow-on adds the half pixel, so nothing reflows) */
+jv-window[active], jv-window[named] { border-color: var(--glass-edge); box-shadow: var(--glow-on), var(--pane-shadow); }
+/* depth without parallax: the rest sit back, a little dimmer (0.98 scale, a dimmer edge, 88% opacity in Night).
+   Automatic on the Now canvas, the Stage canvas (and in scenes) once one window is active. */
+jv-window[dim], :is(.jv-now__canvas, .jv-stage__canvas, .jv-window-demo):has(> jv-window[active]) > jv-window:not([active], [named], [leaving]) {
+  opacity: var(--dim-opacity); transform: scale(0.98); border-color: var(--glass-edge-rest);
+  transition: opacity var(--t-move) var(--jv-window-ease), transform var(--t-move) var(--jv-window-ease);
+}
+:root[data-still] jv-window[dim], :root[data-still] :is(.jv-now__canvas, .jv-stage__canvas, .jv-window-demo):has(> jv-window[active]) > jv-window:not([active], [named]) { transform: none; }
+/* (Daylight keeps --line-dim too: its --frame on the canvas was 1.4:1, so dimmed window edges vanished) */
+
+/* the kicker row: kicker left (status word last), index / timer / type and the tools right */
+.jv-window__head { display: flex; align-items: center; gap: var(--gap-small); min-height: 32px; margin-bottom: 8px; min-width: 0; }
+/* the kicker: small mono caps in the one accent, SOURCE // TOPIC ("GE 122 // PPS 7") */
+.jv-window__title {
+  flex: 1; min-width: 0; position: relative; display: flex; align-items: center; gap: 8px;
+  font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--cyan);
+  font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden;
+}
+.jv-window__name { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.jv-window__sep { color: inherit; flex: none; margin: 0 -4px; }
+.jv-window__status { color: inherit; flex: none; }
+/* longer than 4 words: a quiet sentence-case title, never caps */
+.jv-window__title--long { font: 500 14px/20px var(--font-head); letter-spacing: 0; text-transform: none; color: var(--muted); }
+.jv-window__index { flex: none; color: var(--text-3); }  /* the one index or time, in grey */
+.jv-window__tools { display: flex; gap: 2px; margin-right: -8px; flex: none; }
+.jv-window__tool { width: 32px; height: 32px; display: grid; place-items: center; border: 0; background: none; color: var(--text-3); border-radius: var(--r-control); cursor: pointer; transition: transform var(--t-fast) var(--ease); }
+.jv-window__tool:hover { background: var(--sunken); color: var(--text); }
+.jv-window__tool:active { transform: scale(0.94); }
+.jv-window__tool[aria-pressed="true"] { color: var(--text); }
+/* no buttons on the cards (HUD v3): with a mouse, pin and close show only while the pointer is on the window or
+   keyboard focus is in it (still real, labelled buttons, always in the Tab order; Playwright and screen readers
+   reach them as before). They sit over the top-right corner, so they take no room from the kicker. Touch
+   screens and the phone keep them showing. */
+@media (hover: hover) {
+  :root:not([data-size="phone"]) jv-window > .jv-window__head .jv-window__tools {
+    position: absolute; z-index: 2; top: 4px; right: 4px; margin: 0; padding: 0 2px;
+    background: var(--bg-0); box-shadow: 0 0 0 1px var(--line-dim);
+    opacity: 0; transition: opacity var(--t-fast) var(--ease);
+  }
+  :root:not([data-size="phone"]) jv-window:is(:hover, :focus-within) > .jv-window__head .jv-window__tools { opacity: 1; }
+}
+.jv-window__body { position: relative; flex: 1; min-height: 0; min-width: 0; overflow: auto; }  /* relative: screen-reader-only text stays inside the scroller */
+
+/* the one mark a kicker may lead with: a "wants you" glance code (diamond, square, triangle), small. It is the
+   only amber or red on the window (HUD v2 §14.2); no other glyph ever sits in the kicker. */
+.jv-window__glance { flex: none; display: inline-flex; }
+
+/* corner brackets: only "wants you" (soon, your yes, critical) or while Jarvis names the window */
+.jv-window__bracket {
+  --bx: -1; --by: -1;
+  position: absolute; width: 14px; height: 14px; border: 0 solid var(--line); pointer-events: none;
+  visibility: hidden; transform-origin: 0 0;
+}
+.jv-window__bracket--1 { top: -6px; left: -6px; border-top-width: 1.5px; border-left-width: 1.5px; }
+.jv-window__bracket--2 { --bx: 1; top: -6px; right: -6px; border-top-width: 1.5px; border-right-width: 1.5px; transform-origin: 100% 0; }
+.jv-window__bracket--3 { --by: 1; bottom: -6px; left: -6px; border-bottom-width: 1.5px; border-left-width: 1.5px; transform-origin: 0 100%; }
+.jv-window__bracket--4 { --bx: 1; --by: 1; bottom: -6px; right: -6px; border-bottom-width: 1.5px; border-right-width: 1.5px; transform-origin: 100% 100%; }
+jv-window[named] > .jv-window__bracket, jv-window[data-wants] > .jv-window__bracket { visibility: visible; }
+/* the voice's cue (HUD v2 §9.1): the brackets snap on in 250 ms each time Jarvis names the window */
+jv-window[named]:not([assembling]) > .jv-window__bracket { animation: jv-window-snap 250ms var(--jv-window-ease) both; }
+@keyframes jv-window-snap {
+  from { opacity: 0; transform: translate(calc(var(--bx) * 12px), calc(var(--by) * 12px)); }
+  to { opacity: 1; transform: none; }
+}
+/* (the brackets keep the frame's own ice: the kicker's mark is the one amber or red thing, §14.2) */
+jv-window[named][named] > .jv-window__bracket { border-color: var(--cyan); }  /* while Jarvis names it: the accent, whatever its state */
+/* critical: ±2 px at ~1 Hz for 5 s, then still; reduced motion: a still 3 px frame */
+jv-window[glance="critical"]:not([assembling]) > .jv-window__bracket { animation: jv-window-crit 1s linear 5; }
+@keyframes jv-window-crit {
+  0%, 50%, 100% { transform: none; }
+  25% { transform: translate(calc(var(--bx) * 2px), calc(var(--by) * 2px)); }
+  75% { transform: translate(calc(var(--bx) * -2px), calc(var(--by) * -2px)); }
+}
+:root[data-still] jv-window[glance="critical"] > .jv-window__bracket { border-width: 0; }
+:root[data-still] jv-window[glance="critical"] > .jv-window__bracket--1 { border-top-width: 3px; border-left-width: 3px; }
+:root[data-still] jv-window[glance="critical"] > .jv-window__bracket--2 { border-top-width: 3px; border-right-width: 3px; }
+:root[data-still] jv-window[glance="critical"] > .jv-window__bracket--3 { border-bottom-width: 3px; border-left-width: 3px; }
+:root[data-still] jv-window[glance="critical"] > .jv-window__bracket--4 { border-bottom-width: 3px; border-right-width: 3px; }
+
+/* working: a segmented scan bar (~30 blocks drawn as 2 elements): the track is masked into blocks and lit up
+   to the progress in the ice line colour; a bright cyan chunk (Jarvis working) sweeps across it.
+   Reduced motion, strip: the words "Working · 60%" instead. (In the mask only the alpha counts.) */
+.jv-window__working { display: flex; align-items: center; gap: var(--gap-small); margin: -2px 0 10px; }
+.jv-window__scan {
+  --p: 0%;
+  position: relative; flex: 1; height: 6px; overflow: hidden;
+  background: linear-gradient(90deg, var(--line) 0 var(--p), var(--line-dim) var(--p) 100%);
+  -webkit-mask: repeating-linear-gradient(90deg, black 0 calc(100% / 30 - 2px), transparent calc(100% / 30 - 2px) calc(100% / 30));
+  mask: repeating-linear-gradient(90deg, black 0 calc(100% / 30 - 2px), transparent calc(100% / 30 - 2px) calc(100% / 30));
+}
+:root:not([data-theme="night"]) .jv-window__scan { background: linear-gradient(90deg, var(--line-dim) 0 var(--p), var(--frame) var(--p) 100%); }
+.jv-window__chunk { position: absolute; inset: 0 auto 0 0; width: 20%; background: var(--cyan); transform: translateX(-100%); animation: jv-window-scan 1.6s linear infinite; }
+@keyframes jv-window-scan { from { transform: translateX(-100%); } to { transform: translateX(500%); } }
+.jv-window__scan-words { display: none; color: var(--text-2); }
+:root[data-still] .jv-window__scan { display: none; }
+:root[data-still] .jv-window__scan-words { display: inline; }
+
+/* "since you looked": a static cyan notch on the top edge, never a badge count */
+.jv-window__notch { position: absolute; top: -2px; left: 50%; transform: translateX(-50%); width: 28px; height: 4px; pointer-events: none; }
+.jv-window__notchmark { position: absolute; inset: 0; background: var(--cyan); }
+
+/* metadata outside the frame: base.css places .jv-frame > .jv-meta under the bottom-left corner */
+
+/* ── fitting its area (the window canvas measures it: stage/canvas.js fit()) ─────────────────────────────
+   compact: the hero number gets smaller (see the one anatomy below). */
+/* clipped: it still doesn't fit and nothing could step aside, so it says so (a fade and "More" at its foot)
+   instead of cutting silently; on the hub the body scrolls with a thin bar */
+.jv-window__body { scrollbar-width: thin; }
+jv-window[data-clipped]::after {
+  content: ""; position: absolute; left: 1px; right: 1px; bottom: 1px; height: 36px; pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--bg-1) 80%);
+}
+jv-window[data-clipped]::before {
+  content: "More \2193"; position: absolute; z-index: 1; right: var(--pad); bottom: 6px; pointer-events: none;
+  font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-2);
+}
+
+/* ── mechanical assembly (≤ 300 ms, film review S2): brackets snap to the corners (0–80 ms), the frame draws
+   between them (80–200), the kicker resolves left to right (120–220), the brackets lock (220–300). An overlay
+   only: the content is usable from 0 ms, and at rest every overlay is invisible (so with motion off nothing
+   is left behind). --jv-asm-at (a negative delay) freezes it for a screenshot when assembling-hold is set. */
+jv-window[assembling] > .jv-window__bracket {
+  animation: jv-asm-bracket var(--t-fly) var(--jv-window-ease) var(--jv-asm-at, 0ms) both;
+}
+@keyframes jv-asm-bracket {
+  0% { visibility: visible; opacity: 0; transform: translate(calc(var(--bx) * 14px), calc(var(--by) * 14px)); }
+  26.6% { visibility: visible; opacity: 1; transform: none; }
+  73.3% { visibility: visible; opacity: 1; transform: none; }
+  86.6% { visibility: visible; opacity: 1; transform: scale(1.3); }
+  99.9% { visibility: visible; opacity: 1; transform: none; }
+}
+.jv-window__draw { position: absolute; inset: -1px; pointer-events: none; opacity: 0; }
+.jv-window__draw::before, .jv-window__draw::after { content: ""; position: absolute; inset: 0; border: 0 solid var(--line); }
+.jv-window__draw::before { border-top-width: 1.5px; border-bottom-width: 1.5px; transform: scaleX(0); }
+.jv-window__draw::after { border-left-width: 1.5px; border-right-width: 1.5px; transform: scaleY(0); }
+jv-window[assembling] > .jv-window__draw { animation: jv-asm-draw var(--t-fly) linear var(--jv-asm-at, 0ms) both; }
+jv-window[assembling] > .jv-window__draw::before { animation: jv-asm-draw-x var(--t-fly) var(--jv-window-ease) var(--jv-asm-at, 0ms) both; }
+jv-window[assembling] > .jv-window__draw::after { animation: jv-asm-draw-y var(--t-fly) var(--jv-window-ease) var(--jv-asm-at, 0ms) both; }
+@keyframes jv-asm-draw { 0%, 26.6% { opacity: 0; } 27% { opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes jv-asm-draw-x { 0%, 26.6% { transform: scaleX(0); } 66.6%, 100% { transform: none; } }
+@keyframes jv-asm-draw-y { 0%, 26.6% { transform: scaleY(0); } 66.6%, 100% { transform: none; } }
+/* the kicker resolves left to right: a cover of the panel's own colour pulls away to the right */
+.jv-window__cover {
+  position: absolute; inset: -2px -2px -2px -2px; pointer-events: none; transform-origin: 100% 50%; transform: scaleX(0);
+  background: linear-gradient(var(--jv-glass), var(--jv-glass)), var(--jv-backdrop);
+}
+jv-window[assembling] .jv-window__cover { animation: jv-asm-cover var(--t-fly) var(--jv-window-ease) var(--jv-asm-at, 0ms) both; }
+@keyframes jv-asm-cover { 0%, 40% { transform: none; } 73.3%, 100% { transform: scaleX(0); } }
+jv-window[assembling-hold] > .jv-window__bracket, jv-window[assembling-hold] > .jv-window__draw,
+jv-window[assembling-hold] > .jv-window__draw::before, jv-window[assembling-hold] > .jv-window__draw::after,
+jv-window[assembling-hold] .jv-window__cover { animation-play-state: paused; }
+
+/* ── the one anatomy (HUD v2 §14.2): `clean` ─────────────────────────────────────────────────────────────
+   Every window on a canvas: (1) the kicker row above, (2) ONE hero (media edge to edge, a big number, a flat
+   chart or a title in condensed caps, two lines at most), (3) at most ONE line of supporting text, (4) one
+   footer item hanging under the frame. Colour budget: the accent (kicker), near-white (hero), grey (line,
+   index, footer), the media's own colours, and at most the kicker's one amber or red mark. No glows on text. */
+jv-window[clean] { font-size: 13px; line-height: 19px; --jv-glass: var(--glass); }  /* every clean window: the see-through fill (the grid shows) */
+jv-window[clean].jv-frame { padding: 8px var(--jv-pad) 12px; }
+jv-window[clean] > .jv-window__head { min-height: 24px; margin-bottom: 4px; }
+:root jv-window[clean] > .jv-window__body { position: static; overflow: visible; }  /* nothing scrolls: the anatomy always fits */
+.jv-pane { display: grid; gap: 6px; min-width: 0; }
+.jv-pane__title, jv-window[clean] .jv-approval-card__title {
+  margin: 0; font: var(--display); letter-spacing: var(--display-track); text-transform: var(--display-case); color: var(--text); text-shadow: none;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: anywhere;
+}
+/* the cyan title plate: only on the window Jarvis means, only on its hero title; it hugs the words line by line
+   (never one big block when a title wraps) */
+jv-window[clean]:is([active], [named]) > .jv-window__body > :is(.jv-pane, jv-approval-card) :is(.jv-pane__title, .jv-approval-card__title) > span {
+  color: var(--text);  /* serious mode (v0.6.0): no plate; the window's accent edge marks it */
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+/* a count as the hero ("4 / 6"): the hero number's face */
+.jv-pane__title--number { font: var(--hero); font-size: 64px; line-height: 64px; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+/* the one line of supporting text: one line, cut with an ellipsis (the whole line is in its title and the drawer) */
+.jv-pane__line {
+  margin: 0; font: 400 13px/19px var(--font-ui); color: var(--text-2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.jv-pane__line[hidden] { display: none; }
+/* a number: near-white, never amber (urgency is the kicker's mark and the brackets) */
+.jv-pane--number { gap: 2px; }
+/* media fill the panel edge to edge under the kicker, with nothing laid over them; bright pictures (a white
+   page) sit under a static dark tint, so text stays above media in the brightness order (no filter, no motion) */
+jv-window.jv-frame[clean]:has(> .jv-window__body > .jv-pane--media) { padding-bottom: 0; }
+.jv-pane--media { gap: 0; margin: 0 calc(-1 * var(--jv-pad)); }
+.jv-pane__media { width: 100%; }
+.jv-pane__media .jv-thumb { border: 0; border-radius: var(--r-card); }
+.jv-pane__media .jv-thumb::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: var(--media-tint); }
+.jv-pane--chart { gap: 8px; }
+.jv-pane--chart > jv-mini-chart { height: 132px; }
+
+/* the "Why?" drawer: sources, details and controls. Real content (always in the Tab order, read by screen
+   readers), closed to nothing at rest and drawn under the window while the pointer rests on it (350 ms) or
+   keyboard focus is inside (at once). Opaque, over whatever is below; over the window when there is no room. */
+jv-window[clean] .jv-more {
+  position: absolute; z-index: 6; left: -1px; right: -1px; top: calc(100% + 1px); box-sizing: border-box;
+  max-height: 0; overflow: hidden; opacity: 0; padding: 0 var(--jv-pad); border: 0 solid var(--line-dim);
+  display: grid; gap: 8px; align-content: start; background: var(--bg-0); color: var(--text);
+  font: 400 13px/19px var(--font-ui); cursor: auto;
+  transition: max-height 0s linear, opacity 0s linear, padding 0s linear, border-width 0s linear;
+}
+jv-window[clean][why-up] .jv-more { top: auto; bottom: calc(100% + 1px); }
+/* rounded like the window it hangs from (v0.6.3): the far corners round, the near ones meet the window */
+jv-window[clean] .jv-more { border-radius: 0 0 var(--r-pane, 0) var(--r-pane, 0); }
+jv-window[clean][why-up] .jv-more { border-radius: var(--r-pane, 0) var(--r-pane, 0) 0 0; }
+jv-window[clean]:is(:hover, :focus-within, [data-show-why]) .jv-more {
+  max-height: min(var(--why-max, 60vh), 420px); overflow: auto; overscroll-behavior: contain; opacity: 1; padding: 8px var(--jv-pad) 12px; border-width: 1px;
+  transition-delay: 350ms;
+}
+jv-window[clean]:is(:focus-within, [data-show-why]) .jv-more { transition-delay: 0s; }
+:root jv-window[clean]:is(:hover, :focus-within, [data-show-why]) { z-index: 45; transition: z-index 0s linear 350ms; }
+:root jv-window[clean]:is(:focus-within, [data-show-why]) { transition-delay: 0s; }
+.jv-more__kicker { color: var(--cyan); }
+.jv-more__lead { font-weight: 500; }
+.jv-more__sources { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; }
+.jv-more p { margin: 0; }
+/* where nothing can hover (touch, the phone) the drawer is simply open under a hairline */
+@media (hover: none) {
+  jv-window[clean] .jv-more { position: static; max-height: none; overflow: visible; opacity: 1; padding: 8px 0 0; margin-top: 4px; border-width: 1px 0 0; background: none; }
+}
+:root[data-size="phone"] jv-window[clean] .jv-more { position: static; max-height: none; overflow: visible; opacity: 1; padding: 8px 0 0; margin-top: 4px; border-width: 1px 0 0; background: none; }
+
+/* On the Stage's board ([opens]: the cluster sets it) the panel is its own "Open it": the content's open control
+   stays a real, labelled button (keyboard, screen readers) but isn't drawn; the panel is what he clicks
+   (window.js), and keyboard focus on it rings the whole panel */
+jv-window[opens] .jv-window__body [data-key="open"] {
+  position: absolute; width: 1px; height: 1px; min-height: 0; padding: 0; margin: 0; border: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+jv-window[opens] .jv-window__body :has(> [data-key="open"]:only-child) { display: contents; }
+jv-window[opens]:has(.jv-window__body [data-key="open"]) { cursor: pointer; }
+jv-window[opens]:has(.jv-window__body [data-key="open"]:focus-visible) { outline: 2px solid var(--text); outline-offset: 4px; }
+/* compact (the room is very short): the number steps down a size */
+jv-window[clean][data-fit="compact"] .jv-big-number__value { font-size: 44px; line-height: 46px; }
+
+/* scenes */
+jv-window[data-show-tools] > .jv-window__head .jv-window__tools { opacity: 1 !important; }  /* the hover state, held still for a screenshot */
+.jv-window-demo { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--gap-large); align-items: start; }
+.jv-window-demo--note { grid-template-columns: 1fr; }
+
+/* ---- his hands (v0.17.0): a window on a board can be dragged anywhere and sized from its corner ---- */
+/* the grip: a real button in the bottom-right corner, two short strokes; shows with the pointer or focus */
+.jv-window__grip {
+  position: absolute; z-index: 3; right: 0; bottom: 0; width: 20px; height: 20px; padding: 0; border: 0; background: none;
+  cursor: nwse-resize; touch-action: none; color: var(--text-3); opacity: 0; transition: opacity var(--t-fast) var(--ease);
+}
+.jv-window__grip::before {
+  content: ""; position: absolute; right: 4px; bottom: 4px; width: 9px; height: 9px;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+}
+jv-window:is(:hover, :focus-within, [sizing]) > .jv-window__grip, .jv-window__grip:focus-visible { opacity: 1; }
+.jv-window__grip:hover, .jv-window__grip:focus-visible { color: var(--text); }
+@media (hover: none) { .jv-window__grip { opacity: 1; } }
+/* a window that can be moved says so with the pointer, on its glass only (controls keep their own) */
+jv-window[sizable] > .jv-window__head { cursor: grab; }
+jv-window[dragging], jv-window[dragging] * { cursor: grabbing !important; user-select: none; }
+jv-window[sizing], jv-window[sizing] * { cursor: nwse-resize !important; user-select: none; }
+jv-window:is([dragging], [sizing]) { transition: none !important; }
+jv-window:is([dragging], [sizing]) iframe { pointer-events: none; }  /* a framed page must not swallow the drag */
+/* past the edge of this screen's window: it is on its way to the other one (shape + word, not colour alone) */
+jv-window[leaving-screen] { opacity: 0.6; outline: 2px dashed var(--line); outline-offset: 4px; }
+jv-window[leaving-screen]::after {
+  content: "Let go to move it to the other window"; position: absolute; left: 8px; bottom: 8px; z-index: 4;
+  font: 500 12px/16px var(--font-mono); letter-spacing: 0.04em; color: var(--text); background: var(--bg-0); padding: 2px 6px;
+}
+/* a window he sized: its content fills the size he chose */
+/* placed by hand it may lie over other windows: it never sits back see-through, so nothing shows through it */
+jv-window:is([held], [dragging], [sizing]):not([leaving], [leaving-screen]) { opacity: 1 !important; transform: none !important; }
+/* sized by hand: what is inside fits the size he chose (text scrolls, a picture fills it from the top) */
+:root jv-window[sized] > .jv-window__body { overflow: auto; }
+:root jv-window[sized] > .jv-window__body:has(> .jv-pane--media) { overflow: hidden; }
+jv-window[sized] > .jv-window__body > .jv-pane--media, jv-window[sized] .jv-pane__media { height: 100%; }
+jv-window[sized] .jv-pane__media .jv-thumb { height: 100%; aspect-ratio: auto; }

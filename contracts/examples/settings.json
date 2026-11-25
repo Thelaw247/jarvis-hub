@@ -1,0 +1,89 @@
+{
+ "interruption": "balanced",
+ "theme": "night",
+ "motion": "full",
+ "earcons": "minimal",
+ "address": "name",
+ "stage": "window",
+ "quiet_hours": {
+  "on": true,
+  "from": "22:30",
+  "to": "07:30"
+ },
+ "focus": false,
+ "game_mode": "auto",
+ "plants": true,
+ "ambient": true,
+ "muted": false,
+ "memory_paused": false,
+ "off_record": false,
+ "standing_permissions": [
+  {
+   "id": "sp-blocks",
+   "text": "Move study blocks Jarvis made, within the same day",
+   "granted": "Nov 10"
+  },
+  {
+   "id": "sp-file",
+   "text": "File new Canvas downloads into Class Content",
+   "granted": "Nov 3"
+  }
+ ],
+ "never": [
+  "Submitting assignments",
+  "Payments"
+ ],
+ "sources": [
+  {
+   "id": "canvas",
+   "name": "Canvas",
+   "on": true,
+   "last_sync": "2 min ago",
+   "status": "ok"
+  },
+  {
+   "id": "paws",
+   "name": "PAWS",
+   "on": true,
+   "last_sync": "Today 7:00 am",
+   "status": "ok"
+  },
+  {
+   "id": "calendar",
+   "name": "Google Calendar",
+   "on": true,
+   "last_sync": "2 min ago",
+   "status": "ok"
+  },
+  {
+   "id": "gmail",
+   "name": "Gmail",
+   "on": true,
+   "last_sync": "Yesterday",
+   "status": "stale"
+  },
+  {
+   "id": "files",
+   "name": "Class Content folder",
+   "on": true,
+   "last_sync": "2 min ago",
+   "status": "ok"
+  },
+  {
+   "id": "crowdmark",
+   "name": "Crowdmark",
+   "on": false,
+   "status": "off"
+  }
+ ],
+ "tiers": [
+  {
+   "branch_id": "money",
+   "tier": 2
+  },
+  {
+   "branch_id": "health",
+   "tier": 2
+  }
+ ]
+}

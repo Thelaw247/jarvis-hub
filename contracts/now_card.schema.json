@@ -1,0 +1,261 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "now_card.schema.json",
+  "title": "The now card: what matters right now",
+  "type": "object",
+  "properties": {
+    "greeting": {
+      "type": "string"
+    },
+    "updated": {
+      "type": "string",
+      "description": "ISO 8601 date-time, local time unless it carries an offset",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+    },
+    "next_up": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "when": {
+              "type": "string"
+            },
+            "where": {
+              "type": "string"
+            },
+            "source": {
+              "$ref": "common.schema.json#/$defs/source"
+            },
+            "thumb": {
+              "$ref": "common.schema.json#/$defs/thumb"
+            }
+          },
+          "required": [
+            "title",
+            "when"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "flag": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "why": {
+              "type": "string"
+            },
+            "branch_id": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+            },
+            "source": {
+              "$ref": "common.schema.json#/$defs/source"
+            }
+          },
+          "required": [
+            "text"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ready_to_offer": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+          },
+          "text": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 3
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 3
+    },
+    "done_today": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "day": {
+      "type": "object",
+      "properties": {
+        "done": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "done",
+        "total"
+      ],
+      "additionalProperties": false,
+      "description": "Drives the day plant: it grows with done items."
+    },
+    "moment": {
+      "enum": [
+        "rushed",
+        "between",
+        "settled",
+        "heads_down",
+        "others",
+        "game"
+      ],
+      "description": "How much Jarvis may say right now: rushed 0\u20131 sentences, between 1, settled up to 2; heads_down, others and game are visual only. Critical items are the exception."
+    }
+  },
+  "required": [
+    "greeting",
+    "updated"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "event": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "when": {
+          "type": "string"
+        },
+        "where": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "common.schema.json#/$defs/source"
+        },
+        "thumb": {
+          "$ref": "common.schema.json#/$defs/thumb"
+        }
+      },
+      "required": [
+        "title",
+        "when"
+      ],
+      "additionalProperties": false
+    },
+    "due": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "due": {
+          "type": "string",
+          "description": "ISO 8601 date-time, local time unless it carries an offset",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+        },
+        "progress": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "source": {
+          "$ref": "common.schema.json#/$defs/source"
+        },
+        "branch_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "due"
+      ],
+      "additionalProperties": false
+    },
+    "file": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "pdf",
+            "slides",
+            "doc",
+            "sheet",
+            "code",
+            "folder",
+            "image"
+          ]
+        },
+        "path": {
+          "type": "string"
+        },
+        "page": {
+          "type": "string"
+        },
+        "pages": {
+          "type": "integer"
+        },
+        "branch_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+        },
+        "preview": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "A few lines of text shown as the thumbnail"
+        },
+        "thumb": {
+          "$ref": "common.schema.json#/$defs/thumb"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "kind"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

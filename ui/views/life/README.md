@@ -1,0 +1,5 @@
+# Life (V03a, V03b, V03c)
+
+His life as a plant. `map.js` is the engine: the focus is a pot, its children are leaves on curved stems fanning out of it (at most 7 including "+n more"), grandchildren are leaflets on each stem; waiting-for-your-yes counts come from `state.approvals` (`withPending`), counted on the branch and everything above it; 300 ms fly; d3-zoom. `nodes.js` draws a node: the leaf is the node (size by activity), its name beside it in Lexend, a due outline that fills as the date nears, and word tags ("Due 2d", "1 waiting", "Proposed") in the notice tokens; dashed = proposed, lock = private. Labels never draw smaller than their CSS size; when the map would need them to, Life shows the list instead and says so. `outline.js` is the same tree as an accessible list (`role="tree"`); `life.js` puts map or list beside the branch page under the shared page header. L switches map and list.
+
+Scenes: `life`, `life-school`, `life-fall`, `life-course`, `life-outline`, `life-private`, `life-projects`, `life-empty`. Add `&theme=evening` or `&size=laptop|phone|ambient`. Details are in the comments at the top of each file.

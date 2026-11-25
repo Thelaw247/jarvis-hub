@@ -1,0 +1,47 @@
+jv-tabs, jv-page-dots { display: inline-block; max-width: 100%; }
+.jv-tabs__list { display: inline-flex; gap: 4px; padding: 4px; background: var(--sunken); border: 1px solid var(--line); border-radius: var(--r-pill); }
+.jv-tabs__tab {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 14px;
+  font: 500 14px/20px var(--font-head); color: var(--muted); text-decoration: none; border-radius: var(--r-pill);
+  transition: background-color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.jv-tabs__tab:hover { color: var(--text); }
+.jv-tabs__tab:active { transform: scale(0.97); }
+/* the selected tab is told apart by more than a fill: a 1 px outline in --muted (≥ 3:1 on --card and --sunken) */
+.jv-tabs__tab[aria-current="page"] { background: var(--card); color: var(--text); box-shadow: var(--shadow-small), inset 0 0 0 1px var(--muted); }
+.jv-tabs__glyph { display: none; }
+.jv-tabs__badge { min-width: 20px; height: 20px; padding: 0 6px; display: inline-grid; place-items: center; font: 600 12px/1 var(--font-head); font-variant-numeric: tabular-nums; color: var(--honey-ink); background: var(--honey); box-shadow: inset 0 0 0 1px var(--notice-border); border-radius: var(--r-pill); }
+
+/* page dots: Huw's "▬ • • • •" under the icon row. Each dot is a 24 × 20 target; the view he is on is a short bar. */
+.jv-page-dots__list { display: flex; gap: 0; justify-content: center; }
+.jv-page-dots__dot { position: relative; display: grid; place-items: center; width: 24px; height: 20px; border-radius: var(--r-control); }
+.jv-page-dots__dot::before { content: ""; width: 5px; height: 5px; border-radius: var(--r-pill); background: var(--line-dim); }
+.jv-page-dots__dot:hover::before { background: var(--text-2); }
+.jv-page-dots__dot[aria-current="page"]::before { width: 14px; height: 3px; background: var(--text); }
+
+/* the header's tabs are the phone's tab bar only: elsewhere the page dots under the icon row replace them */
+:root:not([data-size="phone"]) .jv-chrome jv-tabs { display: none; }
+
+:root[data-size="phone"] jv-tabs { display: block; width: 100%; }
+:root[data-size="phone"] .jv-tabs__list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; border: 0; background: none; padding: 0; }
+:root[data-size="phone"] .jv-tabs__tab { position: relative; flex-direction: column; justify-content: center; gap: 2px; min-height: 48px; padding: 0 2px; border-radius: var(--r-control); font-size: 12px; line-height: 16px; }
+:root[data-size="phone"] .jv-tabs__glyph { display: block; line-height: 0; }
+:root[data-size="phone"] .jv-tabs__glyph .jv-icon { width: 20px; height: 20px; }
+:root[data-size="phone"] .jv-tabs__word { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+:root[data-size="phone"] .jv-tabs__badge { position: absolute; top: 2px; left: calc(50% + 6px); min-width: 18px; height: 18px; padding: 0 5px; }
+
+/* Night HUD (N5b, HUD v2 §3): small outlined mono pills, top-right, like Huw's TIDY · CLEAR VIEW row. The view you
+   are on: a brighter frame and text (never cyan). The one badge: the amber hollow square with the count. */
+:root[data-theme="night"] .jv-tabs__list { gap: 6px; padding: 0; background: transparent; border: 0; }
+:root[data-theme="night"] .jv-tabs__tab {
+  min-height: 32px; padding: 0 12px; gap: 8px;
+  font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-2);
+  border: 1px solid var(--line-dim); border-radius: var(--r-pill);
+}
+:root[data-theme="night"] .jv-tabs__tab:hover { color: var(--text); border-color: var(--frame-on); }
+:root[data-theme="night"] .jv-tabs__tab[aria-current="page"] { color: var(--text); background: var(--sunken); border-color: var(--frame-on); box-shadow: none; }
+:root[data-theme="night"] .jv-tabs__badge { min-width: 18px; height: 18px; padding: 0 4px; font: var(--kicker); color: var(--warn); background: transparent; box-shadow: inset 0 0 0 1.5px var(--warn); border-radius: var(--r-card); }
+/* phone: the same five, in the bottom bar, with icons; mono words, the chosen one framed */
+:root[data-theme="night"][data-size="phone"] .jv-tabs__list { gap: 4px; }
+:root[data-theme="night"][data-size="phone"] .jv-tabs__tab { border-color: transparent; border-radius: var(--r-control); font-size: 12px; letter-spacing: 0; padding: 0 2px; }
+:root[data-theme="night"][data-size="phone"] .jv-tabs__tab[aria-current="page"] { border-color: var(--frame-on); }

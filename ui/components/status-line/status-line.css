@@ -1,0 +1,26 @@
+jv-status-line { display: inline-block; min-width: 0; }
+/* words, not telemetry: Atkinson (--font-ui), small and muted, never mono */
+.jv-status-line { display: inline-flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: wrap; max-width: 100%; font: 400 12px/16px var(--font-ui); color: var(--muted); }
+.jv-status-line__mic { width: 26px; height: 26px; display: grid; place-items: center; border-radius: var(--r-pill); border: 1.5px solid var(--leaf-ink); background: var(--growth-soft); color: var(--leaf-ink); cursor: pointer; transition: transform var(--t-fast) var(--ease); }
+.jv-status-line__mic:active:not([aria-disabled="true"]) { transform: scale(0.94); }
+.jv-status-line__mic .jv-icon { width: 14px; height: 14px; }
+.jv-status-line__mic--off { border: 1.5px dashed var(--control); background: var(--sunken); color: var(--muted); }
+.jv-status-line__mic--offline { border: 1.5px dashed var(--notice-ink); background: var(--notice-bg); color: var(--notice-ink); cursor: default; }
+.jv-status-line__state { color: var(--text); font-weight: 500; }
+.jv-status-line__flag { color: var(--notice-ink); }
+.jv-status-line__help { color: var(--notice-ink); background: var(--notice-bg); border-radius: var(--r-pill); padding: 2px 10px; }
+
+/* Night HUD (HUD v3 §14 decision 2): a tiny mono word, bottom-left, like an instrument readout, and a small
+   mic glyph with no ring (Huw's corners are empty). The glyph is the mic's state by shape: mic = can hear you,
+   mic struck through = muted, amber mic struck through = offline (and the word says it). */
+:root[data-theme="night"] .jv-status-line { gap: 4px; font: 400 12px/16px var(--font-mono); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3); }
+:root[data-theme="night"] .jv-status-line__state { color: var(--text-2); font-weight: 400; }
+:root[data-theme="night"] .jv-status-line__mic { width: 24px; height: 24px; border: 0; border-radius: var(--r-control); background: transparent; color: var(--text-2); }
+:root[data-theme="night"] .jv-status-line__mic:hover { color: var(--text); }
+:root[data-theme="night"] .jv-status-line__mic .jv-icon { width: 14px; height: 14px; }
+:root[data-theme="night"] .jv-status-line__mic--off { border: 0; color: var(--text-3); }
+:root[data-theme="night"] .jv-status-line__mic--offline { border: 0; color: var(--warn); background: transparent; }
+:root[data-theme="night"] .jv-status-line__flag { color: var(--text-2); }
+:root[data-theme="night"] .jv-status-line__help { color: var(--warn); background: transparent; box-shadow: inset 0 0 0 1px var(--warn); border-radius: var(--r-control); text-transform: none; letter-spacing: 0; font: 400 13px/18px var(--font-ui); }
+/* beside the Rail the line never wraps under the mic: it shortens instead (the help text for offline may wrap) */
+.jv-status-line__text { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

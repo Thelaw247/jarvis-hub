@@ -1,0 +1,47 @@
+/* <jv-day-dial>: the day dial (HUD v2 §6.1). Static: no animation, no transition, ever (HUD v2 §7).
+   On its own it is a square; in the orb it fills the dial slot (2.5 R), whose inscribed circle is its ring. */
+jv-day-dial { display: block; position: relative; width: 280px; height: 280px; pointer-events: none; }
+.jv-orb__dial > jv-day-dial { position: absolute; inset: 0; width: auto; height: auto; }
+jv-day-dial, jv-day-dial * { animation: none !important; transition: none !important; }
+.jv-day-dial__svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+/* the face: a faint ring (structure only) and 12 ticks, longer at 12, 3, 6 and 9 */
+.jv-day-dial__face { fill: none; stroke: var(--line-dim); stroke-width: 1; opacity: 0.45; }
+.jv-day-dial__ticks { fill: none; stroke: var(--line-dim); stroke-width: 1.5; stroke-linecap: butt; }
+
+/* 4 px arcs: upcoming dim, next cyan (Jarvis means this), done cyan-hi (done is cyan, never green),
+   moved or missed dashed text-3 */
+.jv-day-dial__arc { fill: none; stroke-width: 4; stroke-linecap: butt; }
+.jv-day-dial__arc--upcoming { stroke: var(--line-dim); }
+.jv-day-dial__arc--next { stroke: var(--cyan); }
+.jv-day-dial__arc--done { stroke: var(--cyan-hi); }
+.jv-day-dial__arc--off { stroke: var(--text-3); stroke-dasharray: 5 4; }
+.jv-day-dial__bloom { fill: none; stroke-width: 9; stroke-linecap: butt; opacity: 0.22; }
+.jv-day-dial__bloom--next { stroke: var(--cyan); }
+.jv-day-dial__bloom--done { stroke: var(--cyan-hi); opacity: 0.16; }
+:root:not([data-theme="night"]) .jv-day-dial__bloom { display: none; }  /* light is added at night only */
+.jv-day-dial__leader { fill: none; stroke: var(--cyan); stroke-width: 1.5; }
+
+/* the "now" hand: 2 px, the text colour, across the ring */
+.jv-day-dial__hand { fill: none; stroke: var(--text); stroke-width: 2; stroke-linecap: round; }
+
+/* due: a 9 px diamond (warn); done: the same diamond in cyan-hi; overdue: a crit triangle. A dark edge keeps
+   each mark readable where it sits on an arc. */
+.jv-day-dial__mark { stroke: var(--bg-1); stroke-width: 1.5; paint-order: stroke; }
+.jv-day-dial__mark--due { fill: var(--warn); }
+.jv-day-dial__mark--done { fill: var(--cyan-hi); }
+.jv-day-dial__mark--overdue { fill: var(--crit); }
+
+/* only the next item is labelled: 12 px mono, outside the motes, in short words on up to two lines (it breaks
+   only between its parts, never with an ellipsis); the time in cyan like its arc */
+.jv-day-dial__label {
+  position: absolute; margin: 0; width: max-content; max-width: 30ch; white-space: normal;
+  font: var(--kicker); letter-spacing: 0.06em; font-variant-numeric: tabular-nums; color: var(--text); text-shadow: none;
+}
+.jv-day-dial__part { white-space: nowrap; }
+.jv-day-dial__time { color: var(--cyan); }
+
+/* scenes */
+.jv-day-dial-scene { display: grid; place-items: center; min-height: 100%; }
+.jv-day-dial-cell { display: grid; place-items: center; padding: 56px 0 36px; }
+.jv-day-dial-cell jv-day-dial { width: 220px; height: 220px; }

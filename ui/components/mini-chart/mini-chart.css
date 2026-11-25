@@ -1,0 +1,64 @@
+/* jv-mini-chart: one series in token colours, in HTML so it fits the height it is given (a window on the Stage,
+   a card in Under the hood). The plot takes the room left over (at least 48 px); the values sit on top of their
+   bars, the short labels under them; text stays 12 px whatever the size. */
+jv-mini-chart { display: block; height: 100%; min-height: 0; }
+.jv-mini-chart { display: flex; flex-direction: column; gap: 4px; height: 100%; min-height: 0; margin: 0; }
+/* chart captions are often long ("Study hours planned"), so sentence case, never small caps */
+.jv-mini-chart__caption { flex: none; font: 500 13px/18px var(--font-head); color: var(--muted); }
+.jv-mini-chart__unit { font-weight: 400; }
+
+/* the plot: 18 px on top for the values, then the area the bars and points scale to */
+.jv-mini-chart__plot { position: relative; flex: 1 1 110px; min-height: 48px; max-height: 220px; padding-top: 18px; border-bottom: 1px solid var(--line-strong); }
+.jv-mini-chart__area { position: relative; height: 100%; }
+.jv-mini-chart__bar { position: absolute; bottom: 0; width: min(40px, calc(62% / var(--n, 5))); transform: translateX(-50%); background: var(--control); border-radius: 4px 4px 0 0; }
+.jv-mini-chart__svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.jv-mini-chart__line { fill: none; stroke: var(--control); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.jv-mini-chart__dot { position: absolute; width: 9px; height: 9px; margin: 0 0 -4.5px -4.5px; border-radius: 50%; background: var(--card); border: 2.5px solid var(--control); box-sizing: border-box; }
+.jv-mini-chart--growth .jv-mini-chart__bar { background: var(--leaf-deep); }
+.jv-mini-chart--growth .jv-mini-chart__line { stroke: var(--leaf-deep); }
+.jv-mini-chart--growth .jv-mini-chart__dot { border-color: var(--leaf-deep); }
+.jv-mini-chart__value {
+  position: absolute; transform: translate(-50%, -4px); white-space: nowrap; line-height: 14px;
+  font: 500 12px/14px var(--font-head); color: var(--text); font-variant-numeric: tabular-nums;
+}
+.jv-mini-chart--line .jv-mini-chart__value { transform: translate(-50%, -8px); }
+.jv-mini-chart__target { position: absolute; left: 0; right: 0; height: 0; border-top: 1.2px dashed var(--muted); }
+.jv-mini-chart__target-label { position: absolute; right: 0; bottom: 2px; font: 400 12px/14px var(--font-ui); color: var(--muted); }
+
+/* short labels under each bar or point (a 12 px row; every bar keeps its label) */
+.jv-mini-chart__labels { flex: none; display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); }
+.jv-mini-chart__label { min-width: 0; overflow: hidden; white-space: nowrap; text-align: center; font: 400 12px/16px var(--font-ui); color: var(--muted); }
+
+.jv-mini-chart__table { flex: none; }
+.jv-mini-chart__table summary { display: inline-block; cursor: pointer; font-size: 13px; }
+.jv-mini-chart__table table { margin-top: 6px; border-collapse: collapse; font-size: 14px; }
+.jv-mini-chart__table th, .jv-mini-chart__table td { text-align: left; padding: 3px 16px 3px 0; font-weight: 400; border-bottom: 1px solid var(--rule); }
+.jv-mini-chart__table thead th { font: var(--label); color: var(--muted); }
+
+/* Night HUD (N5b): Huw's flat charts. Ice strokes and flat bars, values and labels in small mono, a quiet axis,
+   the target as a dashed line in --text-3. Growth tone keeps the same ice (green is only for system health). */
+:root[data-theme="night"] .jv-mini-chart__caption { color: var(--text-2); }
+:root[data-theme="night"] .jv-mini-chart__plot { border-bottom-color: var(--line-dim); }
+:root[data-theme="night"] .jv-mini-chart__bar, :root[data-theme="night"] .jv-mini-chart--growth .jv-mini-chart__bar { background: var(--line); border-radius: 0; }
+:root[data-theme="night"] .jv-mini-chart__line, :root[data-theme="night"] .jv-mini-chart--growth .jv-mini-chart__line { stroke: var(--line); stroke-width: 2; }
+:root[data-theme="night"] .jv-mini-chart__svg { filter: drop-shadow(0 0 4px var(--sheen)); }
+:root[data-theme="night"] .jv-mini-chart__dot, :root[data-theme="night"] .jv-mini-chart--growth .jv-mini-chart__dot { background: var(--bg-0); border: 2px solid var(--line); }
+:root[data-theme="night"] .jv-mini-chart__value { font: 400 12px/14px var(--font-mono); color: var(--text); }
+:root[data-theme="night"] .jv-mini-chart__label { font: 400 12px/16px var(--font-mono); color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; }
+:root[data-theme="night"] .jv-mini-chart__target { border-top-color: var(--text-3); }
+:root[data-theme="night"] .jv-mini-chart__target-label { font: 400 12px/14px var(--font-mono); color: var(--text-3); }
+:root[data-theme="night"] .jv-mini-chart__table th, :root[data-theme="night"] .jv-mini-chart__table td { border-bottom-color: var(--rule); }
+:root[data-theme="night"] .jv-mini-chart__table td { font-family: var(--font-mono); }
+
+/* A window's hero (HUD v2 §14.2, `bare`): Huw's flat chart. Flat near-white bars (or one near-white line), tiny
+   grey labels and values, a quiet axis; no caption, no link, no glow, one colour. `numbers`: the table alone. */
+.jv-mini-chart--bare .jv-mini-chart__plot { border-bottom-color: var(--rule); max-height: none; }
+:root .jv-mini-chart--bare .jv-mini-chart__bar { background: var(--chart-bar); border-radius: 0; width: min(28px, calc(56% / var(--n, 5))); }
+:root .jv-mini-chart--bare .jv-mini-chart__line { stroke: var(--chart-bar); stroke-width: 1.5; }
+:root .jv-mini-chart--bare .jv-mini-chart__svg { filter: none; }
+:root .jv-mini-chart--bare .jv-mini-chart__dot { background: var(--chart-bar); border: 0; width: 5px; height: 5px; margin: 0 0 -2.5px -2.5px; }
+:root .jv-mini-chart--bare :is(.jv-mini-chart__value, .jv-mini-chart__label, .jv-mini-chart__target-label) { font: 400 12px/14px var(--font-mono); color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; }
+:root .jv-mini-chart--bare .jv-mini-chart__target { border-top-color: var(--text-3); }
+jv-mini-chart[numbers] { height: auto; }
+.jv-mini-chart__table--open table { margin-top: 0; }
+.jv-mini-chart__table--open caption.jv-mini-chart__caption { text-align: left; padding-bottom: 4px; }

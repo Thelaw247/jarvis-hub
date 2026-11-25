@@ -1,0 +1,71 @@
+/* Phone layout pass (V08). Touch targets at least 44 px; one column; nothing hidden behind hover. */
+.jv-quick { display: flex; flex-wrap: wrap; gap: var(--gap-small); align-items: center; }
+:root[data-size="phone"] .jv-btn, :root[data-size="phone"] .jv-chip, :root[data-size="phone"] .jv-switch { min-height: var(--hit); }
+:root[data-size="phone"] .jv-btn--small { min-height: 40px; }
+:root[data-size="phone"] .jv-view__head h1 { width: 100%; }
+:root[data-size="phone"] .jv-sheet { padding: var(--pad) 16px; }
+:root[data-size="phone"] .jv-life__bar { gap: 6px; }
+:root[data-size="phone"] .jv-life__tree { max-height: 46vh; overflow: auto; border-bottom: 1px solid var(--line); }
+:root[data-size="phone"] .jv-activity__approval { max-width: none; }
+:root[data-size="phone"] jv-caption { max-width: calc(100vw - 16px); }
+:root[data-size="phone"] .jv-controls__demo { margin-left: 0; }
+:root[data-size="phone"] .jv-seg button { min-height: var(--hit); }
+:root[data-size="phone"] .jv-chrome__demo { display: none; }
+/* the chosen chattiness is told apart by an outline, not only a fill (same as Controls) */
+.jv-quick .jv-seg button[aria-checked="true"] { box-shadow: var(--shadow-small), inset 0 0 0 1px var(--muted); }
+
+/* ---- N8: the Rail row, toasts, and the narrowest phones (320 px) ------------------------------------------ */
+/* The Rail: a 44 px row above the tabs (shell.css). Gauges, counts and worst shapes always; each slot's icon,
+   and its word too when the row has room for all six (the words replace the icons then). One Tab stop; ← →
+   move between slots (the Rail's own toolbar keys). */
+:root[data-size="phone"] #rail { container: jv-phone-rail / inline-size; width: 100%; }  /* a size container can't shrink to fit */
+:root[data-size="phone"] .jv-rail__slot { min-width: 0; justify-content: center; }
+@container jv-phone-rail (min-width: 660px) {
+  :root[data-size="phone"] .jv-rail__name { position: static; width: auto; height: auto; overflow: visible; clip-path: none; }
+  :root[data-size="phone"] .jv-rail__word .jv-icon { display: none; }
+}
+/* an open slot's things: the full width of the phone, above the Rail row */
+:root[data-size="phone"] .jv-rail__fan { width: calc(100vw - 16px); max-height: min(56vh, 460px); padding: 10px; }
+:root[data-size="phone"] .jv-rail__cards { grid-template-columns: minmax(0, 1fr); }
+:root[data-size="phone"] .jv-rail__fanhead { flex-wrap: wrap; row-gap: 6px; }
+:root[data-size="phone"] .jv-rail__fanhead h2 { flex-basis: 100%; }
+
+/* a kicker row (a window's or a card's top line) wraps instead of running its two ends into each other */
+:root[data-size="phone"] .jv-kicker-row { flex-wrap: wrap; row-gap: 4px; }
+
+/* toasts sit just above the band (caption row, Rail row, tabs); phone.js keeps --phone-above-band current */
+:root[data-size="phone"] #toasts { bottom: calc(var(--phone-above-band, calc(var(--phone-bar) + 64px)) + env(safe-area-inset-bottom)); width: calc(100% - 24px); max-width: 480px; }
+
+/* the narrowest phones (under 360 px): the tab words in the reading face so all five fit beside the orb */
+@media (max-width: 359.98px) {
+  :root[data-size="phone"] .jv-chrome { padding-left: 2px; }
+  :root[data-size="phone"] .jv-tabs__list, :root[data-theme="night"][data-size="phone"] .jv-tabs__list { gap: 0; }
+  :root[data-size="phone"] .jv-tabs__tab { min-width: 0; }
+  :root[data-size="phone"] .jv-tabs__word { font: 500 12px/16px var(--font-ui); letter-spacing: 0; text-transform: none; }
+  :root[data-size="phone"] #stage { padding: 10px 8px; }
+  /* the window's name keeps its room; the top-right index ("P. 3 / 5") is repeated in the window's body */
+  :root[data-size="phone"] .jv-window__index { display: none; }
+}
+/* the open slot is read over a scrolling page: an opaque sheet, so nothing shows through it */
+:root[data-size="phone"] .jv-rail__fan { background: var(--sheet); }
+
+/* the reader on the phone: the resume card sits low and compact (within thumb reach, in the lower half of the
+   page so PPS 7 still opens with Q7 at the top), on an opaque sheet so the page behind never shows through */
+:root[data-size="phone"] .jv-reader__card { width: calc(100% - 16px); bottom: 8px; }
+:root[data-size="phone"] .jv-reader__card .jv-resume-card { padding: 10px 12px; gap: 8px; background: var(--sheet); }
+:root[data-size="phone"] .jv-resume-card__thumb, :root[data-size="phone"] .jv-resume-card__mono { width: 44px; height: 57px; }
+:root[data-size="phone"] .jv-resume-card__main { gap: 10px; }
+:root[data-size="phone"] .jv-resume-card__kicker span { white-space: normal; }
+:root[data-size="phone"] .jv-resume-card__acts { gap: 6px; }
+:root[data-size="phone"] .jv-resume-card__acts .jv-btn { padding-inline: 14px; }
+:root[data-size="phone"] .jv-resume-card__acts .jv-btn--quiet { padding-inline: 6px; min-height: 40px; }
+:root[data-size="phone"] .jv-reader__bar { flex-wrap: wrap; row-gap: 4px; }
+
+/* Now on the phone: one column exactly the screen's width (a wide row inside a window wraps; it never widens
+   the column and pushes everything sideways) */
+:root[data-size="phone"] .jv-now { grid-template-columns: minmax(0, 1fr); }
+:root[data-size="phone"] .jv-now__canvas > jv-window { min-width: 0; }
+
+/* a pushed window's pin and close are thumb targets on the phone too (44 px) */
+:root[data-size="phone"] .jv-window__tool { width: var(--hit); height: var(--hit); }
+:root[data-size="phone"] .jv-window__tools { margin-right: -12px; gap: 0; }

@@ -1,0 +1,18 @@
+/* jv-branch-card: picture or monogram, the name in the condensed face, Due with its glance code, Next, one fact. */
+jv-branch-card { display: block; }
+.jv-branch-card { display: grid; gap: 10px; }
+.jv-branch-card__head { display: flex; gap: var(--gap); align-items: center; min-width: 0; }
+.jv-branch-card__who { min-width: 0; }
+.jv-branch-card__glyph { flex: none; width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid var(--frame); border-radius: var(--r-control); color: var(--text-2); }
+.jv-branch-card__glyph .jv-icon { width: 20px; height: 20px; }
+.jv-branch-card__name { font: var(--display); letter-spacing: var(--display-track); text-transform: var(--display-case); color: var(--text); }
+.jv-branch-card section { display: grid; gap: 2px; }
+.jv-branch-card ul { display: grid; gap: 2px; }
+.jv-branch-card h4.jv-label { font: var(--kicker); letter-spacing: var(--kicker-track); color: var(--text-3); }
+.jv-branch-card__due { display: flex; align-items: center; gap: 8px; }
+.jv-branch-card__count { font: 600 36px/40px var(--font-display); font-variant-numeric: tabular-nums; color: var(--text); text-shadow: var(--text-glow); }
+.jv-branch-card__soon { color: var(--notice-ink); }
+.jv-branch-card__past { color: var(--crit); font-size: 26px; text-transform: var(--kicker-case); letter-spacing: var(--display-track); }
+.jv-branch-card__next { display: flex; gap: 8px; align-items: flex-start; }
+.jv-branch-card__next .jv-icon { margin-top: 2px; color: var(--text-3); }
+.jv-branch-card__foot { margin-top: 2px; }

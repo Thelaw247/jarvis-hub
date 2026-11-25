@@ -1,0 +1,23 @@
+jv-command-bar:not([inline]) .jv-command-bar__scrim { position: fixed; inset: 0; background: var(--scrim); display: grid; justify-items: center; align-items: start; padding-top: 14vh; animation: jv-cmd-in var(--t-fast) var(--ease); }
+jv-command-bar[inline] { position: static; display: block; }
+.jv-command-bar { width: min(560px, calc(100vw - 32px)); background: var(--card); border: 1px solid var(--line-strong); border-radius: var(--r-card); box-shadow: var(--shadow); padding: 10px; display: grid; gap: 6px; }
+jv-command-bar[inline] .jv-command-bar { width: 100%; }
+.jv-command-bar__field { display: flex; align-items: center; gap: 10px; padding: 0 12px; height: 48px; background: var(--sheet); border: 1px solid var(--control); border-radius: var(--r-control); color: var(--muted); }
+.jv-command-bar__field:focus-within { outline: 2px solid var(--text); outline-offset: 3px; box-shadow: 0 0 0 5px var(--bg-0); }
+.jv-command-bar__field input { flex: 1; min-width: 0; border: 0; background: none; outline: none; font: 400 17px/24px var(--font-ui); color: var(--text); }
+.jv-command-bar__field input::placeholder { color: var(--muted); }
+.jv-command-bar__list { display: grid; gap: 2px; }
+.jv-command-bar__row { display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 6px 10px; border-radius: var(--r-control); cursor: pointer; color: var(--text); }
+.jv-command-bar__row .jv-icon { color: var(--muted); }
+.jv-command-bar__row[aria-selected="true"] { background: var(--sunken); box-shadow: inset 3px 0 0 var(--text); }
+.jv-command-bar__label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.jv-command-bar__hint { padding: 4px 10px 2px; font: 400 13px/18px var(--font-ui); color: var(--muted); }
+@keyframes jv-cmd-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* Night HUD (N5b): a square HUD window; the field is a dark well; the chosen row is a brighter left edge in text
+   colour (never cyan); the focus ring is the base one. */
+:root[data-theme="night"] .jv-command-bar { border-color: var(--frame-on); border-radius: var(--r-card); background: var(--bg-0); box-shadow: var(--glow-on); }
+:root[data-theme="night"] .jv-command-bar__field { background: var(--panel); border-color: var(--line-dim); }
+:root[data-theme="night"] .jv-command-bar__row[aria-selected="true"] { background: var(--sunken); box-shadow: inset 2px 0 0 var(--text); }
+:root[data-theme="night"] .jv-command-bar__hint { font: var(--kicker); letter-spacing: 0.06em; text-transform: var(--kicker-case); color: var(--text-3); }
+:root[data-theme="night"] .jv-command-bar__kind { font: var(--kicker); letter-spacing: var(--kicker-track); color: var(--text-3); }

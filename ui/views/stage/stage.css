@@ -1,0 +1,81 @@
+/* The Stage (stage.js, HUD v2 §6.5, v3 §14): Jarvis's screen in its own borderless window. No tabs or header:
+   the dotted ruler along the top (base.css) and three small, quiet words top-right (HUB · TIDY · CLEAR VIEW),
+   the window canvas as Huw's board (canvas.css collage), and the shell's bottom band (status, the bottom row,
+   caption, the docked orb). */
+:root[data-window="stage"] .jv-chrome { display: none; }
+:root[data-window="stage"] body { grid-template-rows: minmax(0, 1fr) auto; }
+:root[data-window="stage"] #stage { overflow: hidden; }
+/* the docked orb keeps its full 120 px on the Stage's big screen (64 px on a laptop), as on the hub's Now */
+:root[data-view="stage"] { --band-orb: 120px; }
+:root[data-view="stage"][data-size="laptop"] { --band-orb: 64px; }
+:root[data-view="stage"]:not([data-size="laptop"], [data-size="phone"], [data-size="strip"]) #orb { --jv-orb-size: 120px; width: 120px; height: 120px; }  /* (white rings only when docked: the orb, P1) */
+/* standby: the big orb is in the view, so the corner one steps aside */
+:root[data-stage="standby"] .jv-dock #orb { display: none; }
+
+jv-view-stage { display: block; height: 100%; }
+.jv-stage { position: relative; height: 100%; display: grid; grid-template-rows: minmax(0, 1fr); }
+.jv-stage__standby, .jv-stage__canvas { grid-row: 1; grid-column: 1; }
+
+/* the top edge (base.css draws the dotted ruler and its notch): three quiet mono words top-right, just under
+   it, over the board (the collage keeps clear of them: data-keep-clear) */
+.jv-stage__bar { position: absolute; top: 10px; right: 8px; z-index: 5; display: flex; }
+.jv-stage__pills { position: relative; display: flex; gap: 2px; }
+.jv-stage__word {
+  min-height: 28px; min-width: 28px; padding: 0 8px; border: 1px solid transparent; border-radius: var(--r-control); background: none; cursor: pointer;
+  font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3);
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.jv-stage__word:hover { color: var(--text); border-color: var(--line-dim); }
+.jv-stage__word:active { transform: scale(0.97); }
+.jv-stage__pills [hidden] { display: none; }
+
+/* standby: the orb in the centre over the clock; it fades in when the last window is put away */
+.jv-stage__standby { display: grid; place-items: center; min-height: 0; padding-bottom: 40px; opacity: 0; visibility: hidden; }  /* leaving standby is the dock beat: the orb flies to the corner, so the centre goes at once (no ghost) */
+.jv-stage--standby .jv-stage__standby { opacity: 1; visibility: visible; transition: opacity var(--t-fly) var(--ease) 120ms, visibility 0s; }
+.jv-stage--standby .jv-stage__canvas { pointer-events: none; }
+.jv-stage__centre { display: grid; justify-items: center; }
+.jv-stage__standby { container-type: size; }
+/* HUD v3 (§14 decision 1): like Huw's standby, a small sphere (its ornaments about 1/6 of the screen's width)
+   over the small clock (<jv-clock small>: mono time, tiny tracked date); the clock never dominates. The orb's
+   box comes from --jv-orb-size, the clock's digits from --jv-clock-size (both read by their components). */
+.jv-stage__standby { --jv-orb-size: clamp(160px, min(32cqh, 17cqw), 340px); --jv-clock-size: clamp(32px, 5.5cqh, 60px); }
+:root .jv-stage jv-orb.jv-stage__orb { width: var(--jv-orb-size); height: var(--jv-orb-size); margin: 0 0 18px; }
+:root .jv-stage__clock .jv-clock { gap: 0; justify-items: center; text-align: center; }
+:root .jv-stage__clock .jv-clock__time { font-size: var(--jv-clock-size); line-height: 1; }
+:root .jv-stage__clock .jv-clock__half { font-size: max(12px, 0.2em); }  /* the small clock's "pm": never under 12 px */
+
+/* windows arriving from standby: the big orb slides into the corner over them (canvas.js slideOrbToDock) */
+.jv-stage.jv-stage--docking .jv-stage__standby {
+  position: fixed; left: var(--dock-x, 0); top: var(--dock-y, 0); width: var(--dock-w, 100%); height: var(--dock-h, 100%);
+  opacity: 1; visibility: visible; transition: none; z-index: 25; pointer-events: none;
+}
+.jv-stage--docking .jv-stage__centre > :not(jv-orb) { visibility: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .jv-stage__standby, .jv-stage--standby .jv-stage__standby { transition: none; }
+}
+:root[data-still] .jv-stage__standby { transition: none; }
+
+/* receipts on the Stage: bottom-left, just above the status line and clear of the canvas (not over the first
+   window's top edge, where the hub keeps them) */
+:root[data-window="stage"]:not([data-size="phone"], [data-size="strip"]) #toasts {
+  left: 20px; right: auto; top: auto; bottom: calc(var(--rail-h) + 22px); transform: none; max-width: min(480px, calc(50vw - 290px));
+}
+:root[data-window="stage"]:not([data-size="phone"], [data-size="strip"]) #toasts .jv-toasts { display: grid; gap: 8px; justify-items: start; }
+
+/* arriving (stage.js arrive): before the beat the windows wait. Coming from a hidden Stage (Laptop A,
+   from-hub), the orb sits where the hub's awake orb sits (same box, same place), so when the Stage window covers
+   the hub nothing jumps; then it slides */
+.jv-stage.jv-stage--from-hub .jv-stage__standby { --jv-orb-size: clamp(160px, min(22cqw, 40cqh), 480px); }
+.jv-stage.jv-stage--from-hub .jv-stage__standby jv-orb.jv-stage__orb {
+  position: absolute; margin: 0; left: calc(50% - var(--jv-orb-size) / 2); top: calc(47% - var(--jv-orb-size) / 2);
+}
+.jv-stage.jv-stage--arriving .jv-stage__standby { opacity: 1; visibility: visible; transition: none; z-index: 25; pointer-events: none; }
+.jv-stage--arriving .jv-stage__centre > :not(jv-orb) { visibility: hidden; }
+.jv-stage--arriving .jv-stage__canvas { visibility: hidden; }
+
+/* ---- one window (v0.17.0): the second window is a plain holder for what he pulled out of the hub ---- */
+/* no orb, no voice, no bottom row: the shell's dock and band are not drawn here at all */
+:root[data-stage="holder"] :is(#dock, #foot, #caption) { display: none !important; }
+.jv-stage--holder .jv-stage__standby { display: none; }
+.jv-stage__empty { position: absolute; inset: 0; margin: auto; height: max-content; max-width: 44ch; padding: 0 var(--s-4, 16px); text-align: center; color: var(--muted); font: var(--body, 400 15px/22px var(--font-body)); }

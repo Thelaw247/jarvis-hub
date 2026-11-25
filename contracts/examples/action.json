@@ -1,0 +1,20 @@
+{
+ "id": "a-sync",
+ "ts": "2026-11-16T15:38:00",
+ "kind": "done",
+ "what": "Synced Canvas: 1 new file in GE 122",
+ "why": "You arrived back; the last sync was at 7 am.",
+ "category": "files",
+ "sources": [
+  {
+   "kind": "canvas",
+   "label": "Canvas"
+  }
+ ],
+ "result": "PPS 7 hints.pdf filed under GE 122 › Lectures",
+ "branch_id": "ge-122",
+ "undo": {
+  "until": "2026-11-17T15:38:00",
+  "label": "24 h"
+ }
+}

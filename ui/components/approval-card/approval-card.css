@@ -1,0 +1,54 @@
+jv-approval-card { display: block; container-type: inline-size; }
+.jv-approval-card { display: grid; gap: 10px; }
+/* focus lands on the card after "Change it" is sent; inside a window the window shows the ring (its body clips) */
+.jv-approval-card:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; box-shadow: 0 0 0 5px var(--bg-0); border-radius: var(--r-control); }
+jv-window .jv-approval-card:focus-visible { outline: none; }
+jv-window:has(.jv-approval-card:focus-visible) { outline: 2px solid var(--text); outline-offset: 3px; box-shadow: 0 0 0 5px var(--bg-0); }
+.jv-approval-card__title { font: 500 18px/26px var(--font-head); }
+.jv-approval-card__cols, .jv-approval-card__col { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.jv-approval-card__list { display: grid; gap: 4px; margin-top: 4px; }
+.jv-approval-card__list li { position: relative; padding-left: 18px; }
+.jv-approval-card__list li::before { content: ""; position: absolute; left: 3px; top: 8px; width: 7px; height: 7px; border-radius: var(--r-pill); border: 1.5px solid var(--control); }
+.jv-approval-card__warn { display: flex; align-items: center; gap: 6px; color: var(--error-ink); background: var(--error-bg); border-radius: var(--r-control); padding: 6px 10px; font-weight: 500; }
+.jv-approval-card__say { color: var(--muted); max-width: var(--measure); }
+.jv-approval-card__sources { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.jv-approval-card__buttons { display: flex; flex-wrap: wrap; gap: var(--gap-small); margin-top: 4px; }
+/* in a HUD window that is shorter than the card, Yes / No / Change it stay at the bottom edge, always in reach */
+jv-window .jv-approval-card__buttons { position: sticky; bottom: 0; z-index: 1; padding: 8px 0 2px; background: linear-gradient(var(--panel), var(--panel)), var(--bg-0); }
+.jv-approval-card .jv-btn[aria-disabled="true"] { opacity: 0.6; cursor: default; }
+.jv-approval-card .jv-btn[aria-disabled="true"]:active { transform: none; }
+.jv-approval-card__wait { font-size: 13px; }
+.jv-approval-card__done { display: flex; align-items: center; gap: 6px; font-weight: 500; }
+.jv-approval-card--approved .jv-approval-card__done { color: var(--leaf-ink); }
+.jv-approval-card--expired .jv-approval-card__done, .jv-approval-card--declined .jv-approval-card__done { color: var(--muted); }
+.jv-approval-card--changed .jv-approval-card__done { color: var(--text); }
+.jv-approval-card__form { display: grid; gap: 6px; }
+.jv-approval-card__form textarea { width: 100%; min-height: 64px; padding: 8px 10px; background: var(--sheet); border: 1px solid var(--control); border-radius: var(--r-control); font: var(--body); resize: vertical; }
+/* a wide card (Activity) uses its width: what will happen on the left, the question and the answers on the right */
+@container (min-width: 680px) {
+  .jv-approval-card__cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: var(--gap-large); }
+}
+.jv-approval-card__mark { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
+/* one kicker, all caps: "CALENDAR // YOUR YES" (the glance's word reads as part of it, not a mixed-case label) */
+.jv-approval-card__mark .jv-glance__word { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); }
+
+/* Night HUD (N5b): consequences first, square bullets on quiet rules, the title in condensed caps,
+   the read-back as Jarvis's words (reading text), irreversible in the critical colour with its triangle */
+:root[data-theme="night"] .jv-approval-card__title { font: var(--display); font-size: 26px; line-height: 28px; letter-spacing: var(--display-track); text-transform: var(--display-case); text-shadow: var(--text-glow); }
+:root[data-theme="night"] .jv-approval-card h4.jv-title { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3); }
+:root[data-theme="night"] .jv-approval-card__list { gap: 0; }
+:root[data-theme="night"] .jv-approval-card__list li { padding: 7px 0 7px 20px; border-bottom: 1px solid var(--rule); }
+:root[data-theme="night"] .jv-approval-card__list li:last-child { border-bottom: 0; }
+:root[data-theme="night"] .jv-approval-card__list li::before { top: 15px; left: 2px; width: 7px; height: 7px; border-radius: var(--r-card); border: 1.5px solid var(--text-2); }
+:root[data-theme="night"] .jv-approval-card__warn { color: var(--crit); background: transparent; border: 1px solid var(--crit); border-radius: var(--r-control); }
+:root[data-theme="night"] .jv-approval-card__say { color: var(--text); padding-left: 12px; border-left: 2px solid var(--line-dim); }
+:root[data-theme="night"] .jv-approval-card__say .jv-label, :root[data-theme="night"] .jv-approval-card__sources .jv-label { display: block; font: var(--kicker); letter-spacing: var(--kicker-track); color: var(--text-3); margin-bottom: 2px; }
+:root[data-theme="night"] .jv-approval-card__sources .jv-label { display: inline; margin: 0 4px 0 0; }
+:root[data-theme="night"] .jv-approval-card__wait { color: var(--text-2); }
+:root[data-theme="night"] .jv-approval-card--approved .jv-approval-card__done { color: var(--cyan-hi); }
+:root[data-theme="night"] .jv-approval-card__form textarea { background: var(--bg-0); border-color: var(--line-dim); }
+
+/* In a window (HUD v2 §14.2, `clean`): the title (the hero) and one line. Yes / No and the rest are in the drawer. */
+.jv-approval-card--clean { gap: 6px; }
+.jv-approval-card--clean .jv-more .jv-approval-card__buttons { position: static; background: none; padding: 0; margin: 0; }
+.jv-approval-card--clean .jv-approval-card__open { margin: 0; }

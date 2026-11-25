@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "toast.schema.json",
+  "title": "A short notice",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+    },
+    "kind": {
+      "enum": [
+        "info",
+        "success",
+        "notice",
+        "error"
+      ]
+    },
+    "text": {
+      "type": "string"
+    },
+    "ttl_ms": {
+      "type": "integer"
+    },
+    "action": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "args": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "label",
+        "action",
+        "target"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "id",
+    "kind",
+    "text"
+  ],
+  "additionalProperties": false
+}

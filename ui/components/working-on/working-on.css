@@ -1,0 +1,30 @@
+/* jv-working-on: mono chips with a segmented scan bar (HUD v2 §3 "Working"). */
+jv-working-on { display: inline-block; min-width: 0; }
+.jv-working-on { display: flex; gap: var(--gap-small); flex-wrap: wrap; }
+.jv-working-on__chip {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 30px; padding: 3px 10px;
+  font: var(--kicker); letter-spacing: 0.06em; color: var(--text-2);
+  background: var(--panel); border: 1px solid var(--line-dim); border-radius: var(--r-control);
+}
+.jv-working-on__label { white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+/* in the bottom band a long label is cut with an ellipsis (its title says it in full): never over the icon row */
+.jv-band__left > jv-working-on { flex: 0 1 auto; overflow: hidden; }
+.jv-band__left .jv-working-on { flex-wrap: nowrap; min-width: 0; }
+.jv-band__left .jv-working-on__chip { min-width: 0; }
+/* ~16 blocks: the track is masked into blocks (only the mask's alpha counts), lit up to the progress in the
+   ice line colour; the cyan chunk (Jarvis working) sweeps across while the job runs */
+.jv-working-on__bar {
+  --p: 0%;
+  position: relative; width: 72px; height: 6px; overflow: hidden; flex: none;
+  background: linear-gradient(90deg, var(--line) 0 var(--p), var(--line-dim) var(--p) 100%);
+  -webkit-mask: repeating-linear-gradient(90deg, black 0 4px, transparent 4px 6px);
+  mask: repeating-linear-gradient(90deg, black 0 4px, transparent 4px 6px);
+}
+:root:not([data-theme="night"]) .jv-working-on__bar { background: linear-gradient(90deg, var(--text-2) 0 var(--p), var(--frame) var(--p) 100%); }
+.jv-working-on__chunk { position: absolute; inset: 0 auto 0 0; width: 25%; background: var(--cyan); transform: translateX(-100%); animation: jv-working-scan 1.6s linear infinite; }
+@keyframes jv-working-scan { from { transform: translateX(-100%); } to { transform: translateX(400%); } }
+:root[data-still] .jv-working-on__chunk { display: none; }
+:root[data-still] .jv-working-on__bar:not([role="progressbar"]) { display: none; }
+.jv-working-on__pct { font-variant-numeric: tabular-nums; min-width: 32px; text-align: right; color: var(--text); }
+.jv-working-on__chip--done { color: var(--text-2); }
+.jv-working-on__chip--failed { color: var(--notice-ink); border-color: var(--warn); }

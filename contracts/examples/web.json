@@ -1,0 +1,22 @@
+{
+  "pages": [
+    {
+      "id": "p-article",
+      "url": "http://127.0.0.1:8765/demo/web/article.html",
+      "title": "The method of joints, step by step",
+      "site": "statics.demo"
+    },
+    {
+      "id": "p-search",
+      "url": "https://www.google.com/search?q=method+of+joints",
+      "title": "method of joints - Google Search"
+    },
+    {
+      "id": "p-doc",
+      "url": "https://docs.google.com/document/d/demo-ge122-notes/edit",
+      "title": "GE 122 lab notes",
+      "frame": "no"
+    }
+  ],
+  "active": "p-article"
+}

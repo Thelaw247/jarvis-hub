@@ -1,0 +1,2131 @@
+{
+ "v": 2,
+ "mode": "demo",
+ "now": "2026-11-16T15:40:00",
+ "orb": {
+  "state": "idle"
+ },
+ "presence": {
+  "here": true,
+  "others": false,
+  "idle_s": 0
+ },
+ "now_card": {
+  "greeting": "Good afternoon",
+  "updated": "2026-11-16T15:38:00",
+  "next_up": {
+   "title": "Review GE 122 lecture 21",
+   "when": "4:00 pm",
+   "where": "Your desk",
+   "source": {
+    "kind": "jarvis",
+    "label": "Jarvis"
+   },
+   "thumb": {
+    "src": "/api/thumb/slides-ge122-l21.webp",
+    "kind": "slide",
+    "alt": "GE 122 lecture 21 title slide: Frames and trusses"
+   }
+  },
+  "flag": {
+   "text": "PPS 7 is due Wednesday 8 pm · half done",
+   "why": "It's the closest deadline, and your problem sets run about twice the estimate.",
+   "branch_id": "ge-122",
+   "source": {
+    "kind": "canvas",
+    "label": "Canvas"
+   }
+  },
+  "ready_to_offer": [
+   {
+    "id": "o-week",
+    "text": "A study plan for this week",
+    "path": "/activity"
+   },
+   {
+    "id": "o-hints",
+    "text": "New hints for PPS 7",
+    "path": "/life/ge-122"
+   }
+  ],
+  "gaps": [
+   "Thursday afternoon is still open."
+  ],
+  "done_today": [
+   "MATH 133 lecture",
+   "GE 122 lecture 21",
+   "Lunch with Sam",
+   "CHEM 142 lab 4"
+  ],
+  "day": {
+   "done": 4,
+   "total": 6
+  },
+  "moment": "between"
+ },
+ "branches": [
+  {
+   "id": "you",
+   "parent": null,
+   "name": "You",
+   "glyph": "DW",
+   "kind": "root",
+   "status": "active",
+   "tier": 1,
+   "activity": 2,
+   "due": null,
+   "pending": 1,
+   "counts": {
+    "due": 4,
+    "open_loops": 5,
+    "facts": 64
+   },
+   "summary": "6 areas · 4 things due this week"
+  },
+  {
+   "id": "school",
+   "parent": "you",
+   "name": "School",
+   "glyph": "SC",
+   "kind": "area",
+   "status": "active",
+   "tier": 1,
+   "activity": 2,
+   "due": {
+    "label": "2d",
+    "hours": 52
+   },
+   "pending": 1,
+   "counts": {
+    "due": 4,
+    "open_loops": 2
+   },
+   "summary": "8 courses · 4 things due this week"
+  },
+  {
+   "id": "projects",
+   "parent": "you",
+   "name": "Projects",
+   "glyph": "PR",
+   "kind": "area",
+   "status": "active",
+   "tier": 1,
+   "activity": 2,
+   "due": null,
+   "pending": 0,
+   "counts": {
+    "due": 0,
+    "open_loops": 2
+   },
+   "summary": "5 projects · Jarvis is the busiest"
+  },
+  {
+   "id": "people",
+   "parent": "you",
+   "name": "People",
+   "glyph": "PE",
+   "kind": "area",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": null,
+   "pending": 0,
+   "summary": "Family, friends, classmates"
+  },
+  {
+   "id": "life",
+   "parent": "you",
+   "name": "Life",
+   "glyph": "LI",
+   "kind": "area",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": null,
+   "pending": 0,
+   "counts": {
+    "due": 0,
+    "open_loops": 1
+   },
+   "summary": "Residence, errands, plans"
+  },
+  {
+   "id": "learning",
+   "parent": "you",
+   "name": "Learning",
+   "glyph": "LE",
+   "kind": "area",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": null,
+   "pending": 0,
+   "summary": "High Valyrian"
+  },
+  {
+   "id": "tech",
+   "parent": "you",
+   "name": "Tech & setup",
+   "glyph": "TE",
+   "kind": "area",
+   "status": "active",
+   "tier": 1,
+   "activity": 0,
+   "due": null,
+   "pending": 0,
+   "summary": "Two laptops, phone, desk"
+  },
+  {
+   "id": "unsorted",
+   "parent": "you",
+   "name": "Unsorted",
+   "glyph": "?",
+   "kind": "system",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": null,
+   "pending": 0,
+   "counts": {
+    "facts": 2
+   },
+   "summary": "2 items to file"
+  },
+  {
+   "id": "fall-2026",
+   "parent": "school",
+   "name": "Fall 2026",
+   "glyph": "F26",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 2,
+   "due": {
+    "label": "2d",
+    "hours": 52
+   },
+   "pending": 1,
+   "counts": {
+    "due": 4,
+    "open_loops": 2
+   },
+   "summary": "Week 11 of 13"
+  },
+  {
+   "id": "study-system",
+   "parent": "school",
+   "name": "Study system",
+   "glyph": "SS",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "school-admin",
+   "parent": "school",
+   "name": "Admin",
+   "glyph": "AD",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 0,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "robotics-club",
+   "parent": "school",
+   "name": "Robotics club",
+   "glyph": "RC",
+   "kind": "branch",
+   "status": "proposed",
+   "tier": 1,
+   "activity": 0,
+   "due": null,
+   "pending": 0,
+   "summary": "Proposed: you mentioned it twice this week"
+  },
+  {
+   "id": "ge-122",
+   "parent": "fall-2026",
+   "name": "GE 122",
+   "glyph": "GE",
+   "kind": "leaf",
+   "status": "active",
+   "tier": 1,
+   "activity": 2,
+   "due": {
+    "label": "2d",
+    "hours": 52
+   },
+   "pending": 0,
+   "counts": {
+    "due": 2,
+    "open_loops": 1,
+    "facts": 9
+   },
+   "summary": "Week 11 of 13 · on track"
+  },
+  {
+   "id": "chem-142",
+   "parent": "fall-2026",
+   "name": "CHEM 142",
+   "glyph": "CH",
+   "kind": "leaf",
+   "status": "active",
+   "tier": 1,
+   "activity": 2,
+   "due": {
+    "label": "3d",
+    "hours": 76
+   },
+   "pending": 0,
+   "counts": {
+    "due": 1,
+    "open_loops": 1,
+    "facts": 7
+   },
+   "summary": "Lab report 4 in progress"
+  },
+  {
+   "id": "math-133",
+   "parent": "fall-2026",
+   "name": "MATH 133",
+   "glyph": "MA",
+   "kind": "leaf",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": {
+    "label": "6d",
+    "hours": 150
+   },
+   "pending": 0,
+   "counts": {
+    "due": 1
+   }
+  },
+  {
+   "id": "phys-155",
+   "parent": "fall-2026",
+   "name": "PHYS 155",
+   "glyph": "PH",
+   "kind": "leaf",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "geol-121",
+   "parent": "fall-2026",
+   "name": "GEOL 121",
+   "glyph": "GL",
+   "kind": "leaf",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "cmpt-141",
+   "parent": "fall-2026",
+   "name": "CMPT 141",
+   "glyph": "CM",
+   "kind": "leaf",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "ge-102",
+   "parent": "fall-2026",
+   "name": "GE 102",
+   "glyph": "G1",
+   "kind": "leaf",
+   "status": "active",
+   "tier": 1,
+   "activity": 0,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "ge-132",
+   "parent": "fall-2026",
+   "name": "GE 132",
+   "glyph": "G3",
+   "kind": "leaf",
+   "status": "active",
+   "tier": 1,
+   "activity": 0,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "jarvis",
+   "parent": "projects",
+   "name": "Jarvis",
+   "glyph": "JV",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 2,
+   "due": null,
+   "pending": 0,
+   "counts": {
+    "open_loops": 2,
+    "facts": 12
+   },
+   "summary": "Hub build in progress"
+  },
+  {
+   "id": "pen-reader",
+   "parent": "projects",
+   "name": "Pen Reader",
+   "glyph": "PN",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "praelecta",
+   "parent": "projects",
+   "name": "Praelecta",
+   "glyph": "PL",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "cedar-student-pilot",
+   "parent": "projects",
+   "name": "Cedar Student Pilot",
+   "glyph": "CS",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 0,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "ideas",
+   "parent": "projects",
+   "name": "Ideas",
+   "glyph": "ID",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 0,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "cedar-mail-pilot",
+   "parent": "projects",
+   "name": "Cedar Mail Pilot",
+   "glyph": "CM",
+   "kind": "branch",
+   "status": "archived",
+   "tier": 1,
+   "activity": 0,
+   "due": null,
+   "pending": 0,
+   "summary": "Archived: scrapped in August"
+  },
+  {
+   "id": "family",
+   "parent": "people",
+   "name": "Family",
+   "glyph": "FA",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "friends",
+   "parent": "people",
+   "name": "Friends",
+   "glyph": "FR",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "classmates",
+   "parent": "people",
+   "name": "Classmates",
+   "glyph": "CL",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "profs-tas",
+   "parent": "people",
+   "name": "Profs & TAs",
+   "glyph": "PT",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 0,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "residence",
+   "parent": "life",
+   "name": "Residence",
+   "glyph": "RE",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": null,
+   "pending": 0,
+   "counts": {
+    "open_loops": 1
+   }
+  },
+  {
+   "id": "errands",
+   "parent": "life",
+   "name": "Errands & admin",
+   "glyph": "ER",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 0,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "money",
+   "parent": "life",
+   "name": "Money",
+   "glyph": "MO",
+   "kind": "branch",
+   "status": "active",
+   "tier": 2,
+   "activity": 0,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "health",
+   "parent": "life",
+   "name": "Health & fitness",
+   "glyph": "HE",
+   "kind": "branch",
+   "status": "active",
+   "tier": 2,
+   "activity": 0,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "trips",
+   "parent": "life",
+   "name": "Plans & trips",
+   "glyph": "TR",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 0,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "high-valyrian",
+   "parent": "learning",
+   "name": "High Valyrian",
+   "glyph": "HV",
+   "kind": "leaf",
+   "status": "active",
+   "tier": 1,
+   "activity": 1,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "laptop-a",
+   "parent": "tech",
+   "name": "Laptop A",
+   "glyph": "LA",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 0,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "laptop-b",
+   "parent": "tech",
+   "name": "Laptop B (hub)",
+   "glyph": "LB",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 0,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "phone",
+   "parent": "tech",
+   "name": "Phone",
+   "glyph": "PH",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 0,
+   "due": null,
+   "pending": 0
+  },
+  {
+   "id": "gaming",
+   "parent": "tech",
+   "name": "Gaming",
+   "glyph": "GA",
+   "kind": "branch",
+   "status": "active",
+   "tier": 1,
+   "activity": 0,
+   "due": null,
+   "pending": 0
+  }
+ ],
+ "cards": {
+  "you": {
+   "branch_id": "you",
+   "status": "Monday · week 11 of 13",
+   "rollup": "6 areas · 4 things due this week · PPS 7 is the closest.",
+   "due": [
+    {
+     "id": "due-pps7",
+     "title": "GE 122 · PPS 7",
+     "due": "2026-11-18T20:00:00",
+     "progress": 0.5,
+     "source": {
+      "kind": "canvas",
+      "label": "Canvas"
+     },
+     "branch_id": "ge-122"
+    },
+    {
+     "id": "due-lab4",
+     "title": "CHEM 142 · Lab report 4",
+     "due": "2026-11-19T17:00:00",
+     "progress": 0.4,
+     "source": {
+      "kind": "canvas",
+      "label": "Canvas"
+     },
+     "branch_id": "chem-142"
+    }
+   ],
+   "gaps": [
+    "No grade yet for the MATH 133 midterm"
+   ]
+  },
+  "school": {
+   "branch_id": "school",
+   "status": "Fall 2026 · week 11 of 13",
+   "rollup": "8 courses · 4 things due this week · PPS 7 is the closest.",
+   "due": [
+    {
+     "id": "due-prelab5",
+     "title": "CHEM 142 · Pre-lab quiz 5",
+     "due": "2026-11-16T23:59:00",
+     "progress": 1,
+     "source": {
+      "kind": "canvas",
+      "label": "Canvas"
+     },
+     "branch_id": "chem-142"
+    },
+    {
+     "id": "due-pps7",
+     "title": "GE 122 · PPS 7",
+     "due": "2026-11-18T20:00:00",
+     "progress": 0.5,
+     "source": {
+      "kind": "canvas",
+      "label": "Canvas"
+     },
+     "branch_id": "ge-122"
+    },
+    {
+     "id": "due-lab4",
+     "title": "CHEM 142 · Lab report 4",
+     "due": "2026-11-19T17:00:00",
+     "progress": 0.4,
+     "source": {
+      "kind": "canvas",
+      "label": "Canvas"
+     },
+     "branch_id": "chem-142"
+    },
+    {
+     "id": "due-webwork",
+     "title": "MATH 133 · WeBWorK 9",
+     "due": "2026-11-22T23:59:00",
+     "progress": 0,
+     "source": {
+      "kind": "canvas",
+      "label": "Canvas"
+     },
+     "branch_id": "math-133"
+    }
+   ],
+   "key_facts": [
+    "f-sched"
+   ],
+   "open_loops": [
+    {
+     "text": "Ask about the robotics club",
+     "slot": "Not planned yet"
+    }
+   ]
+  },
+  "fall-2026": {
+   "branch_id": "fall-2026",
+   "status": "Week 11 of 13 · finals start Dec 8",
+   "rollup": "8 courses · 4 things due this week · 1 plan waiting for your yes.",
+   "due": [
+    {
+     "id": "due-pps7",
+     "title": "GE 122 · PPS 7",
+     "due": "2026-11-18T20:00:00",
+     "progress": 0.5,
+     "source": {
+      "kind": "canvas",
+      "label": "Canvas"
+     },
+     "branch_id": "ge-122"
+    },
+    {
+     "id": "due-lab4",
+     "title": "CHEM 142 · Lab report 4",
+     "due": "2026-11-19T17:00:00",
+     "progress": 0.4,
+     "source": {
+      "kind": "canvas",
+      "label": "Canvas"
+     },
+     "branch_id": "chem-142"
+    }
+   ]
+  },
+  "ge-122": {
+   "branch_id": "ge-122",
+   "status": "Week 11 of 13 · on track; PPS 7 at question 7",
+   "next": [
+    {
+     "title": "Lecture 22 · Trusses",
+     "when": "Tue 10:00 am",
+     "where": "ENGR 1A10",
+     "source": {
+      "kind": "paws",
+      "label": "PAWS"
+     }
+    },
+    {
+     "title": "Tutorial",
+     "when": "Wed 2:30 pm",
+     "where": "ENGR 2A20",
+     "source": {
+      "kind": "paws",
+      "label": "PAWS"
+     }
+    },
+    {
+     "title": "Quiz 5",
+     "when": "Thu 10:00 am",
+     "where": "ENGR 1A10",
+     "source": {
+      "kind": "you",
+      "label": "You · Nov 13"
+     }
+    }
+   ],
+   "due": [
+    {
+     "id": "due-pps7",
+     "title": "PPS 7",
+     "due": "2026-11-18T20:00:00",
+     "progress": 0.5,
+     "source": {
+      "kind": "canvas",
+      "label": "Canvas"
+     },
+     "branch_id": "ge-122"
+    },
+    {
+     "id": "due-memo",
+     "title": "Design memo 3",
+     "due": "2026-11-25T23:59:00",
+     "progress": 0,
+     "source": {
+      "kind": "syllabus",
+      "label": "Syllabus GE 122 p.3"
+     },
+     "branch_id": "ge-122"
+    }
+   ],
+   "open_loops": [
+    {
+     "text": "Finish PPS 7 questions 7 to 12",
+     "slot": "Tonight 7:00 to 8:30 pm"
+    }
+   ],
+   "key_facts": [
+    "f-ge-pps7",
+    "f-ge-quiz",
+    "f-ge-late",
+    "f-ge-pace"
+   ],
+   "decisions": [
+    {
+     "text": "Quiz date: Thursday (your call over Canvas)",
+     "date": "Nov 13"
+    }
+   ],
+   "people": [
+    {
+     "name": "Prof. Smith",
+     "role": "Instructor"
+    },
+    {
+     "name": "Maya",
+     "role": "TA, tutorial T05"
+    }
+   ],
+   "files": [
+    {
+     "id": "file-pps7",
+     "name": "PPS 7.pdf",
+     "kind": "pdf",
+     "path": "Class Content/GE 122/Assessments/PPS 7.pdf",
+     "page": "Page 3 of 5",
+     "pages": 5,
+     "branch_id": "ge-122",
+     "preview": [
+      "GE 122 · Problem-Solving Set 7 (12 questions)",
+      "1. A 4 m beam AB is simply supported at A and B…",
+      "7. The truss shown is pinned at A and on a roller at E…",
+      "12. A 15 kg drum rests between two smooth inclines…"
+     ]
+    },
+    {
+     "id": "file-pps7-hints",
+     "name": "PPS 7 hints.pdf",
+     "kind": "pdf",
+     "path": "Class Content/GE 122/Lectures/PPS 7 hints.pdf",
+     "page": "Page 1 of 1",
+     "pages": 1,
+     "branch_id": "ge-122",
+     "preview": [
+      "Hints for PPS 7",
+      "Start with the free-body diagram."
+     ]
+    },
+    {
+     "id": "file-l21",
+     "name": "Lecture 21 study pack",
+     "kind": "folder",
+     "path": "Class Content/GE 122/Lectures/L21",
+     "branch_id": "ge-122"
+    }
+   ],
+   "recent": [
+    "a-sync",
+    "a-quiz"
+   ],
+   "gaps": [
+    "No grade yet for PPS 6"
+   ],
+   "story": {
+    "text": "GE 122 is on track. PPS 7 is half done and due Wednesday evening, and the quiz is Thursday by your call.",
+    "sources": [
+     {
+      "kind": "canvas",
+      "label": "Canvas"
+     },
+     {
+      "kind": "you",
+      "label": "You · Nov 13"
+     }
+    ]
+   }
+  },
+  "chem-142": {
+   "branch_id": "chem-142",
+   "status": "Lab report 4 in progress · 40% done",
+   "next": [
+    {
+     "title": "Lab 5",
+     "when": "Tue 1:30 pm",
+     "where": "Thorvaldson 173",
+     "source": {
+      "kind": "paws",
+      "label": "PAWS"
+     }
+    }
+   ],
+   "due": [
+    {
+     "id": "due-prelab5",
+     "title": "Pre-lab quiz 5",
+     "due": "2026-11-16T23:59:00",
+     "progress": 1,
+     "source": {
+      "kind": "canvas",
+      "label": "Canvas"
+     },
+     "branch_id": "chem-142"
+    },
+    {
+     "id": "due-lab4",
+     "title": "Lab report 4",
+     "due": "2026-11-19T17:00:00",
+     "progress": 0.4,
+     "source": {
+      "kind": "canvas",
+      "label": "Canvas"
+     },
+     "branch_id": "chem-142"
+    }
+   ],
+   "open_loops": [
+    {
+     "text": "Write the discussion section",
+     "slot": "Wed 10:00 to 11:30 am"
+    }
+   ],
+   "key_facts": [
+    "f-ch-lab",
+    "f-ch-pace",
+    "f-ch-room"
+   ],
+   "files": [
+    {
+     "id": "file-lab4",
+     "name": "Lab report 4.docx",
+     "kind": "doc",
+     "path": "Class Content/CHEM 142/Labs/Lab report 4.docx",
+     "page": "Draft · 40% done",
+     "branch_id": "chem-142"
+    }
+   ],
+   "recent": [
+    "a-moved"
+   ],
+   "gaps": [
+    "No grade yet for Lab 3"
+   ]
+  },
+  "jarvis": {
+   "branch_id": "jarvis",
+   "status": "Hub build in progress · demo mode",
+   "open_loops": [
+    {
+     "text": "Try the hub installer on Laptop A",
+     "slot": "This weekend"
+    },
+    {
+     "text": "Decide the wake word",
+     "slot": "Not planned yet"
+    }
+   ],
+   "key_facts": [
+    "f-jv-look",
+    "f-jv-latency"
+   ],
+   "decisions": [
+    {
+     "text": "Earth HUD look",
+     "date": "Nov 14"
+    }
+   ]
+  },
+  "residence": {
+   "branch_id": "residence",
+   "status": "Laundry is the only open item",
+   "open_loops": [
+    {
+     "text": "Laundry",
+     "slot": "Tue 9:00 am, the room is quiet then"
+    }
+   ],
+   "key_facts": [
+    "f-res",
+    "f-laundry"
+   ]
+  }
+ },
+ "facts": [
+  {
+   "id": "f-ge-late",
+   "branch_id": "ge-122",
+   "statement": "Late problem sets lose 10% per day, up to three days.",
+   "source": {
+    "kind": "syllabus",
+    "label": "Syllabus GE 122 p.2",
+    "snippet": "Late submissions: 10% per day to a maximum of three days."
+   },
+   "confidence": "sure",
+   "learned": "2026-11-16T09:00:00",
+   "last_confirmed": "2026-11-03T10:00:00",
+   "pinned": true
+  },
+  {
+   "id": "f-ge-pps7",
+   "branch_id": "ge-122",
+   "statement": "PPS 7 is due Wednesday at 8 pm.",
+   "source": {
+    "kind": "canvas",
+    "label": "Canvas"
+   },
+   "confidence": "sure",
+   "learned": "2026-11-10T07:00:00",
+   "last_confirmed": "2026-11-16T07:00:00"
+  },
+  {
+   "id": "f-ge-quiz",
+   "branch_id": "ge-122",
+   "statement": "The next quiz is Thursday, not Friday.",
+   "source": {
+    "kind": "you",
+    "label": "You · Nov 13"
+   },
+   "confidence": "sure",
+   "learned": "2026-11-13T16:20:00",
+   "conflict": {
+    "other_source": {
+     "kind": "canvas",
+     "label": "Canvas"
+    },
+    "other_value": "Friday",
+    "kept": "mine"
+   },
+   "history": [
+    {
+     "was": "Friday",
+     "when": "until Nov 13"
+    }
+   ]
+  },
+  {
+   "id": "f-ge-pace",
+   "branch_id": "ge-122",
+   "statement": "Problem sets take you about twice the estimate.",
+   "source": {
+    "kind": "guess",
+    "label": "Guess"
+   },
+   "confidence": "guess",
+   "learned": "2026-11-12T22:00:00",
+   "basis": "The last four problem sets ran 1.8 to 2.3 times the planned block."
+  },
+  {
+   "id": "f-ge-ai",
+   "branch_id": "ge-122",
+   "statement": "AI tools are allowed for studying, not for graded work.",
+   "source": {
+    "kind": "syllabus",
+    "label": "Syllabus GE 122 p.4"
+   },
+   "confidence": "sure",
+   "learned": "2026-11-16T09:00:00",
+   "pinned": true
+  },
+  {
+   "id": "f-ch-lab",
+   "branch_id": "chem-142",
+   "statement": "Lab report 4 is due Thursday at 5 pm.",
+   "source": {
+    "kind": "canvas",
+    "label": "Canvas"
+   },
+   "confidence": "sure",
+   "learned": "2026-11-09T07:00:00"
+  },
+  {
+   "id": "f-ch-pace",
+   "branch_id": "chem-142",
+   "statement": "Lab reports take you about 1.5 times the estimate.",
+   "source": {
+    "kind": "jarvis",
+    "label": "Jarvis"
+   },
+   "confidence": "likely",
+   "learned": "2026-11-08T22:00:00",
+   "basis": "Three of the last four reports ran long."
+  },
+  {
+   "id": "f-ch-room",
+   "branch_id": "chem-142",
+   "statement": "Labs are in Thorvaldson 173.",
+   "source": {
+    "kind": "paws",
+    "label": "PAWS"
+   },
+   "confidence": "sure",
+   "learned": "2026-11-16T09:00:00"
+  },
+  {
+   "id": "f-res",
+   "branch_id": "residence",
+   "statement": "You live in Maple Hall.",
+   "source": {
+    "kind": "you",
+    "label": "You · Oct 15"
+   },
+   "confidence": "sure",
+   "learned": "2026-10-15T12:00:00",
+   "history": [
+    {
+     "was": "Birch House",
+     "when": "until Oct 15"
+    }
+   ],
+   "derived": [
+    "Laundry room busy hours (3 notes)",
+    "Walk time to Engineering: 9 min"
+   ]
+  },
+  {
+   "id": "f-laundry",
+   "branch_id": "residence",
+   "statement": "The laundry room is quiet on weekday mornings.",
+   "source": {
+    "kind": "you",
+    "label": "You · Nov 2"
+   },
+   "confidence": "likely",
+   "learned": "2026-11-02T10:30:00"
+  },
+  {
+   "id": "f-8am",
+   "branch_id": "study-system",
+   "statement": "You'd rather not book study blocks before 9 am.",
+   "source": {
+    "kind": "guess",
+    "label": "Guess"
+   },
+   "confidence": "guess",
+   "learned": "2026-11-14T22:00:00",
+   "basis": "You skipped 3 of 4 blocks booked at 8 am."
+  },
+  {
+   "id": "f-blocks",
+   "branch_id": "study-system",
+   "statement": "Study blocks are sized generously; each one says exactly what to do.",
+   "source": {
+    "kind": "you",
+    "label": "You · Nov 3"
+   },
+   "confidence": "sure",
+   "learned": "2026-11-03T19:00:00",
+   "pinned": true
+  },
+  {
+   "id": "f-jv-look",
+   "branch_id": "jarvis",
+   "statement": "The hub uses Huw's layout with the Night HUD look.",
+   "source": {
+    "kind": "you",
+    "label": "You · Nov 14"
+   },
+   "confidence": "sure",
+   "learned": "2026-11-14T15:00:00",
+   "pinned": true
+  },
+  {
+   "id": "f-jv-latency",
+   "branch_id": "jarvis",
+   "statement": "Replies should start within about half a second.",
+   "source": {
+    "kind": "file",
+    "label": "JARVIS_CONSTRAINTS.md"
+   },
+   "confidence": "sure",
+   "learned": "2026-11-09T12:00:00"
+  },
+  {
+   "id": "f-hv",
+   "branch_id": "high-valyrian",
+   "statement": "You practise High Valyrian on Duolingo most evenings.",
+   "source": {
+    "kind": "you",
+    "label": "You · Oct 12"
+   },
+   "confidence": "likely",
+   "learned": "2026-10-12T20:00:00"
+  },
+  {
+   "id": "f-sched",
+   "branch_id": "school",
+   "statement": "Your Wednesday tutorial moved to room 2C02.",
+   "source": {
+    "kind": "gmail",
+    "label": "Gmail",
+    "unexpected": true,
+    "snippet": "Tutorial section T05 will meet in 2C02 from Nov 18."
+   },
+   "confidence": "likely",
+   "learned": "2026-11-16T08:10:00"
+  },
+  {
+   "id": "u-1",
+   "branch_id": "unsorted",
+   "statement": "Priya offered to share her CMPT 141 notes.",
+   "source": {
+    "kind": "you",
+    "label": "You · today"
+   },
+   "confidence": "likely",
+   "learned": "2026-11-16T12:40:00",
+   "guess_branch_id": "cmpt-141"
+  },
+  {
+   "id": "u-2",
+   "branch_id": "unsorted",
+   "statement": "Look into the 3D printer in the makerspace.",
+   "source": {
+    "kind": "you",
+    "label": "You · today"
+   },
+   "confidence": "guess",
+   "learned": "2026-11-16T13:05:00",
+   "guess_branch_id": "ideas"
+  }
+ ],
+ "actions": [
+  {
+   "id": "a-sync",
+   "ts": "2026-11-16T15:38:00",
+   "kind": "done",
+   "what": "Synced Canvas: 1 new file in GE 122",
+   "why": "You arrived back; the last sync was at 7 am.",
+   "category": "files",
+   "sources": [
+    {
+     "kind": "canvas",
+     "label": "Canvas"
+    }
+   ],
+   "result": "PPS 7 hints.pdf filed under GE 122 › Lectures",
+   "branch_id": "ge-122",
+   "undo": {
+    "until": "2026-11-17T15:38:00",
+    "label": "24 h"
+   }
+  },
+  {
+   "id": "a-filed",
+   "ts": "2026-11-16T13:06:00",
+   "kind": "done",
+   "what": "Filed a note under Unsorted",
+   "why": "It didn't clearly belong to a branch.",
+   "category": "tree",
+   "sources": [
+    {
+     "kind": "you",
+     "label": "You · today"
+    }
+   ],
+   "result": "“Look into the 3D printer in the makerspace”",
+   "branch_id": "unsorted",
+   "undo": {
+    "until": "2026-11-17T13:06:00",
+    "label": "24 h"
+   }
+  },
+  {
+   "id": "a-quiz",
+   "ts": "2026-11-16T09:12:00",
+   "kind": "done",
+   "what": "Kept your quiz date (Thursday) over Canvas (Friday)",
+   "why": "Your call stands when sources disagree.",
+   "category": "memory",
+   "sources": [
+    {
+     "kind": "you",
+     "label": "You · Nov 13"
+    },
+    {
+     "kind": "canvas",
+     "label": "Canvas"
+    }
+   ],
+   "result": "Fact updated in GE 122",
+   "branch_id": "ge-122",
+   "undo": {
+    "until": "2026-11-17T09:12:00",
+    "label": "24 h"
+   }
+  },
+  {
+   "id": "a-held",
+   "ts": "2026-11-16T10:47:00",
+   "kind": "held",
+   "what": "Held back a reminder about laundry",
+   "why": "You were in a lecture.",
+   "category": "skills",
+   "result": "Will mention it at your next break."
+  },
+  {
+   "id": "a-moved",
+   "ts": "2026-11-16T08:02:00",
+   "kind": "done",
+   "what": "Moved the CHEM 142 review to 4 pm",
+   "why": "Your 8 am block was skipped; 4 pm is free after the lab.",
+   "category": "calendar",
+   "sources": [
+    {
+     "kind": "calendar",
+     "label": "Calendar"
+    }
+   ],
+   "result": "Calendar updated",
+   "branch_id": "chem-142",
+   "undo": {
+    "until": "2026-11-17T08:02:00",
+    "label": "24 h"
+   }
+  },
+  {
+   "id": "a-old",
+   "ts": "2026-11-15T07:00:00",
+   "kind": "done",
+   "what": "Built this morning's now card",
+   "why": "Morning build.",
+   "category": "skills",
+   "result": "Next up, 1 flag, 2 gaps",
+   "undo": null
+  }
+ ],
+ "approvals": [
+  {
+   "id": "ap-week",
+   "title": "Book this week's study plan",
+   "status": "pending",
+   "asked": "2026-11-16T15:41:00",
+   "consequences": [
+    "Adds 9 study blocks to your Google Calendar this week",
+    "Moves 1 block you made: CHEM review, Tue 4 pm to Wed 10 am",
+    "Can be undone for 24 hours"
+   ],
+   "read_back": "I'd like to add nine study blocks to your calendar this week and move your CHEM review to Wednesday at 10 am. Shall I book it?",
+   "branch_id": "fall-2026",
+   "sources": [
+    {
+     "kind": "canvas",
+     "label": "Canvas"
+    },
+    {
+     "kind": "paws",
+     "label": "PAWS"
+    },
+    {
+     "kind": "calendar",
+     "label": "Calendar"
+    }
+   ],
+   "answer_window_s": 10,
+   "expires": "2026-11-16T21:00:00",
+   "reversible": true,
+   "category": "calendar"
+  }
+ ],
+ "windows": [],
+ "jobs": [],
+ "day": {
+  "date": "2026-11-16",
+  "items": [
+   {
+    "id": "d-math",
+    "start": "08:30",
+    "end": "09:20",
+    "title": "MATH 133 lecture",
+    "kind": "class",
+    "where": "ARTS 101",
+    "source": {
+     "kind": "paws",
+     "label": "PAWS"
+    },
+    "state": "done",
+    "branch_id": "math-133"
+   },
+   {
+    "id": "d-ge",
+    "start": "10:00",
+    "end": "11:20",
+    "title": "GE 122 lecture 21 · Frames",
+    "kind": "class",
+    "where": "ENGR 1A10",
+    "source": {
+     "kind": "paws",
+     "label": "PAWS"
+    },
+    "state": "done",
+    "branch_id": "ge-122"
+   },
+   {
+    "id": "d-lunch",
+    "start": "12:00",
+    "end": "12:45",
+    "title": "Lunch with Sam",
+    "kind": "own",
+    "source": {
+     "kind": "you",
+     "label": "You · Nov 15"
+    },
+    "state": "done"
+   },
+   {
+    "id": "d-chem",
+    "start": "13:30",
+    "end": "15:20",
+    "title": "CHEM 142 lab 4",
+    "kind": "lab",
+    "where": "Thorvaldson 173",
+    "source": {
+     "kind": "paws",
+     "label": "PAWS"
+    },
+    "state": "done",
+    "branch_id": "chem-142",
+    "thumb": {
+     "src": "/api/thumb/course-chem-142.webp",
+     "kind": "course",
+     "alt": "CHEM 142 course picture: a molecule"
+    }
+   },
+   {
+    "id": "d-review",
+    "start": "16:00",
+    "end": "16:45",
+    "title": "Review GE 122 lecture 21",
+    "kind": "block",
+    "source": {
+     "kind": "jarvis",
+     "label": "Jarvis"
+    },
+    "why": "Right after today's lecture, while it's fresh.",
+    "state": "planned",
+    "branch_id": "ge-122",
+    "thumb": {
+     "src": "/api/thumb/slides-ge122-l21.webp",
+     "kind": "slide",
+     "alt": "GE 122 lecture 21 title slide: Frames and trusses"
+    }
+   },
+   {
+    "id": "d-pps",
+    "start": "19:00",
+    "end": "20:30",
+    "title": "PPS 7 · questions 7 to 12",
+    "kind": "block",
+    "source": {
+     "kind": "jarvis",
+     "label": "Jarvis"
+    },
+    "why": "Your problem sets run about twice the estimate, so this block is 90 minutes.",
+    "state": "planned",
+    "branch_id": "ge-122",
+    "thumb": {
+     "src": "/api/thumb/file-pps7-p3.webp",
+     "kind": "page",
+     "alt": "PPS 7, page 3: question 7"
+    }
+   },
+   {
+    "id": "d-chemrev",
+    "start": "08:00",
+    "end": "08:30",
+    "title": "CHEM 142 pre-lab review",
+    "kind": "block",
+    "source": {
+     "kind": "jarvis",
+     "label": "Jarvis"
+    },
+    "state": "moved",
+    "moved_to": "Moved to 4 pm tomorrow.",
+    "branch_id": "chem-142"
+   }
+  ],
+  "proposals": [
+   {
+    "id": "p-laundry",
+    "text": "Laundry tomorrow at 9:00 am",
+    "why": "The room is usually quiet then, and you're free until 10:00 am.",
+    "changes": [
+     "Adds “Laundry” Tue 9:00 to 10:00 am"
+    ],
+    "sources": [
+     {
+      "kind": "you",
+      "label": "You · Nov 2"
+     },
+     {
+      "kind": "calendar",
+      "label": "Calendar"
+     }
+    ]
+   }
+  ],
+  "dial": [
+   {
+    "id": "dial-chem",
+    "kind": "lab",
+    "start": "2026-11-16T13:30:00",
+    "end": "2026-11-16T15:20:00",
+    "title": "CHEM 142 lab 4",
+    "where": "Thorvaldson 173",
+    "state": "done",
+    "ref": "d-chem"
+   },
+   {
+    "id": "dial-review",
+    "kind": "block",
+    "start": "2026-11-16T16:00:00",
+    "end": "2026-11-16T16:45:00",
+    "title": "Review GE 122 lecture 21",
+    "where": "Your desk",
+    "state": "next",
+    "ref": "d-review"
+   },
+   {
+    "id": "dial-pps",
+    "kind": "block",
+    "start": "2026-11-16T19:00:00",
+    "end": "2026-11-16T20:30:00",
+    "title": "PPS 7 · questions 7 to 12",
+    "where": "Your desk",
+    "state": "upcoming",
+    "ref": "d-pps"
+   },
+   {
+    "id": "dial-due-prelab5",
+    "kind": "due",
+    "start": "2026-11-16T23:59:00",
+    "title": "CHEM 142 · Pre-lab quiz 5",
+    "state": "done",
+    "ref": "due-prelab5"
+   }
+  ]
+ },
+ "settings": {
+  "interruption": "balanced",
+  "theme": "night",
+  "motion": "full",
+  "earcons": "minimal",
+  "address": "name",
+  "stage": "window",
+  "quiet_hours": {
+   "on": true,
+   "from": "22:30",
+   "to": "07:30"
+  },
+  "focus": false,
+  "game_mode": "auto",
+  "plants": true,
+  "ambient": true,
+  "muted": false,
+  "memory_paused": false,
+  "off_record": false,
+  "standing_permissions": [
+   {
+    "id": "sp-blocks",
+    "text": "Move study blocks Jarvis made, within the same day",
+    "granted": "Nov 10"
+   },
+   {
+    "id": "sp-file",
+    "text": "File new Canvas downloads into Class Content",
+    "granted": "Nov 3"
+   }
+  ],
+  "never": [
+   "Submitting assignments",
+   "Payments"
+  ],
+  "sources": [
+   {
+    "id": "canvas",
+    "name": "Canvas",
+    "on": true,
+    "last_sync": "2 min ago",
+    "status": "ok"
+   },
+   {
+    "id": "paws",
+    "name": "PAWS",
+    "on": true,
+    "last_sync": "Today 7:00 am",
+    "status": "ok"
+   },
+   {
+    "id": "calendar",
+    "name": "Google Calendar",
+    "on": true,
+    "last_sync": "2 min ago",
+    "status": "ok"
+   },
+   {
+    "id": "gmail",
+    "name": "Gmail",
+    "on": true,
+    "last_sync": "Yesterday",
+    "status": "stale"
+   },
+   {
+    "id": "files",
+    "name": "Class Content folder",
+    "on": true,
+    "last_sync": "2 min ago",
+    "status": "ok"
+   },
+   {
+    "id": "crowdmark",
+    "name": "Crowdmark",
+    "on": false,
+    "status": "off"
+   }
+  ],
+  "tiers": [
+   {
+    "branch_id": "money",
+    "tier": 2
+   },
+   {
+    "branch_id": "health",
+    "tier": 2
+   }
+  ]
+ },
+ "metrics": {
+  "latency": [
+   {
+    "stage": "Hear (speech to text)",
+    "p50_ms": 180,
+    "p95_ms": 280,
+    "target_ms": 300
+   },
+   {
+    "stage": "Think (first words)",
+    "p50_ms": 420,
+    "p95_ms": 780,
+    "target_ms": 800
+   },
+   {
+    "stage": "Speak (first sound)",
+    "p50_ms": 140,
+    "p95_ms": 260,
+    "target_ms": 300
+   },
+   {
+    "stage": "Hub (event to screen)",
+    "p50_ms": 35,
+    "p95_ms": 80,
+    "target_ms": 100
+   }
+  ],
+  "connectors": [
+   {
+    "name": "Canvas",
+    "status": "ok",
+    "last_sync": "2 min ago"
+   },
+   {
+    "name": "PAWS",
+    "status": "ok",
+    "last_sync": "Today 7:00 am"
+   },
+   {
+    "name": "Google Calendar",
+    "status": "ok",
+    "last_sync": "2 min ago"
+   },
+   {
+    "name": "Gmail",
+    "status": "stale",
+    "last_sync": "Yesterday",
+    "note": "Sign in again from Controls"
+   }
+  ],
+  "spend": {
+   "claude_usd": 38.4,
+   "credit_usd": 100
+  },
+  "credits": {
+   "elevenlabs_left": 61200,
+   "elevenlabs_total": 100000
+  },
+  "eval": [
+   {
+    "week": "Oct 19",
+    "score": 71
+   },
+   {
+    "week": "Oct 26",
+    "score": 74
+   },
+   {
+    "week": "Nov 2",
+    "score": 80
+   },
+   {
+    "week": "Nov 9",
+    "score": 83
+   }
+  ],
+  "placement_accuracy": 0.91,
+  "backup": {
+   "last": "Today 3:10 am",
+   "restore_test": "Passed Nov 14"
+  },
+  "self_report": {
+   "learned": [
+    "Problem sets take about twice the estimate",
+    "You prefer blocks after 9 am"
+   ],
+   "got_wrong": [
+    "Filed a CMPT note under GE 122"
+   ]
+  }
+ },
+ "caption": null,
+ "toasts": [],
+ "files": [
+  {
+   "id": "file-pps7",
+   "name": "PPS 7.pdf",
+   "kind": "pdf",
+   "path": "Class Content/GE 122/Assessments/PPS 7.pdf",
+   "page": "Page 3 of 5",
+   "pages": 5,
+   "branch_id": "ge-122",
+   "preview": [
+    "GE 122 · Problem-Solving Set 7 (12 questions)",
+    "1. A 4 m beam AB is simply supported at A and B…",
+    "7. The truss shown is pinned at A and on a roller at E…",
+    "12. A 15 kg drum rests between two smooth inclines…"
+   ]
+  },
+  {
+   "id": "file-pps7-hints",
+   "name": "PPS 7 hints.pdf",
+   "kind": "pdf",
+   "path": "Class Content/GE 122/Lectures/PPS 7 hints.pdf",
+   "page": "Page 1 of 1",
+   "pages": 1,
+   "branch_id": "ge-122",
+   "preview": [
+    "Hints for PPS 7",
+    "Start with the free-body diagram."
+   ]
+  },
+  {
+   "id": "file-l21",
+   "name": "Lecture 21 study pack",
+   "kind": "folder",
+   "path": "Class Content/GE 122/Lectures/L21",
+   "branch_id": "ge-122"
+  },
+  {
+   "id": "file-lab4",
+   "name": "Lab report 4.docx",
+   "kind": "doc",
+   "path": "Class Content/CHEM 142/Labs/Lab report 4.docx",
+   "page": "Draft · 40% done",
+   "branch_id": "chem-142"
+  }
+ ],
+ "learned_today": 3,
+ "rail": {
+  "slots": {
+   "yes": {
+    "items": [
+     {
+      "ref": "ap-week",
+      "slot": "yes",
+      "kind": "approval",
+      "title": "Book this week's study plan",
+      "at": "2026-11-16T15:41:00",
+      "state": "yes",
+      "detail": "Adds 9 study blocks to your Google Calendar this week"
+     }
+    ],
+    "worst": "yes"
+   },
+   "today": {
+    "items": [
+     {
+      "ref": "d-review",
+      "slot": "today",
+      "kind": "event",
+      "title": "Review GE 122 lecture 21",
+      "at": "2026-11-16T15:38:00",
+      "state": "soon",
+      "detail": "4 pm",
+      "thumb": {
+       "src": "/api/thumb/slides-ge122-l21.webp",
+       "kind": "slide",
+       "alt": "GE 122 lecture 21 title slide: Frames and trusses"
+      }
+     },
+     {
+      "ref": "d-pps",
+      "slot": "today",
+      "kind": "event",
+      "title": "PPS 7 · questions 7 to 12",
+      "at": "2026-11-16T15:38:00",
+      "detail": "7 pm",
+      "thumb": {
+       "src": "/api/thumb/file-pps7-p3.webp",
+       "kind": "page",
+       "alt": "PPS 7, page 3: question 7"
+      }
+     },
+     {
+      "ref": "d-chemrev",
+      "slot": "today",
+      "kind": "event",
+      "title": "CHEM 142 pre-lab review",
+      "at": "2026-11-16T08:00:00",
+      "detail": "Moved to 4 pm tomorrow.",
+      "state": "parked"
+     },
+     {
+      "ref": "d-math",
+      "slot": "today",
+      "kind": "event",
+      "title": "MATH 133 lecture",
+      "at": "2026-11-16T08:30:00",
+      "detail": "8:30 am · ARTS 101",
+      "state": "done"
+     },
+     {
+      "ref": "d-ge",
+      "slot": "today",
+      "kind": "event",
+      "title": "GE 122 lecture 21 · Frames",
+      "at": "2026-11-16T10:00:00",
+      "detail": "10 am · ENGR 1A10",
+      "state": "done"
+     },
+     {
+      "ref": "d-lunch",
+      "slot": "today",
+      "kind": "event",
+      "title": "Lunch with Sam",
+      "at": "2026-11-16T12:00:00",
+      "detail": "12 pm",
+      "state": "done"
+     },
+     {
+      "ref": "d-chem",
+      "slot": "today",
+      "kind": "event",
+      "title": "CHEM 142 lab 4",
+      "at": "2026-11-16T13:30:00",
+      "detail": "1:30 pm · Thorvaldson 173",
+      "state": "done",
+      "thumb": {
+       "src": "/api/thumb/course-chem-142.webp",
+       "kind": "course",
+       "alt": "CHEM 142 course picture: a molecule"
+      }
+     }
+    ],
+    "worst": "soon",
+    "done": 0.67
+   },
+   "homework": {
+    "items": [
+     {
+      "ref": "due-pps7",
+      "slot": "homework",
+      "kind": "due",
+      "title": "GE 122 · PPS 7",
+      "at": "2026-11-16T15:38:00",
+      "state": "soon",
+      "detail": "Due Wed 8 pm · 50% done",
+      "thumb": {
+       "src": "/api/thumb/file-pps7-p3.webp",
+       "kind": "page",
+       "alt": "PPS 7, page 3: question 7"
+      }
+     },
+     {
+      "ref": "file-lab4",
+      "slot": "homework",
+      "kind": "thread",
+      "title": "Lab report 4",
+      "at": "2026-11-15T17:52:00",
+      "state": "progress",
+      "detail": "Results · paused Sun 5:52 pm",
+      "thumb": {
+       "src": "/api/thumb/file-lab4-p1.webp",
+       "kind": "page",
+       "alt": "Lab report 4, the Results heading and a decay plot"
+      }
+     },
+     {
+      "ref": "due-lab4",
+      "slot": "homework",
+      "kind": "due",
+      "title": "CHEM 142 · Lab report 4",
+      "detail": "Due Thu 5 pm · 40% done",
+      "state": "progress",
+      "at": "2026-11-16T15:40:00"
+     },
+     {
+      "ref": "file-pps7",
+      "slot": "homework",
+      "kind": "thread",
+      "title": "PPS 7",
+      "at": "2026-11-15T21:14:00",
+      "state": "progress",
+      "detail": "Q7 · paused Sun 9:14 pm",
+      "thumb": {
+       "src": "/api/thumb/file-pps7-p3.webp",
+       "kind": "page",
+       "alt": "PPS 7, page 3: question 7"
+      }
+     },
+     {
+      "ref": "file-l21",
+      "slot": "homework",
+      "kind": "thread",
+      "title": "Lecture 21 study pack",
+      "at": "2026-11-16T11:40:00",
+      "state": "progress",
+      "detail": "Step 2 · free-body diagrams · paused Mon 11:40 am",
+      "thumb": {
+       "src": "/api/thumb/slides-ge122-l21.webp",
+       "kind": "slide",
+       "alt": "GE 122 lecture 21 title slide: Frames and trusses"
+      }
+     },
+     {
+      "ref": "due-memo",
+      "slot": "homework",
+      "kind": "due",
+      "title": "Design memo 3",
+      "at": "2026-11-12T10:00:00",
+      "detail": "Due Wed 11:59 pm"
+     },
+     {
+      "ref": "due-webwork",
+      "slot": "homework",
+      "kind": "due",
+      "title": "MATH 133 · WeBWorK 9",
+      "detail": "Due Sun 11:59 pm",
+      "at": "2026-11-16T15:40:00"
+     },
+     {
+      "ref": "due-prelab5",
+      "slot": "homework",
+      "kind": "due",
+      "title": "CHEM 142 · Pre-lab quiz 5",
+      "detail": "Due Mon 11:59 pm · 100% done",
+      "state": "done",
+      "at": "2026-11-16T15:40:00"
+     }
+    ],
+    "worst": "soon",
+    "done": 0.38
+   },
+   "messages": {
+    "items": [
+     {
+      "ref": "msg-maya-room",
+      "slot": "messages",
+      "kind": "message",
+      "title": "Maya (TA) · tutorial room",
+      "at": "2026-11-16T13:12:00",
+      "detail": "T05 meets in 2C02 from Wednesday"
+     }
+    ]
+   },
+   "jarvis": {
+    "items": [
+     {
+      "ref": "f-sched",
+      "slot": "jarvis",
+      "kind": "fact",
+      "title": "Learned: tutorial moved to 2C02",
+      "at": "2026-11-16T13:14:00",
+      "detail": "From Maya's email"
+     },
+     {
+      "ref": "job-sync-am",
+      "slot": "jarvis",
+      "kind": "job",
+      "title": "Synced Canvas",
+      "at": "2026-11-16T15:38:00",
+      "state": "done",
+      "detail": "1 new file in GE 122"
+     }
+    ],
+    "said": [
+     {
+      "text": "Lab four's done. The review of lecture 21 is at 4 pm.",
+      "at": "2026-11-16T15:22:00",
+      "kind": "caption",
+      "source": {
+       "kind": "paws",
+       "label": "PAWS"
+      }
+     },
+     {
+      "text": "Synced Canvas: 1 new file in GE 122.",
+      "at": "2026-11-16T15:38:00",
+      "kind": "toast"
+     }
+    ],
+    "worst": "done"
+   },
+   "parked": {
+    "items": [
+     {
+      "ref": "file-geol-14",
+      "slot": "parked",
+      "kind": "file",
+      "title": "GEOL 121 slides 14",
+      "at": "2026-11-06T09:30:00",
+      "state": "parked",
+      "from": "homework",
+      "detail": "Opened Nov 6"
+     }
+    ],
+    "count": 1,
+    "worst": "parked"
+   }
+  }
+ },
+ "marks": {
+  "due-pps7": {
+   "what": "New on Canvas: hints for PPS 7",
+   "at": "2026-11-16T15:38:00"
+  },
+  "msg-maya-room": {
+   "what": "New: tutorial moves to 2C02 from Wednesday",
+   "at": "2026-11-16T13:12:00"
+  },
+  "job-sync-am": {
+   "what": "Finished: Synced Canvas",
+   "at": "2026-11-16T15:38:00"
+  }
+ },
+ "threads": [
+  {
+   "id": "th-pps7",
+   "kind": "pdf",
+   "ref": "file-pps7",
+   "branch": "ge-122",
+   "title": "PPS 7",
+   "thumb": {
+    "src": "/api/thumb/file-pps7-p3.webp",
+    "kind": "page",
+    "alt": "PPS 7, page 3: question 7"
+   },
+   "resume": {
+    "page": 3,
+    "y": 71.2,
+    "label": "Q7",
+    "source": "inferred",
+    "at": "2026-11-15T21:14:00"
+   },
+   "done": [
+    "Q1",
+    "Q2",
+    "Q3",
+    "Q4",
+    "Q5",
+    "Q6"
+   ],
+   "viewed": [
+    "Q4"
+   ],
+   "state": "paused",
+   "updated": "2026-11-15T21:14:00"
+  },
+  {
+   "id": "th-lab4",
+   "kind": "doc",
+   "ref": "file-lab4",
+   "branch": "chem-142",
+   "title": "Lab report 4",
+   "thumb": {
+    "src": "/api/thumb/file-lab4-p1.webp",
+    "kind": "page",
+    "alt": "Lab report 4, the Results heading and a decay plot"
+   },
+   "resume": {
+    "label": "Results",
+    "source": "confirmed",
+    "at": "2026-11-15T17:52:00"
+   },
+   "done": [
+    "Introduction",
+    "Method"
+   ],
+   "viewed": [],
+   "state": "paused",
+   "updated": "2026-11-15T17:52:00"
+  },
+  {
+   "id": "th-l21",
+   "kind": "session",
+   "ref": "file-l21",
+   "branch": "ge-122",
+   "title": "Lecture 21 study pack",
+   "thumb": {
+    "src": "/api/thumb/slides-ge122-l21.webp",
+    "kind": "slide",
+    "alt": "GE 122 lecture 21 title slide: Frames and trusses"
+   },
+   "resume": {
+    "label": "Step 2 · free-body diagrams",
+    "source": "inferred",
+    "at": "2026-11-16T11:40:00"
+   },
+   "done": [
+    "Step 1"
+   ],
+   "viewed": [],
+   "state": "open",
+   "updated": "2026-11-16T11:40:00"
+  }
+ ],
+ "focus": null
+}

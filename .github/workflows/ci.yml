@@ -1,0 +1,50 @@
+name: CI
+
+# Every push and pull request: lint, unit tests, colour and contrast checks, and the browser smoke tests.
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install what the tests need
+        run: |
+          python -m pip install -e ".[dev,core]"
+          python -m playwright install --with-deps chromium
+
+      - name: Lint
+        run: python -m ruff check .
+
+      - name: Colours only in tokens.css
+        run: python tools/hexlint.py
+
+      - name: Contrast of every token pair
+        run: python tools/contrast.py
+
+      - name: Tests (unit and browser)
+        run: python -m pytest
+
+      - name: Keep the screenshots when a browser test fails
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/
+          if-no-files-found: ignore

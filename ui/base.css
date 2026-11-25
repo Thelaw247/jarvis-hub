@@ -1,0 +1,193 @@
+/* Base styles shared by every view and component: type, buttons, focus ring, labels, the HUD background,
+   window frame, kicker, metadata and pills, reduced motion. Colours, radii, spacing and durations come from
+   tokens.css only. HUD rules: docs/design/JARVIS_DESIGN_HUD_V2.md §2–§3, §7–§8. */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; margin: 0; }
+body {
+  color: var(--text); font: var(--body);
+  -webkit-font-smoothing: antialiased; overflow: hidden;
+}
+/* The HUD background, all static: Huw's faint square line grid (his pick for HUD v3, §14; 64 px cells, 1 px lines)
+   over a radial vignette (raised centre → base → edges). (body.jv-grid too, so the old class doesn't replace it.) */
+body, body.jv-grid {
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / var(--grid-cell) var(--grid-cell),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / var(--grid-cell) var(--grid-cell),
+    radial-gradient(ellipse 75% 70% at 50% 45%, var(--bg-2) 0%, var(--bg-1) 55%, var(--bg-0) 100%) fixed,
+    var(--canvas);
+}
+/* v0.5.3: a little texture and lens fall-off, so the screen reads as a lit display and not a flat drawing: a
+   fine static grain and a darker rim. One fixed layer, painted once, never animated. */
+html::before, html::after { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+html::before {  /* grain: behind the windows (it shows through their glass), over the grid */
+  opacity: var(--grain-opacity);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.75 0 0 0 0 0.85 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E") 0 0 / 160px 160px;
+}
+html::after { background: radial-gradient(ellipse 85% 80% at 50% 45%, transparent 55%, var(--vignette) 100%); }
+:root[data-size="strip"]::before, :root[data-size="strip"]::after, :root[data-size="phone"]::before, :root[data-size="phone"]::after { display: none; }
+/* Chrome on the background, static and behind everything: a dotted ruler along the top edge and a small
+   notch at top centre. Not on the strip or the phone. */
+body::before, body::after { content: ""; position: fixed; z-index: -1; pointer-events: none; }
+body::before {
+  top: 3px; left: 0; right: 0; height: 2px; opacity: 0.7;
+  background: radial-gradient(circle, var(--line-dim) 0.8px, transparent 1.1px) 0 0 / 8px 2px repeat-x;
+}
+body::after {
+  top: 0; left: calc(50% - 36px); width: 72px; height: 7px;
+  border: 1px solid var(--line-dim); border-top: 0; background: var(--bg-0);
+}
+:root[data-size="strip"] body::before, :root[data-size="strip"] body::after,
+:root[data-size="phone"] body::before, :root[data-size="phone"] body::after { display: none; }
+
+h1, h2, h3, h4, p, dl, dd, ul, ol, figure { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 500; }
+h1 { font-size: 24px; line-height: 32px; }
+h2 { font-size: 18px; line-height: 26px; }
+h3 { font-size: 15px; line-height: 22px; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+
+/* the faint dot grid on a desk or gallery (Daylight touch; the HUD grid is on the body) */
+.jv-grid { background-image: radial-gradient(var(--grid-dot) 1px, transparent 1.5px); background-size: var(--grid-size) var(--grid-size); }
+
+/* Panel titles. Small caps (.jv-label: Lexend 500, tracked, never below 12 px) only for titles of one or
+   two words ("Next", "Due", "Open loops"). Anything longer is a sentence-case heading (.jv-title), never caps. */
+.jv-label { font: var(--label); letter-spacing: var(--label-track); text-transform: var(--kicker-case); color: var(--muted); }
+.jv-title { font: var(--title); letter-spacing: 0; text-transform: none; color: var(--text); }
+.jv-num { font-family: var(--font-head); font-variant-numeric: tabular-nums; }
+/* JetBrains Mono: tiny telemetry (a path, a log line, a ms reading), and the HUD kickers, metadata and pills. */
+.jv-telemetry { font: var(--telemetry); color: var(--muted); font-variant-numeric: tabular-nums; }
+.jv-muted { color: var(--muted); }
+.jv-read { font: var(--read); max-width: var(--measure); }
+.jv-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.jv-guess { text-decoration: underline dotted var(--control); text-underline-offset: 4px; }
+
+/* ── HUD type (HUD v2 §8) ──────────────────────────────────────────────────────────────────────────────
+   Kicker: inside a window, top-left. 12 px mono caps, tracking 0.12em, ≤ 4 words, status word last
+   ("GE 122 // DUE"). .jv-kicker-row: kicker left, a timer, index or type right ("00:04", "01 / 03"). */
+.jv-kicker {
+  font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case);
+  color: var(--text-3); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.jv-kicker-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--gap); min-width: 0; }
+.jv-kicker-row > .jv-kicker:first-child { overflow: hidden; text-overflow: ellipsis; }
+/* Window title (caps, two lines at most) and hero number in the condensed face. The only text with glow. */
+.jv-display {
+  font: var(--display); letter-spacing: var(--display-track); text-transform: var(--display-case); color: var(--text);
+  text-shadow: var(--text-glow);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+}
+.jv-hero { font: var(--hero); font-variant-numeric: tabular-nums; letter-spacing: 0; color: var(--text); text-shadow: var(--text-glow); }
+/* No glow on text under 18 px (it smears for readers with astigmatism). The clock's small "PM" sits inside
+   its glowing digits, so it is named here too. */
+.jv-kicker, .jv-meta, .jv-pill, .jv-label, .jv-title, .jv-telemetry, .jv-btn, small, .jv-clock__half { text-shadow: none; }
+
+/* ── The window frame (HUD v2 §3) ───────────────────────────────────────────────────────────────────────
+   Square corners (Night), a 1 px frame with a soft static glow, a near-opaque panel fill, a faint 1 px top
+   sheen. .jv-frame--on: the window Jarvis means (a brighter, 1.5 px frame); one at a time.
+   .jv-frame--dim: windows he isn't talking about (0.98 scale; --dim-opacity, 88% in Night, where the text inside,
+   the metadata outside and the frame all still pass; the frame is --line-dim, ≥ 3:1 in both themes). */
+.jv-frame {
+  position: relative; color: var(--text); padding: var(--pad);
+  border: 1px solid var(--frame); border-radius: var(--r-card);
+  background:
+    linear-gradient(90deg, transparent, var(--sheen) 18%, var(--sheen) 82%, transparent) top / 100% 1px no-repeat,
+    var(--panel);
+  box-shadow: var(--glow);
+}
+.jv-frame--on { border-color: var(--frame-on); box-shadow: var(--glow-on); }
+.jv-frame--dim { opacity: var(--dim-opacity); transform: scale(0.98); border-color: var(--line-dim); }
+/* room for metadata hanging outside the frame */
+.jv-frame:has(> .jv-meta:not(.jv-meta--above)) { margin-bottom: 24px; }
+.jv-frame:has(> .jv-meta--above) { margin-top: 24px; }
+/* Metadata hangs just outside the frame in small mono ("ADDED 2 MIN AGO", "SYLLABUS P.3"); never the only
+   copy of a fact. As a child of .jv-frame it sits under the bottom-left corner; --above / --end move it. */
+.jv-meta {
+  font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case);
+  color: var(--text-3); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.jv-frame > .jv-meta {
+  position: absolute; left: -1px; top: calc(100% + 6px);
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis;
+}
+.jv-frame > .jv-meta--above { top: auto; bottom: calc(100% + 6px); }
+.jv-frame > .jv-meta--end { left: auto; right: -1px; }
+
+/* surfaces */
+.jv-card { background: var(--card); border: 1px solid var(--line-strong); border-radius: var(--r-card); box-shadow: var(--shadow); padding: var(--pad); }
+.jv-sheet { background: var(--sheet); border: 1px solid var(--line);border-radius: var(--r-sheet); padding: var(--gap-large); }
+/* The light reading sheet (PDFs, notes, long text) inside a HUD frame: dark inks on paper in both themes.
+   Components inside it keep using --text, --warn, --cyan…; the sheet swaps those for its inks. */
+.jv-paper {
+  background: var(--paper); color: var(--ink-text); border-radius: var(--r-control);
+  --text: var(--ink-text); --muted: var(--ink-muted); --text-2: var(--ink-muted); --text-3: var(--ink-muted);
+  --warn: var(--ink-warn); --ok: var(--ink-ok); --cyan: var(--ink-cyan); --crit: var(--ink-crit);
+  --accent-ink: var(--ink-cyan); --text-glow: none;
+}
+
+/* buttons: one .jv-btn--primary per panel at most */
+.jv-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--gap-small);
+  font: 500 15px/20px var(--font-head); color: var(--text);
+  min-height: var(--control-height); padding: 0 16px;
+  border: 1px solid var(--line-strong); border-radius: var(--r-pill);
+  background: var(--card); cursor: pointer; white-space: nowrap;
+  transition: transform var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease);
+}
+.jv-btn:hover:not(:disabled) { background: var(--sunken); }
+.jv-btn:active:not(:disabled) { transform: scale(0.97); }
+.jv-btn:disabled { color: var(--muted); cursor: default; opacity: 0.6; }
+.jv-btn--primary { background: var(--accent); border-color: transparent; color: var(--on-accent); padding: 0 22px; box-shadow: var(--shadow-small); }
+.jv-btn--primary:hover:not(:disabled) { background: var(--accent-hover); }
+.jv-btn--quiet { border-color: transparent; background: transparent; color: var(--muted); padding: 0 12px; }
+.jv-btn--quiet:hover:not(:disabled) { color: var(--text); }
+.jv-btn--small { min-height: 32px; font-size: 13px; padding: 0 12px; }
+.jv-link { color: var(--accent-ink); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.jv-icon { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* HUD pills: small outlined mono buttons (TIDY · CLEAR VIEW · the five views). Chosen (aria-pressed,
+   aria-current or aria-checked) = brighter frame and text, never cyan (cyan means "Jarvis means this"). */
+.jv-pill {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 32px; padding: 0 12px;
+  font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); white-space: nowrap;
+  color: var(--text-2); background: transparent;
+  border: 1px solid var(--line-dim); border-radius: var(--r-pill); cursor: pointer;
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease);
+}
+.jv-pill:hover:not(:disabled) { color: var(--text); border-color: var(--frame-on); }
+.jv-pill:active:not(:disabled) { background: var(--sunken); }
+.jv-pill[aria-pressed="true"], .jv-pill[aria-current="page"], .jv-pill[aria-current="true"], .jv-pill[aria-checked="true"] {
+  color: var(--text); border-color: var(--frame-on); background: var(--sunken);
+}
+.jv-pill:disabled { opacity: 0.5; cursor: default; }
+.jv-pill .jv-icon { width: 14px; height: 14px; }
+
+/* Focus ring: 2 px --text outline, 3 px offset, with a 5 px dark gap behind it so it reads on any frame.
+   Never cyan, so it can't be mistaken for "Jarvis means this". Always visible for keyboard users.
+   (.jv-show-focus draws it on purpose, for the base gallery's screenshot.) */
+:focus-visible, .jv-show-focus { outline: 2px solid var(--text); outline-offset: 3px; box-shadow: 0 0 0 5px var(--bg-0); }
+[tabindex="-1"]:focus { outline: none; box-shadow: none; }
+
+/* scrollbars stay quiet */
+* { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+
+/* Reduced motion: from Windows, or chosen in Controls (data-motion="reduced" | "off").
+   Nothing moves; every transition is an instant swap and state is shown by words and static shapes.
+   Depth (.jv-frame--dim) keeps its dimming but drops the scale. */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) *, :root:not([data-motion="full"]) *::before, :root:not([data-motion="full"]) *::after {
+    animation: none !important; transition: none !important; scroll-behavior: auto !important;
+  }
+  :root:not([data-motion="full"]) .jv-frame--dim { transform: none; }
+}
+:root[data-motion="reduced"] *, :root[data-motion="reduced"] *::before, :root[data-motion="reduced"] *::after,
+:root[data-motion="off"] *, :root[data-motion="off"] *::before, :root[data-motion="off"] *::after,
+:root[data-size="strip"] *, :root[data-size="strip"] *::before, :root[data-size="strip"] *::after {
+  animation: none !important; transition: none !important; scroll-behavior: auto !important;
+}
+:root[data-still] .jv-frame--dim { transform: none; }
+/* animations pause when the window is hidden (main.js sets data-hidden) */
+:root[data-hidden] * { animation-play-state: paused !important; }

@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "branch_card.schema.json",
+  "title": "The briefing for one branch",
+  "type": "object",
+  "properties": {
+    "branch_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+    },
+    "status": {
+      "type": "string"
+    },
+    "rollup": {
+      "type": "string"
+    },
+    "next": {
+      "type": "array",
+      "items": {
+        "$ref": "now_card.schema.json#/$defs/event"
+      },
+      "maxItems": 3
+    },
+    "due": {
+      "type": "array",
+      "items": {
+        "$ref": "now_card.schema.json#/$defs/due"
+      }
+    },
+    "open_loops": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "slot": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "key_facts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+      },
+      "description": "Fact IDs"
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "text",
+          "date"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "people": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "role"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "$ref": "now_card.schema.json#/$defs/file"
+      },
+      "maxItems": 3
+    },
+    "recent": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+      },
+      "maxItems": 5,
+      "description": "Action IDs, newest first. A memory change keeps one id for both: jarvis-core numbers it chg-<n> and its Activity receipt (action.id) carries the same id, so undo finds it."
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "story": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "sources": {
+              "type": "array",
+              "items": {
+                "$ref": "common.schema.json#/$defs/source"
+              }
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "additionalProperties": false,
+          "description": "Nightly summary; labelled 'summary', never his word."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "branch_id",
+    "status"
+  ],
+  "additionalProperties": false
+}

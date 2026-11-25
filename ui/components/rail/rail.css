@@ -1,0 +1,160 @@
+/* <jv-rail>: Huw's icon row (HUD v3 §14 decision 2): tiny monochrome line icons at the bottom centre with thin
+   dividers and small badges, then the page dots. Tokens only. */
+jv-rail { position: relative; display: grid; justify-items: center; min-width: 0; }
+.jv-rail__bar { display: flex; justify-content: center; align-items: center; height: 28px; }
+
+/* a slot (and a tool): a 40 × 28 button around a 16 px line icon; a thin divider before every one but the first.
+   With the dots under it the row is the shell's --rail-h (48 px) tall. */
+.jv-rail__slot, .jv-rail__tool {
+  position: relative; display: grid; place-items: center; width: 40px; height: 28px; padding: 0;
+  color: var(--text-2); background: transparent; border: 0; border-radius: var(--r-control);
+  cursor: pointer; font: inherit;
+  transition: color var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease);
+}
+.jv-rail__bar > :not(:first-child)::before {
+  content: ""; position: absolute; left: 0; top: 8px; width: 1px; height: 12px; background: var(--rule); pointer-events: none;
+}
+.jv-rail__slot:hover, .jv-rail__tool:hover { color: var(--text); }
+.jv-rail__slot[aria-expanded="true"] { color: var(--text); }
+/* the open slot (v0.5.4): a short lit bar under its icon, no box (a box covered the next slot's count) */
+:root[data-theme="night"] .jv-rail__slot[aria-expanded="true"] { background: var(--rule); border-radius: 6px; }  /* a quiet pill; the counts sit above it (z-index) */
+.jv-rail__word { display: grid; place-items: center; line-height: 0; }
+.jv-rail__word .jv-icon, .jv-rail__tool .jv-icon { width: 16px; height: 16px; stroke-width: 1.5; }
+/* the word is the button's name for screen readers (and its tooltip); the phone shows it when the row has room */
+.jv-rail__name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); }
+
+/* the badge: a small count at the icon's top right, led by the glance shape when something there wants him */
+.jv-rail__badge { position: absolute; z-index: 1; left: calc(50% + 6px); top: 0; display: inline-flex; align-items: center; gap: 2px; pointer-events: none; }
+.jv-rail__badge:empty { display: none; }
+.jv-rail__count { font: 500 12px/12px var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-2); }
+.jv-rail__shape { width: 8px; height: 8px; display: block; overflow: visible; }
+.jv-rail__mark { fill: currentColor; stroke: none; }
+.jv-rail__mark--line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: miter; }
+.jv-rail__slot[data-worst="yes"][data-wants] .jv-rail__badge, .jv-rail__slot[data-worst="soon"][data-wants] .jv-rail__badge { color: var(--warn); }
+.jv-rail__slot[data-worst="critical"][data-wants] .jv-rail__badge { color: var(--crit); }
+.jv-rail__slot[data-wants] .jv-rail__count { color: inherit; }
+
+/* "since you looked": a short static cyan notch under the icon, never a badge count */
+.jv-rail__notch { position: absolute; left: calc(50% - 4px); bottom: 2px; width: 8px; height: 2px; background: var(--cyan); pointer-events: none; }
+
+/* the focus cue (Jarvis is naming this): corner brackets snap on and the icon brightens */
+/* (they frame the icon alone, about 6 px clear of the count badges: its own, top right, and its neighbour's) */
+.jv-rail__brackets { position: absolute; inset: 3px 15px 0 5px; display: none; pointer-events: none; }
+.jv-rail__brackets i { position: absolute; width: 6px; height: 6px; border: 0 solid var(--cyan-hi); }
+.jv-rail__brackets i:nth-child(1) { top: 0; left: 0; border-top-width: 1.5px; border-left-width: 1.5px; }
+.jv-rail__brackets i:nth-child(2) { top: 0; right: 0; border-top-width: 1.5px; border-right-width: 1.5px; }
+.jv-rail__brackets i:nth-child(3) { bottom: 0; left: 0; border-bottom-width: 1.5px; border-left-width: 1.5px; }
+.jv-rail__brackets i:nth-child(4) { bottom: 0; right: 0; border-bottom-width: 1.5px; border-right-width: 1.5px; }
+.jv-rail__slot[data-focus] .jv-rail__brackets { display: block; }
+.jv-rail__slot[data-focus] { color: var(--text); }
+.jv-rail__snap .jv-rail__brackets { animation: jv-rail-snap 250ms var(--ease-mech) both; }
+@keyframes jv-rail-snap { from { opacity: 0; transform: scale(1.3); } to { opacity: 1; transform: none; } }
+
+/* the page dots under the row (jv-page-dots, components/tabs) */
+.jv-rail__dots { display: block; }
+
+/* the fan: the open slot's things, above the Rail, as one glass panel (HUD v2 §14.2, like a window: the page's own
+   grid under a glass tint, a thin near-white edge and two ghost edges down-right; square corners, no glow). Solid:
+   nothing behind shows through. It is above every window because the window canvas is its own stacking layer
+   (views/stage/canvas.css); while it is open the windows dim a step and let the pointer pass. At rest it holds the
+   kicker and the cards only; "Mark all seen" and "Close" are quiet mono words that show on hover or keyboard focus
+   (Esc and a click outside close it too). */
+.jv-rail__fan {
+  --fan-w: min(780px, calc(100vw - 2 * var(--pad)));
+  --fan-glass: var(--glass-strong);
+  position: absolute; z-index: 25; left: 50%; bottom: calc(100% + 14px); width: var(--fan-w); margin-left: calc(var(--fan-w) / -2);
+  display: flex; flex-direction: column; max-height: min(60vh, 520px); padding: 10px 16px 16px; color: var(--text);
+  border: 1px solid var(--glass-edge-rest); border-radius: var(--r-pane, 0);
+  box-shadow: var(--pane-shadow);
+  background:
+    linear-gradient(90deg, transparent, var(--edge-light) 50%, transparent) top / 100% 1px no-repeat,
+    linear-gradient(180deg, var(--glass-top), transparent 40%),
+    linear-gradient(var(--fan-glass), var(--fan-glass)),
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / var(--grid-cell) var(--grid-cell) fixed,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / var(--grid-cell) var(--grid-cell) fixed,
+    radial-gradient(ellipse 75% 70% at 50% 45%, var(--bg-2) 0%, var(--bg-1) 55%, var(--bg-0) 100%) fixed,
+    var(--canvas);
+}
+.jv-rail__fan[hidden] { display: none; }
+.jv-rail__ghost {
+  position: absolute; inset: -1px; pointer-events: none;
+  border: 0 solid var(--glass-ghost); border-right-width: 1px; border-bottom-width: 1px; transform: translate(4px, 4px);
+}
+.jv-rail__ghost--2 { border-color: var(--glass-ghost-2); transform: translate(8px, 8px); }
+.jv-rail__ghost { display: none; }  /* v0.5.4: a real shadow instead (below) */
+.jv-rail__fanbody { min-height: 0; overflow: auto; }
+
+/* the kicker row: SLOT // COUNT in the accent; the two quiet words at its right only on hover or keyboard focus */
+.jv-rail__fanhead { display: flex; align-items: center; gap: 4px; min-height: 24px; margin-bottom: 10px; }
+.jv-rail__fanhead h2 { flex: 1; min-width: 0; color: var(--cyan); }
+.jv-rail__do {
+  min-height: 24px; padding: 0 6px; background: none; border: 0; border-radius: var(--r-control); cursor: pointer;
+  font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3);
+  opacity: 0; transition: opacity var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.jv-rail__fan:is(:hover, :has(:focus-visible)) .jv-rail__do { opacity: 1; }
+.jv-rail__do:hover, .jv-rail__do:focus-visible { color: var(--text); }
+/* a touch screen has no hover: there the words always show */
+@media (hover: none) { .jv-rail__do { opacity: 1; } }
+:root[data-size="phone"] .jv-rail__do { opacity: 1; }
+
+/* the cards: an aligned grid (three columns at full width), even 16 px gutters, every card the same height. Each
+   is a 32 px page preview or line icon, one title line, the state's glance mark (its word only when it wants
+   him), and at most one short line; nothing wraps. No frame at rest; a hairline on hover. */
+.jv-rail__cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px 16px; }
+.jv-rail__card {
+  position: relative; display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; grid-template-rows: 20px 18px;
+  column-gap: 10px; align-items: center; width: 100%; height: 52px; padding: 6px 8px; text-align: left;
+  font: inherit; color: var(--text); background: transparent; border: 1px solid transparent; border-radius: var(--r-card); cursor: pointer;
+  transition: border-color var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease);
+}
+.jv-rail__card:hover { border-color: var(--line-dim); background: var(--sunken); }
+.jv-rail__card > .jv-rail__notch { left: 8px; top: -1px; bottom: auto; width: 10px; height: 2px; }
+.jv-rail__thumb { grid-row: 1 / 3; width: 32px; height: 32px; display: grid; place-items: center; overflow: hidden; color: var(--text-2); }
+.jv-rail__thumb .jv-icon { width: 18px; height: 18px; stroke-width: 1.5; }
+/* a page preview sits under the text in brightness (a static dark tint, as on the windows) */
+.jv-rail__thumb--media { position: relative; border: 1px solid var(--line-dim); }
+.jv-rail__thumb--media::after { content: ""; position: absolute; inset: 0; background: var(--media-tint); opacity: 0.6; pointer-events: none; }  /* lighter than on a window: at 32 px a full tint left a grey square */
+.jv-rail__thumb img { width: 32px; height: 32px; object-fit: cover; object-position: top; display: block; }
+.jv-rail__title { grid-column: 2; min-width: 0; font: 500 14px/20px var(--font-ui); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jv-rail__card > .jv-rail__state { grid-column: 3; grid-row: 1; justify-self: end; }
+.jv-rail__line { grid-column: 2 / 4; grid-row: 2; min-width: 0; font: 400 13px/18px var(--font-ui); color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jv-rail__line--new { color: var(--text); }
+.jv-rail__state { display: inline-flex; align-items: center; gap: 6px; font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-2); }
+.jv-rail__card .jv-glance--rail { --g: 14px; }
+.jv-rail__empty { color: var(--text-2); }
+.jv-rail__said { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--rule); }
+.jv-rail__said:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.jv-rail__said h3 { position: relative; margin-bottom: 6px; }
+.jv-rail__said h3 .jv-rail__notch { position: relative; display: inline-block; top: 0; bottom: auto; left: 0; margin-left: 8px; width: 10px; height: 2px; vertical-align: middle; }
+.jv-rail__said ol { display: grid; gap: 4px; }
+.jv-rail__said li { font: 400 14px/20px var(--font-ui); color: var(--text-2); }
+.jv-rail__when { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3); margin-right: 6px; }
+.jv-rail__legend { display: flex; flex-wrap: wrap; gap: var(--gap-large); }
+
+/* cards fan out 40 ms apart, once, when the slot opens (mechanical: hard stop, no spring) */
+.jv-rail__fan--opening { animation: jv-rail-fan-in 180ms var(--ease-out) backwards; }  /* serious mode: one quick rise, no card stagger */
+.jv-rail__fan--closing { animation: jv-rail-fan-out 120ms var(--ease-in) forwards; pointer-events: none; }
+@keyframes jv-rail-fan-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes jv-rail-fan-out { to { opacity: 0; transform: translateY(4px); } }
+:is(.jv-rail__fan--opening, .jv-rail__fan--closing) { will-change: transform, opacity; }
+
+/* ambient: only filled slots, nothing moves; an empty slot and the tools keep their place, unseen (and out of the
+   tab order) */
+.jv-rail__slot[data-vacant], .jv-rail__tool[data-vacant] { visibility: hidden; }
+jv-rail[data-ambient] * { animation: none !important; transition: none !important; }
+
+/* phone (a 44 px row above the tab bar): the six slots share the width, 44 px tall; no tools or dots (the tab
+   bar is the phone's way between views and it has no command bar button). views/phone widens the words in. */
+:root[data-size="phone"] jv-rail { display: block; justify-items: normal; }
+:root[data-size="phone"] .jv-rail__bar { justify-content: space-between; height: var(--rail-h, 44px); }
+:root[data-size="phone"] .jv-rail__slot { flex: 1 1 0; width: auto; min-width: 0; height: var(--rail-h, 44px); }
+:root[data-size="phone"] .jv-rail__word { display: inline-flex; gap: 6px; }
+:root[data-size="phone"] .jv-rail__tool, :root[data-size="phone"] .jv-rail__dots { display: none; }
+:root[data-size="phone"] .jv-rail__badge { top: 6px; }
+/* the phone's fan is the screen's width (views/phone sets it): centred on that, and without the ghost edges, which
+   would poke past the screen's edge */
+:root[data-size="phone"] .jv-rail__fan { --fan-w: calc(100vw - 16px); }
+:root[data-size="phone"] .jv-rail__ghost { display: none; }
+/* the gallery: an open copy needs room above it for its fan */
+.jv-gallery jv-rail[open] { margin-top: 360px; }

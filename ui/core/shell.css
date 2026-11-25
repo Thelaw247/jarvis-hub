@@ -1,0 +1,113 @@
+/* The shell: header (wordmark, tabs), stage (the current view), the bottom band (status line left, the Rail
+   centre with the caption above it, the orb's dock right), the ambient backdrop, toasts.
+   Layout only; components bring their own styles. */
+:root { --rail-h: 48px; --band-orb: 120px; }  /* the Rail's height (44 px on the phone) and the room the docked orb keeps */
+:root[data-size="laptop"] { --band-orb: 64px; }  /* the docked orb: 120 px on the big screen, 64 px on a laptop (HUD v2 §4) */
+/* off the Now view the docked orb is its 64 px mini rings on every screen: it sits inside the band, so it never
+   covers a row or a button of a page that scrolls under it */
+:root:not([data-view="now"], [data-size="phone"], [data-size="strip"]) #orb { width: 64px; height: 64px; }
+:root:not([data-view="now"]) { --band-orb: 64px; }
+body { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; grid-template-columns: minmax(0, 1fr); }
+.jv-skip { position: absolute; left: var(--pad); top: -80px; z-index: 50; background: var(--card); color: var(--text); padding: 8px 14px; border-radius: var(--r-control); border: 1px solid var(--line-strong); }
+.jv-skip:focus { top: 8px; }
+
+.jv-chrome { position: relative; display: flex; align-items: center; gap: var(--gap); padding: 10px var(--pad); min-height: 56px; }
+/* HUD v3: off the phone the views are page dots under the icon row, so in Night the header holds only the demo
+   chip. With no chip (live mode) it is empty and takes no room; with it, only the chip's height. */
+:root[data-theme="night"]:not([data-size="phone"]) .jv-chrome { min-height: 40px; padding-block: 8px; }
+:root[data-theme="night"]:not([data-size="phone"]) .jv-chrome:not(:has(> .jv-chrome__demo:not([hidden]))) { min-height: 12px; padding-block: 0; }
+.jv-chrome__mark { font: var(--label); letter-spacing: 0.18em; color: var(--muted); }
+/* the demo chip is neutral: amber means only "needs you" (film review S6) */
+.jv-chrome__demo { font: var(--label); letter-spacing: var(--label-track); text-transform: var(--kicker-case); color: var(--text-3); background: none; border: 1px solid var(--line-dim); border-radius: var(--r-pill); padding: 2px 10px; }
+.jv-chrome__space { flex: 1; }
+
+#stage { position: relative; overflow: auto; min-height: 0; padding: 0 var(--pad) var(--pad); scroll-behavior: smooth; }
+#stage:focus { outline: none; }
+
+/* The bottom band. Three columns so the Rail stays in the true centre whatever the status line says. */
+.jv-foot { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: end; gap: var(--gap); padding: 8px var(--pad) 10px; }
+.jv-band__left { display: flex; align-items: center; gap: var(--gap); min-width: 0; min-height: 28px; }
+.jv-band__centre { position: relative; display: grid; justify-items: center; min-width: 0; }
+.jv-band__right { min-width: var(--band-orb); }
+#rail { display: block; min-width: 0; min-height: var(--rail-h); }
+/* the caption floats just above the Rail, so a spoken line never moves the view */
+#caption { position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); z-index: 20; width: max-content; }
+.jv-dock { position: fixed; right: var(--pad); bottom: 14px; z-index: 20; display: flex; align-items: center; gap: var(--gap); pointer-events: none; }
+.jv-dock > * { pointer-events: auto; }
+/* The ambient backdrop: behind the view, never in the way of a click. Whoever draws the ambient screen fills it. */
+.jv-ambient { position: fixed; inset: 0; z-index: 0; display: none; pointer-events: none; }
+:root[data-ambient] .jv-ambient { display: block; }
+jv-command-bar { position: fixed; z-index: 40; }
+#toasts { position: fixed; left: 50%; bottom: calc(var(--rail-h) + 84px); transform: translateX(-50%); z-index: 30; }
+/* On a wide window toasts sit in the header's empty middle, side by side: clear of the windows and of the
+   caption. A narrower window has no free band, so they stay above the caption and the Rail. */
+@media (min-width: 1200px) {
+  :root:not([data-size="phone"], [data-size="strip"]) #toasts { left: 176px; right: 584px; top: 8px; bottom: auto; transform: none; }
+  :root:not([data-size="phone"], [data-size="strip"]) #toasts .jv-toasts { display: flex; flex-wrap: wrap; align-items: center; }
+}
+
+/* Ambient (idle) screen: the big orb is in the view, so the corner orb steps aside and the chrome goes quiet.
+   Quiet means no fills and no shadows, never fading: the words keep --muted on --canvas (≥ 4.5:1), and
+   the chrome comes back in full when it is pointed at or focused. */
+:root[data-ambient] .jv-dock #orb { display: none; }
+/* while the big orb slides into the corner (now.js), the docked orb keeps its place but isn't drawn yet */
+:root[data-orb-docking] .jv-dock #orb { visibility: hidden; }
+:root[data-ambient] .jv-chrome__mark { visibility: hidden; }
+
+/* Strip (Laptop A): only the strip view. Nothing else, nothing moves. */
+:root[data-size="strip"] .jv-chrome, :root[data-size="strip"] .jv-foot, :root[data-size="strip"] .jv-dock, :root[data-size="strip"] .jv-ambient, :root[data-size="strip"] #toasts { display: none; }
+:root[data-size="strip"] #stage { padding: 0; overflow: hidden; }
+:root[data-size="strip"] body { grid-template-rows: minmax(0, 1fr); }
+
+/* Phone: tabs move to the bottom, within thumb reach, and the orb sits at the right end of that bar, so
+   nothing floats over the view. main.js also moves the tabs after the band (view, Rail, tabs), so reading and
+   Tab order = screen order.
+   The band shrinks to the Rail alone: a 44 px row above the tabs (no row at all while the Rail is empty). */
+:root[data-size="phone"] { --phone-orb: 44px; --phone-bar: 56px; --rail-h: 44px; }
+:root[data-size="phone"] body { grid-template-rows: minmax(0, 1fr) auto auto; }
+:root[data-size="phone"] .jv-chrome { order: 2; gap: 0; padding: 4px calc(var(--phone-orb) + 14px) calc(4px + env(safe-area-inset-bottom)) 4px; border-top: 1px solid var(--line); background: var(--sheet); min-height: var(--phone-bar); }
+:root[data-size="phone"] .jv-chrome__mark, :root[data-size="phone"] .jv-chrome__space, :root[data-size="phone"] .jv-chrome__demo { display: none; }
+:root[data-size="phone"] .jv-foot { order: 1; display: block; padding: 0 8px; }
+:root[data-size="phone"] .jv-band__left, :root[data-size="phone"] .jv-band__right { display: none; }
+:root[data-size="phone"] #rail:empty { display: none; }
+/* on the phone the spoken line takes its own row above the Rail (it never floats over what he is reading) */
+:root[data-size="phone"] #caption { position: static; transform: none; width: auto; max-width: none; }
+:root[data-size="phone"] #caption:has(.jv-caption) { padding: 6px 0 2px; }
+:root[data-size="phone"] #caption .jv-caption { display: block; }
+:root[data-size="phone"] #stage { padding: 12px; }
+:root[data-size="phone"] .jv-dock { right: 8px; bottom: calc(env(safe-area-inset-bottom) + (var(--phone-bar) - var(--phone-orb)) / 2); }
+:root[data-size="phone"] #orb { width: var(--phone-orb); height: var(--phone-orb); }
+/* toasts stack above the caption's line, which sits just above the Rail row */
+:root[data-size="phone"] #toasts { bottom: calc(var(--phone-bar) + 64px + env(safe-area-inset-bottom)); width: calc(100% - 24px); }
+
+/* Component galleries (?scene=component:<name>) */
+.jv-gallery { min-height: 100%; padding: var(--pad) 0; }
+.jv-gallery__title { text-transform: capitalize; }
+.jv-gallery__about { margin-top: 4px; max-width: var(--measure); }
+.jv-gallery__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--gallery-min, 300px), 1fr)); gap: var(--gap-large); margin-top: var(--gap-large); align-items: start; }
+.jv-gallery__cell { display: grid; gap: var(--gap-small); min-width: 0; }
+.jv-gallery__cell--wide { grid-column: 1 / -1; }
+.jv-gallery__body { min-width: 0; }
+:root[data-gallery] .jv-dock, :root[data-gallery] .jv-foot, :root[data-gallery] .jv-chrome { display: none; }
+:root[data-gallery] body { grid-template-rows: minmax(0, 1fr); }
+
+.jv-placeholder { max-width: 720px; margin: var(--gap-large) auto; display: grid; gap: var(--gap); }
+.jv-placeholder__facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); }
+.jv-placeholder__facts dd { font: 500 24px/32px var(--font-head); font-variant-numeric: tabular-nums; }
+.jv-placeholder__log { display: grid; gap: 2px; }
+
+/* chrome extras: the search button and the demo chip (a link to Controls) */
+.jv-keys kbd { font: var(--telemetry); border: 1px solid var(--line-strong); border-radius: 6px; padding: 2px 6px; background: var(--sunken); color: var(--muted); white-space: nowrap; }
+a.jv-chrome__demo { text-decoration: none; }
+/* Night: "Go to…" is a mono caps pill like the tabs beside it, and the corner "JARVIS" steps aside (the orb
+   carries the wordmark; film review N2) */
+:root[data-theme="night"] .jv-chrome__mark { display: none; }
+
+/* keyboard shortcuts sheet */
+.jv-keys__scrim { position: fixed; inset: 0; z-index: 45; background: var(--scrim); display: grid; place-items: center; padding: 16px; }
+.jv-keys { width: min(520px, 100%); display: grid; gap: var(--gap); }
+.jv-keys__list { display: grid; gap: 8px; }
+.jv-keys__list > div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: var(--gap); align-items: baseline; }
+
+/* plants can be turned off in Controls */
+:root[data-plants="off"] jv-plant { display: none; }

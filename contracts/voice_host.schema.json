@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "voice_host.schema.json",
+  "title": "This laptop's voice, as its own hub runs it (GET /api/voicehost)",
+  "description": "live: this laptop's mic and speakers are Jarvis's. waiting: another laptop has the voice (device says which). starting, down (it retries by itself), off (message says what is missing).",
+  "type": "object",
+  "properties": {
+    "state": {
+      "enum": [
+        "starting",
+        "live",
+        "waiting",
+        "down",
+        "off"
+      ]
+    },
+    "device": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "state",
+    "device",
+    "message"
+  ],
+  "additionalProperties": false
+}

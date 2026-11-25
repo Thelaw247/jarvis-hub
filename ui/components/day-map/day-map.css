@@ -1,0 +1,53 @@
+/* jv-day-map: the map window's hero (R2). Tokens only: dark land (--bg-0), faint roads and outlines (--rule), an ice
+   route (--frame-on: ice at night), the pin it leads with near-white (--text) in a cyan ring; everything else steps back. Static:
+   nothing animates, the tiles' tint is a fixed blend. */
+jv-day-map { display: block; min-width: 0; }
+.jv-day-map { margin: 0; }
+.jv-day-map__view { position: relative; width: 100%; overflow: hidden; background: var(--bg-0); contain: layout paint; }
+.jv-day-map__view > svg, .jv-day-map__tiles, .jv-day-map__tint { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* the schematic: bundled shapes, deliberately plain */
+.jv-day-map__land { fill: var(--bg-0); }
+.jv-day-map__road { fill: none; stroke: var(--rule); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+.jv-day-map__green { fill: none; stroke: var(--rule); stroke-width: 1; stroke-dasharray: 3 4; }
+.jv-day-map__building { fill: var(--bg-2); stroke: var(--line-dim); stroke-width: 1; stroke-opacity: 0.55; }
+
+/* map tiles: CARTO's no-label basemap, pulled into the HUD palette by a static colour blend (no filter animation) */
+.jv-day-map__tiles img { position: absolute; max-width: none; user-select: none; pointer-events: none; filter: brightness(0.9) contrast(1.1); }
+.jv-day-map__tiles[hidden], .jv-day-map__tiles[hidden] + .jv-day-map__tint { display: none; }
+.jv-day-map__tint { background: var(--bg-1); mix-blend-mode: color; pointer-events: none; }
+/* media sit in (HUD v2 §14.2): the same static dark tint as a page picture, over the tiles only */
+.jv-day-map__tint::after { content: ""; position: absolute; inset: 0; background: var(--media-tint); }
+
+/* the route and the pins */
+.jv-day-map__route { fill: none; stroke: var(--frame-on); stroke-width: 1.75; stroke-opacity: 0.55; stroke-linejoin: round; stroke-linecap: round; }
+.jv-day-map__route--lead { stroke-width: 2.5; stroke-opacity: 1; }
+.jv-day-map__dot { fill: var(--bg-0); stroke: var(--line-dim); stroke-width: 1.5; }
+.jv-day-map__pin--lead .jv-day-map__dot { fill: var(--text); stroke: var(--text); }
+.jv-day-map__ring { fill: none; stroke: var(--cyan); stroke-width: 1.25; }
+
+/* the one label: mono caps beside the pin it leads with, with a dark halo so it reads over any tile */
+.jv-day-map__label {
+  position: absolute; transform: translate(16px, -50%); white-space: nowrap; pointer-events: none;
+  font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text);
+  text-shadow: 0 0 3px var(--bg-0), 0 0 3px var(--bg-0), 0 0 6px var(--bg-0);
+}
+.jv-day-map__label[data-side="left"] { transform: translate(calc(-100% - 16px), -50%); }
+.jv-day-map__label[data-side="above"] { transform: translate(-50%, calc(-100% - 16px)); }
+.jv-day-map__label[data-side="below"] { transform: translate(-50%, 16px); }
+
+/* the credit: what this is (a schematic) or whose tiles these are; small (12 px, the floor), bottom-right, inside the map */
+.jv-day-map__credit {
+  position: absolute; right: 6px; bottom: 4px; margin: 0; pointer-events: none;
+  font: 400 12px/16px var(--font-mono); letter-spacing: 0.04em; color: var(--text-3);
+  text-shadow: 0 0 3px var(--bg-0), 0 0 3px var(--bg-0);
+}
+.jv-day-map[data-mode="schematic"] .jv-day-map__credit { text-transform: var(--kicker-case); letter-spacing: var(--kicker-track); }
+
+/* the one supporting line under the map */
+.jv-day-map__line { margin: 0; padding: 10px var(--jv-pad, 14px) 12px; font-size: 13px; line-height: 19px; color: var(--text-2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* in a window: the map fills the panel edge to edge under the kicker (as media do) */
+jv-window[media] > .jv-window__body:has(> jv-day-map) { margin: 0 calc(-1 * var(--jv-pad)); overflow: hidden; }
+jv-window:not([media]) .jv-day-map__line { padding-inline: 0; }

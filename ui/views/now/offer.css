@@ -1,0 +1,23 @@
+/* The return offer (views/now/offer.js): one small glass card under the orb, only while the offer is live.
+   Glass like the Stage's windows (HUD v3 §14 decision 3): a see-through dark fill, a bright thin edge, one ghost
+   edge behind; no blur. It sits under the orb's box (awake) or under the small clock and date (resting). */
+.jv-amb__offer {
+  position: absolute; left: 50%; top: calc(100% + 12px); transform: translateX(-50%); z-index: 1; width: max-content;
+  display: flex; align-items: stretch; max-width: min(440px, 92vw); white-space: nowrap;
+  border: 1px solid var(--glass-edge); background: var(--glass-strong); color: var(--text);
+}
+.jv-now__ambient[data-standby] .jv-amb__offer { top: calc(50% + var(--amb-orb) * var(--amb-sphere, 0.335) + max(32px, var(--amb-orb) * 0.13) + 58px); }
+.jv-amb__offer-ghost { position: absolute; inset: -1px; pointer-events: none; border: 0 solid var(--glass-ghost); border-right-width: 1px; border-bottom-width: 1px; transform: translate(4px, 4px); }
+.jv-amb__offer-go { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 6px 12px 6px 6px; color: inherit; text-decoration: none; min-width: 0; }
+.jv-amb__offer-thumb { flex: none; }
+.jv-amb__offer-text { display: grid; gap: 2px; min-width: 0; text-align: left; }
+.jv-amb__offer-kick { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--cyan); }
+.jv-amb__offer-where { font: 400 14px/20px var(--font-ui); overflow: hidden; text-overflow: ellipsis; }
+.jv-amb__offer-no {
+  border: 0; border-left: 1px solid var(--rule); background: transparent; color: var(--text-2); cursor: pointer; padding: 0 12px; min-height: 44px;
+  font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case);
+}
+.jv-amb__offer-go:hover .jv-amb__offer-where, .jv-amb__offer-no:hover { color: var(--text); text-decoration: underline; }
+.jv-amb__offer :is(a, button):focus-visible { outline-offset: -3px; box-shadow: none; }
+/* the orb sliding to its dock takes nothing with it */
+.jv-now--docking .jv-amb__offer { visibility: hidden; }

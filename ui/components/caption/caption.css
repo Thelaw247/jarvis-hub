@@ -1,0 +1,28 @@
+/* jv-caption: one spoken line in a slim HUD strip (HUD v2 §6.2: caption above the Rail). */
+jv-caption { display: block; max-width: min(760px, calc(100vw - 140px)); }
+.jv-caption {
+  display: inline-block; padding: 7px 14px 7px 12px;  /* one flow: a long line wraps and the chip stays on its last line */
+  background: var(--panel); border: 1px solid var(--line-dim); border-left: 2px solid var(--cyan);
+  border-radius: var(--r-control); box-shadow: var(--glow);
+  font-size: 15px; line-height: 22px; color: var(--text);
+  animation: jv-caption-in 150ms var(--ease);
+}
+.jv-caption__who { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--cyan); }
+.jv-caption__who { margin-right: 10px; }
+.jv-caption__text { min-width: 0; }
+.jv-caption jv-source-chip { display: inline-block; vertical-align: middle; margin-left: 10px; }
+/* his own words: quieter, no cyan (cyan means Jarvis) */
+.jv-caption--you { border-left-color: var(--line-dim); }
+.jv-caption--you .jv-caption__who { color: var(--text-3); }
+.jv-caption--you .jv-caption__text { color: var(--text-2); }
+@keyframes jv-caption-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+/* Night (HUD v3): no box, like Huw's screen: the cyan JARVIS tick and the line, luminous on the grid, in the clear
+   band above the icon row (windows keep out of it) */
+:root[data-theme="night"] .jv-caption { background: transparent; border: 0; box-shadow: none; padding: 4px 0; font-size: 14px; line-height: 20px; }
+:root[data-theme="night"] .jv-caption__who { margin-right: 12px; }
+/* The Stage (HUD v2 §14.2: no chips at rest): the line's source chip waits for the pointer or keyboard focus on
+   the line; where nothing can hover it stays. The hub keeps it showing. */
+@media (hover: hover) {
+  :root[data-window="stage"] .jv-caption jv-source-chip { opacity: 0; transition: opacity var(--t-fast) var(--ease); }
+  :root[data-window="stage"] .jv-caption:is(:hover, :focus-within) jv-source-chip { opacity: 1; }
+}

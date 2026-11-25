@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "web.schema.json",
+  "title": "A web window's data (window.data when window.type is \"web\")",
+  "description": "R1, hub v0.5.0 (REACH §5.1). One page is a web window; two to six pages are a tabs window. Proposed with the window.type value \"web\" (see docs/contracts.md once merged).",
+  "type": "object",
+  "properties": {
+    "pages": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "common.schema.json#/$defs/id"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https?://",
+            "description": "Only http and https pages are shown; anything else is dropped by the hub UI"
+          },
+          "title": {
+            "type": "string",
+            "description": "The page's title: the tab's word and the card's hero"
+          },
+          "site": {
+            "type": "string",
+            "description": "Shown in the kicker as WEB // site; left out, the UI takes the host without www."
+          },
+          "frame": {
+            "enum": [
+              "auto",
+              "no"
+            ],
+            "description": "\"no\": the backend knows this page can't be framed, so the card shows at once (left out = auto: try the frame, fall back to the card)"
+          }
+        },
+        "required": [
+          "id",
+          "url",
+          "title"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "active": {
+      "$ref": "common.schema.json#/$defs/id",
+      "description": "The page shown first (a page id); left out, the first page"
+    }
+  },
+  "required": [
+    "pages"
+  ],
+  "additionalProperties": false
+}

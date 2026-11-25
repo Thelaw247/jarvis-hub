@@ -1,0 +1,11 @@
+{
+ "id": "t-learned",
+ "kind": "info",
+ "text": "Jarvis learned 3 things today.",
+ "ttl_ms": 6000,
+ "action": {
+  "label": "See them",
+  "action": "open",
+  "target": "/life/memory"
+ }
+}

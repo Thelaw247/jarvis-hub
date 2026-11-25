@@ -1,0 +1,94 @@
+/* Controls › Reach (R3) and Activity › Tasks (tasks.css). Tokens only. */
+jv-view-reach, jv-view-tasks { display: block; }
+/* the Night panels the other views get from views.css (same look; these tags aren't in its list) */
+:root[data-theme="night"] :is(jv-view-reach, jv-view-tasks) .jv-sheet {
+  border: 1px solid var(--frame); border-radius: var(--r-card);
+  background:
+    linear-gradient(90deg, transparent, var(--sheen) 18%, var(--sheen) 82%, transparent) top / 100% 1px no-repeat,
+    var(--panel);
+  box-shadow: var(--glow);
+}
+.jv-reach .jv-sheet { padding: var(--pad) var(--gap-large) 12px; }
+.jv-reach__cols { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
+.jv-reach__rung { padding: 10px 0 6px; border-top: 1px solid var(--rule); }
+.jv-reach__rung:first-of-type { border-top: 0; padding-top: 0; }
+.jv-reach__rung-head { display: flex; align-items: center; gap: var(--gap-small); margin: 0; }
+.jv-reach__rung-head .jv-kicker--end { margin-left: auto; color: var(--text-3); }
+.jv-reach__route, .jv-reach__note { margin: 2px 0 6px; color: var(--text-2); font-size: 14px; max-width: var(--measure); }
+.jv-reach__tools, .jv-reach__list { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.jv-reach__tool {
+  display: grid; grid-template-columns: minmax(0, 1fr) 190px auto; align-items: center; gap: 4px var(--gap);
+  padding: 8px 0; border-bottom: 1px solid var(--rule);
+}
+.jv-reach__tool:last-child { border-bottom: 0; }
+.jv-reach__what { display: grid; gap: 1px; min-width: 0; font-size: 14px; color: var(--text-2); }
+.jv-reach__what b { font: 500 15px/22px var(--font-head); color: var(--text); }
+.jv-reach__name { display: flex; align-items: baseline; gap: var(--gap-small); flex-wrap: wrap; }
+.jv-reach__where { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3); }
+.jv-reach__k { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3); margin-right: 4px; }
+.jv-reach__state { display: grid; gap: 2px; justify-items: start; }
+.jv-reach__used { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3); }
+/* status: shape + colour + word (never colour alone): disc = connected, diamond = needs sign-in, dashed ring =
+   paused in game mode, hollow ring = off */
+.jv-reach__status { display: inline-flex; align-items: center; gap: 6px; font: 500 13px/18px var(--font-head); color: var(--text); white-space: nowrap; }
+.jv-reach__mark { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.jv-reach__status[data-status="on"] .jv-reach__mark { background: var(--cyan-hi); }
+.jv-reach__status[data-status="warn"] .jv-reach__mark { border-radius: var(--r-card); width: 8px; height: 8px; margin: 1px; background: var(--warn); transform: rotate(45deg); }
+.jv-reach__status[data-status="paused"] .jv-reach__mark { border: 1.5px dashed var(--text-3); }
+.jv-reach__status[data-status="off"] .jv-reach__mark { border: 1.5px solid var(--text-3); }
+.jv-reach__status[data-status="off"], .jv-reach__status[data-status="paused"] { color: var(--text-2); }
+.jv-reach__list li { display: flex; align-items: center; justify-content: space-between; gap: var(--gap); padding: 6px 0; border-bottom: 1px solid var(--rule); min-height: 44px; }
+.jv-reach__list li:last-child { border-bottom: 0; }
+.jv-reach__path { font: 400 14px/20px var(--font-mono); color: var(--text); overflow-wrap: anywhere; }
+.jv-reach__add, .jv-reach__caps { display: flex; flex-wrap: wrap; align-items: end; gap: var(--gap-small); margin-top: 10px; }
+.jv-reach__add input, .jv-reach__caps input {
+  min-height: 32px; padding: 0 10px; background: var(--sheet); border: 1px solid var(--control); border-radius: var(--r-control); font: var(--body);
+}
+.jv-reach__add input { flex: 1 1 200px; min-width: 0; }
+.jv-reach__caps label { display: grid; gap: 2px; font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3); }
+.jv-reach__money { display: inline-flex; align-items: center; gap: 4px; font: 500 15px/1 var(--font-mono); color: var(--text); letter-spacing: 0; }
+.jv-reach__caps input { width: 84px; font-family: var(--font-mono); }
+:root[data-theme="night"] :is(.jv-reach__add, .jv-reach__caps) input { background: var(--bg-0); border-color: var(--line-dim); }
+:root[data-size="laptop"] .jv-reach__tool { grid-template-columns: minmax(0, 1fr) 150px auto; }
+:root[data-size="phone"] .jv-reach__cols { grid-template-columns: minmax(0, 1fr); }
+:root[data-size="phone"] .jv-reach__tool { grid-template-columns: minmax(0, 1fr) auto; }
+:root[data-size="phone"] .jv-reach__state { grid-column: 1; }
+
+/* ---- Activity › Tasks ---------------------------------------------------------------------------------------- */
+.jv-tasks .jv-sheet { padding: var(--pad) var(--gap-large) 12px; }
+.jv-tasks .jv-view__kicker .jv-tasks__demo { margin-left: auto; }
+.jv-tasks__list { margin: 0; padding: 0; list-style: none; }
+.jv-tasks__row {
+  display: grid; grid-template-columns: 104px minmax(0, 1.2fr) minmax(0, 1fr) auto auto; align-items: center; gap: 4px var(--gap);
+  padding: 10px 0; border-bottom: 1px solid var(--rule);
+}
+.jv-tasks__row:last-child { border-bottom: 0; }
+.jv-tasks__goal { font: 500 15px/22px var(--font-head); color: var(--text); text-decoration: none; }
+.jv-tasks__goal:hover { text-decoration: underline; text-underline-offset: 3px; }
+.jv-tasks__line { color: var(--text-2); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jv-tasks__meta { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3); white-space: nowrap; }
+.jv-tasks__status { display: flex; align-items: center; gap: var(--gap-small); color: var(--text-2); margin: 4px 0 0; }
+.jv-tasks__actions { margin: 8px 0 0; display: flex; gap: var(--gap-small); }
+.jv-tasks__actions:empty { display: none; }
+.jv-tasks__steps, .jv-tasks__files, .jv-tasks__log { margin: 0; padding: 0; list-style: none; }
+.jv-tasks__steps li { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center; gap: var(--gap-small); padding: 6px 0; border-bottom: 1px solid var(--rule); }
+.jv-tasks__steps li:last-child, .jv-tasks__files li:last-child, .jv-tasks__log li:last-child { border-bottom: 0; }
+.jv-tasks__steps li[data-state="todo"], .jv-tasks__steps li[data-state="skipped"] { color: var(--text-2); }
+.jv-tasks__n { font: 400 13px/1 var(--font-mono); color: var(--text-3); }
+.jv-tasks__todo { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-3); }
+.jv-tasks__files li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px var(--gap-small); padding: 6px 0; border-bottom: 1px solid var(--rule); }
+.jv-tasks__change { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--cyan); min-width: 96px; }
+.jv-tasks__change[data-change="deleted"], .jv-tasks__change[data-change="restored"] { color: var(--text-2); }
+.jv-tasks__path { font: 400 14px/20px var(--font-mono); color: var(--text); overflow-wrap: anywhere; }
+.jv-tasks__log li { display: grid; grid-template-columns: 64px 64px minmax(0, 1fr); gap: var(--gap-small); padding: 6px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+.jv-tasks__who { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--cyan); }
+.jv-tasks__log li[data-who="you"] .jv-tasks__who { color: var(--text); }
+.jv-tasks__log li[data-who="jarvis"] .jv-tasks__who { color: var(--text-2); }
+.jv-tasks__log time { font: 400 12px/1 var(--font-mono); color: var(--text-3); }
+.jv-tasks__said { color: var(--text); font-size: 14px; }
+.jv-tasks__brief { margin: 0 0 4px; color: var(--text-2); font-size: 14px; }
+.jv-tasks__ask { display: block; margin-bottom: var(--gap-large); }
+:root[data-size="laptop"] .jv-tasks__row { grid-template-columns: 96px minmax(0, 1fr) auto auto; }
+:root[data-size="laptop"] .jv-tasks__line { grid-column: 2 / -1; grid-row: 2; }
+:root[data-size="phone"] .jv-tasks__row { grid-template-columns: minmax(0, 1fr) auto; }
+:root[data-size="phone"] :is(.jv-tasks__line, .jv-tasks__meta, .jv-tasks__state) { grid-column: 1 / -1; }

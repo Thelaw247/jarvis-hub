@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "thread.schema.json",
+  "title": "A work thread and its resume point",
+  "description": "One piece of work on a branch of the Life Tree. Saving a resume point is a local note, so it needs no yes.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+    },
+    "kind": {
+      "enum": [
+        "pdf",
+        "video",
+        "doc",
+        "session",
+        "deck",
+        "layout",
+        "code",
+        "plotter",
+        "research"
+      ]
+    },
+    "ref": {
+      "type": "string",
+      "description": "The file, video, deck or design this thread works on"
+    },
+    "branch": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "description": "The Life Tree branch it sits on"
+    },
+    "title": {
+      "type": "string"
+    },
+    "thumb": {
+      "$ref": "common.schema.json#/$defs/thumb"
+    },
+    "resume": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "page": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "y": {
+              "type": "number",
+              "description": "Scroll position inside the page, in the reader's own units"
+            },
+            "seconds": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Where in a video thread: seconds from the start (Panopto &start=, YouTube start=)"
+            },
+            "label": {
+              "type": "string",
+              "description": "Where that is, in his words: 'Q7', 'Results', 'card 18'"
+            },
+            "source": {
+              "enum": [
+                "inferred",
+                "confirmed"
+              ],
+              "description": "inferred: Jarvis noticed where he stopped (Likely). confirmed: he said or accepted it."
+            },
+            "at": {
+              "type": "string",
+              "description": "ISO 8601 date-time, local time unless it carries an offset",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+            }
+          },
+          "required": [
+            "label",
+            "source",
+            "at"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "done": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Finished parts, by label: ['Q1', 'Q2']"
+    },
+    "viewed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Parts whose solutions he looked at. Shown only under Why? or in a review, never on ambient."
+    },
+    "state": {
+      "enum": [
+        "open",
+        "paused",
+        "done"
+      ]
+    },
+    "updated": {
+      "type": "string",
+      "description": "ISO 8601 date-time, local time unless it carries an offset",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+    }
+  },
+  "required": [
+    "id",
+    "kind",
+    "ref",
+    "branch",
+    "title",
+    "done",
+    "viewed"
+  ],
+  "additionalProperties": false
+}

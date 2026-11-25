@@ -1,0 +1,365 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "keys.schema.json",
+  "title": "Controls › Keys: the API keys Jarvis holds, write-only (GET /api/keys)",
+  "description": "Contract set v2 addition (core wave 1, K1; JARVIS_CORE_BUILD_MAP §3). A key is never sent back: rows carry at most its last 4 characters. Routes (all on the core, loopback or tailnet only, hub session token in X-Jarvis-Session): GET /api/keys → this document · POST /api/keys/{id}/next with $defs/next_request → $defs/row (stored as next and checked; never made live by itself) · POST /api/keys/{id}/promote → $defs/row (next becomes live, the old live key is kept as previous for 15 minutes) · DELETE /api/keys/{id}/previous → $defs/row · DELETE /api/keys/{id} with $defs/remove_request → $defs/row (every slot removed, status missing). Errors → $defs/error. Live updates: the event keys.updated with $defs/updated. Activity: an activity.added receipt per change (category keys) whose words come from $defs/audit, never key material.",
+  "type": "object",
+  "properties": {
+    "v": {
+      "const": 2
+    },
+    "can_write": {
+      "type": "boolean",
+      "description": "False on a view-only device (the phone): the page shows the rows and accepts nothing."
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/row"
+      },
+      "description": "One row per service, in display order. The four default services (Claude, ElevenLabs, Composio, the restic backup password) always have a row (status missing until a key is added); an optional service (Google OAuth client, OpenWeather, …) has a row once a key was added for it."
+    },
+    "addable": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/provider"
+      },
+      "description": "Optional services that can be added from the \"Add a service\" list (Google OAuth client, OpenWeather, …) and have no row yet."
+    },
+    "audit": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/audit"
+      },
+      "description": "The latest changes, newest first (at most 20)."
+    }
+  },
+  "required": [
+    "v",
+    "can_write",
+    "rows",
+    "addable"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "provider_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "A service id: anthropic, elevenlabs, composio, google-oauth, restic, openweather, …"
+    },
+    "kind": {
+      "enum": [
+        "token",
+        "client_json",
+        "password"
+      ],
+      "description": "token: one pasted API key. client_json: Google's OAuth client file (paste or drop the JSON). password: a password with no remote check (restic)."
+    },
+    "provider": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/provider_id"
+        },
+        "label": {
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/kind"
+        },
+        "checkable": {
+          "type": "boolean",
+          "description": "False when there is no remote check (restic): the key is only checked for shape."
+        },
+        "console_url": {
+          "type": "string",
+          "description": "The provider's page where he creates and revokes keys (Jarvis can't revoke keys itself)."
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "kind",
+        "checkable"
+      ],
+      "additionalProperties": false
+    },
+    "status": {
+      "enum": [
+        "live",
+        "next_waiting",
+        "checking",
+        "failed_check",
+        "missing",
+        "expiring",
+        "fell_back"
+      ],
+      "description": "Live · Next waiting (a checked key is ready to make live) · Checking · Failed check · Missing (no live key) · Expiring (Google refresh token running out) · Fell back (the new key was refused within 15 minutes, so Jarvis went back to the previous one: flag it on the page and in Your yes)."
+    },
+    "check": {
+      "enum": [
+        "ok",
+        "failed",
+        "checking",
+        "unchecked",
+        "shape_only"
+      ],
+      "description": "The last check of one slot. shape_only: no remote check exists, the shape was fine."
+    },
+    "reason": {
+      "enum": [
+        "rejected",
+        "forbidden",
+        "bad_shape",
+        "rate_limited",
+        "unreachable",
+        "provider_error",
+        "refresh_failed",
+        "too_long",
+        "refused_after_swap"
+      ],
+      "description": "Why a check failed, as a fixed code (the provider's own error text is never passed on: it can echo key material). rejected: 401 · forbidden: 403 · bad_shape: not what this service's key looks like · rate_limited: 429 · unreachable: no answer (network) · provider_error: 5xx or anything else · refresh_failed: Google refused the refresh token · too_long: too big for Credential Manager · refused_after_swap: it worked in the check but was refused once live."
+    },
+    "slot": {
+      "type": "object",
+      "properties": {
+        "last4": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 4,
+          "description": "The key's last 4 characters (for Google, of the client secret). null for a password: nothing of it is shown."
+        },
+        "added": {
+          "$ref": "common.schema.json#/$defs/iso"
+        },
+        "checked": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/iso"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "check": {
+          "$ref": "#/$defs/check"
+        },
+        "reason": {
+          "$ref": "#/$defs/reason"
+        },
+        "until": {
+          "$ref": "common.schema.json#/$defs/iso",
+          "description": "previous only: when it is removed automatically (15 minutes after the swap)."
+        },
+        "expires": {
+          "$ref": "common.schema.json#/$defs/iso",
+          "description": "When the credential runs out, when the provider says (Google refresh token)."
+        }
+      },
+      "required": [
+        "last4",
+        "added",
+        "checked",
+        "check"
+      ],
+      "additionalProperties": false
+    },
+    "row": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/provider_id"
+        },
+        "label": {
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/kind"
+        },
+        "checkable": {
+          "type": "boolean"
+        },
+        "console_url": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/status"
+        },
+        "detail": {
+          "type": "string",
+          "description": "One plain sentence for the row when the status needs it (never key material)."
+        },
+        "live": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/slot"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "next": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/slot"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "previous": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/slot"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "used": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/iso"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "When Jarvis last used the live key (\"Used 12 s ago\")."
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "kind",
+        "checkable",
+        "status",
+        "live",
+        "next",
+        "previous",
+        "used"
+      ],
+      "additionalProperties": false
+    },
+    "next_request": {
+      "type": "object",
+      "properties": {
+        "secret": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "The pasted key (or the Google client JSON as text). Sent once; the page clears the field at once and never keeps it."
+        }
+      },
+      "required": [
+        "secret"
+      ],
+      "additionalProperties": false
+    },
+    "remove_request": {
+      "type": "object",
+      "properties": {
+        "confirm": {
+          "$ref": "#/$defs/provider_id",
+          "description": "Must equal the id in the path: proof he meant this service."
+        }
+      },
+      "required": [
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "enum": [
+            "unknown_provider",
+            "no_next",
+            "next_not_checked",
+            "no_previous",
+            "confirm_required",
+            "bad_request",
+            "not_allowed",
+            "view_only",
+            "store_unavailable"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "description": "Plain words for the page."
+        },
+        "row": {
+          "$ref": "#/$defs/row",
+          "description": "The row as it stands, when there is one."
+        }
+      },
+      "required": [
+        "error",
+        "message"
+      ],
+      "additionalProperties": false,
+      "description": "HTTP 404 unknown_provider · 409 no_next / next_not_checked / no_previous · 400 confirm_required / bad_request · 403 not_allowed (not loopback or tailnet, or no valid hub session) / view_only · 503 store_unavailable (Credential Manager can't be reached)."
+    },
+    "audit": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+        },
+        "ts": {
+          "$ref": "common.schema.json#/$defs/iso"
+        },
+        "provider": {
+          "$ref": "#/$defs/provider_id"
+        },
+        "what": {
+          "enum": [
+            "added",
+            "failed_check",
+            "made_live",
+            "replaced",
+            "fell_back",
+            "previous_removed",
+            "removed"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "description": "The Activity line, e.g. \"Claude key replaced\". Never key material."
+        }
+      },
+      "required": [
+        "id",
+        "ts",
+        "provider",
+        "what",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "updated": {
+      "type": "object",
+      "properties": {
+        "row": {
+          "$ref": "#/$defs/row"
+        },
+        "audit": {
+          "$ref": "#/$defs/audit"
+        }
+      },
+      "required": [
+        "row"
+      ],
+      "additionalProperties": false,
+      "description": "data of the keys.updated event: the changed row, and the audit entry when the change was one."
+    }
+  }
+}

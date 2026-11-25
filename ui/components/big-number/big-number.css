@@ -1,0 +1,33 @@
+/* jv-big-number: the hero number (HUD v2 §8): condensed face, tabular figures, ~3× the window title. */
+jv-big-number { display: block; min-width: 0; }
+.jv-big-number { display: grid; gap: 4px; justify-items: start; min-width: 0; }
+/* the caption above the number: sentence case, never small caps (it is often more than two words) */
+.jv-big-number__label { font: 500 13px/18px var(--font-head); color: var(--muted); }
+.jv-big-number__value {
+  font: var(--hero); font-variant-numeric: tabular-nums; letter-spacing: 0; color: var(--text);
+  text-shadow: var(--text-glow); white-space: nowrap; margin: 2px 0 0;
+}
+.jv-big-number__unit { font-size: 0.5em; letter-spacing: 0.04em; color: var(--text-2); text-shadow: none; }
+.jv-big-number__words { font-size: 0.6em; text-transform: var(--kicker-case); letter-spacing: var(--display-track); }
+.jv-big-number__sub { color: var(--muted); max-width: var(--measure); }
+/* due soon / past due: the glance code (shape + colour + word) */
+.jv-big-number__soon { display: inline-flex; color: var(--notice-ink); }
+.jv-big-number__soon--past { color: var(--crit); }
+/* (the number stays near-white: urgency is the glance code beside it, never an amber number; HUD v2 §14.2) */
+.jv-big-number--past .jv-big-number__value { color: var(--text-2); }  /* no blame: the red is the glance code, not a shouting number */
+/* real progress: ~30 blocks lit up to the share done, in the ice "in progress" colour (the mask only uses alpha) */
+.jv-big-number__bar {
+  --p: 0%;
+  width: 100%; height: 6px; margin-top: 6px;
+  background: linear-gradient(90deg, var(--line) 0 var(--p), var(--line-dim) var(--p) 100%);
+  -webkit-mask: repeating-linear-gradient(90deg, black 0 calc(100% / 30 - 2px), transparent calc(100% / 30 - 2px) calc(100% / 30));
+  mask: repeating-linear-gradient(90deg, black 0 calc(100% / 30 - 2px), transparent calc(100% / 30 - 2px) calc(100% / 30));
+}
+:root:not([data-theme="night"]) .jv-big-number__bar { background: linear-gradient(90deg, var(--text-2) 0 var(--p), var(--frame) var(--p) 100%); }
+.jv-big-number__pct { display: inline-flex; }
+
+/* HUD v3: on the Stage's glass board ([opens]) the words around the number get small; the number stays big */
+jv-window[opens] .jv-big-number__sub, jv-window[opens] .jv-big-number__label { font-size: 13px; line-height: 19px; }
+/* a window's hero: the number alone, near-white, no glow */
+.jv-big-number--bare .jv-big-number__value { margin: 0; color: var(--text); text-shadow: none; font-size: 64px; line-height: 64px; }
+.jv-big-number--bare .jv-big-number__unit { color: var(--text-2); }

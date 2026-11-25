@@ -1,0 +1,91 @@
+{
+ "latency": [
+  {
+   "stage": "Hear (speech to text)",
+   "p50_ms": 180,
+   "p95_ms": 280,
+   "target_ms": 300
+  },
+  {
+   "stage": "Think (first words)",
+   "p50_ms": 420,
+   "p95_ms": 780,
+   "target_ms": 800
+  },
+  {
+   "stage": "Speak (first sound)",
+   "p50_ms": 140,
+   "p95_ms": 260,
+   "target_ms": 300
+  },
+  {
+   "stage": "Hub (event to screen)",
+   "p50_ms": 35,
+   "p95_ms": 80,
+   "target_ms": 100
+  }
+ ],
+ "connectors": [
+  {
+   "name": "Canvas",
+   "status": "ok",
+   "last_sync": "2 min ago"
+  },
+  {
+   "name": "PAWS",
+   "status": "ok",
+   "last_sync": "Today 7:00 am"
+  },
+  {
+   "name": "Google Calendar",
+   "status": "ok",
+   "last_sync": "2 min ago"
+  },
+  {
+   "name": "Gmail",
+   "status": "stale",
+   "last_sync": "Yesterday",
+   "note": "Sign in again from Controls"
+  }
+ ],
+ "spend": {
+  "claude_usd": 38.4,
+  "credit_usd": 100
+ },
+ "credits": {
+  "elevenlabs_left": 61200,
+  "elevenlabs_total": 100000
+ },
+ "eval": [
+  {
+   "week": "Oct 19",
+   "score": 71
+  },
+  {
+   "week": "Oct 26",
+   "score": 74
+  },
+  {
+   "week": "Nov 2",
+   "score": 80
+  },
+  {
+   "week": "Nov 9",
+   "score": 83
+  }
+ ],
+ "placement_accuracy": 0.91,
+ "backup": {
+  "last": "Today 3:10 am",
+  "restore_test": "Passed Nov 14"
+ },
+ "self_report": {
+  "learned": [
+   "Problem sets take about twice the estimate",
+   "You prefer blocks after 9 am"
+  ],
+  "got_wrong": [
+   "Filed a CMPT note under GE 122"
+  ]
+ }
+}

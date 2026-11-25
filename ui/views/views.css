@@ -1,0 +1,120 @@
+/* Shared layout for views: page header, crumbs, columns, chips, segmented controls, switches, rows.
+   Views bring their own files for anything specific. */
+.jv-view { max-width: 1320px; margin: 0 auto; padding: var(--gap-small) 0 72px; display: grid; gap: var(--gap-large); }
+.jv-view--narrow { max-width: 880px; }
+/* Page header, the same on every view, on one left edge:
+   <header class="jv-view__head"><nav class="jv-crumbs" aria-label="Breadcrumb">…</nav><h1>…</h1><p class="jv-view__sub">…</p></header>
+   The crumb is left out on top-level views (Now, Today, Life, Activity, Controls); the subtitle is optional. */
+.jv-view__head { display: grid; justify-items: start; align-content: start; gap: 2px; min-width: 0; }
+.jv-view__head > .jv-crumbs { margin-bottom: 2px; }
+.jv-view__sub { color: var(--muted); max-width: var(--measure); }
+/* Breadcrumbs: sentence case, Lexend 14 px, no underline; the page you are on is in text colour */
+.jv-crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; font: var(--crumb); color: var(--muted); }
+.jv-crumbs a { color: var(--muted); text-decoration: none; border-radius: var(--r-control); }
+.jv-crumbs a:hover { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+.jv-crumbs [aria-current] { color: var(--text); font-weight: 500; }
+.jv-view__cols { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--gap-large); align-items: start; }
+.jv-view__stack { display: grid; gap: var(--gap-large); align-content: start; min-width: 0; }
+.jv-view__section-title { display: flex; align-items: center; gap: var(--gap-small); margin-bottom: var(--gap-small); }
+.jv-view__count { font: 600 12px/1 var(--font-head); min-width: 20px; height: 20px; padding: 0 6px; display: inline-grid; place-items: center; border-radius: var(--r-pill); background: var(--sunken); color: var(--muted); font-variant-numeric: tabular-nums; }
+.jv-view__count--waiting { background: var(--honey); color: var(--honey-ink); box-shadow: inset 0 0 0 1px var(--notice-border); }
+.jv-view__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--gap-large); align-items: start; }
+.jv-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.jv-chip { min-height: 32px; padding: 0 12px; font: 500 13px/1 var(--font-head); color: var(--muted); background: transparent; border: 1px solid var(--line-strong); border-radius: var(--r-pill); cursor: pointer; }
+.jv-chip[aria-pressed="true"], .jv-chip[aria-checked="true"] { background: var(--card); color: var(--text); border-color: var(--control); box-shadow: inset 0 -2px 0 var(--control); }
+.jv-seg { display: inline-flex; padding: 3px; gap: 2px; background: var(--sunken); border: 1px solid var(--line); border-radius: var(--r-pill); }
+/* Segmented controls and switches use Pen Reader's pressed look: the chosen state is lifted onto the card
+   with a --control border. Green stays for growth; terracotta stays for the one main action. */
+.jv-seg button { min-height: 34px; padding: 0 14px; border: 1.5px solid transparent; background: none; border-radius: var(--r-pill); font: 500 14px/1 var(--font-head); color: var(--muted); cursor: pointer; transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+.jv-seg button:hover { color: var(--text); }
+.jv-seg button[aria-checked="true"], .jv-seg button[aria-pressed="true"] { background: var(--card); color: var(--text); border-color: var(--control); box-shadow: var(--shadow-small); }
+.jv-switch { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 0 12px 0 4px; border: 1.5px solid var(--line-strong); border-radius: var(--r-pill); background: var(--sunken); cursor: pointer; font: 500 13px/1 var(--font-head); color: var(--muted); transition: background-color var(--t-fast) var(--ease); }
+.jv-switch::before { content: ""; width: 26px; height: 26px; border-radius: var(--r-pill); border: 1.5px dashed var(--control); }
+.jv-switch:hover { color: var(--text); }
+.jv-switch[aria-checked="true"] { color: var(--text); background: var(--card); border-color: var(--control); box-shadow: var(--shadow-small); flex-direction: row-reverse; padding: 0 4px 0 12px; }
+.jv-switch[aria-checked="true"]::before { background: var(--control); border: 0; }
+.jv-row { display: flex; align-items: center; justify-content: space-between; gap: var(--gap); padding: 10px 0; border-bottom: 1px solid var(--line); min-height: 56px; flex-wrap: wrap; }
+.jv-row:last-child { border-bottom: 0; }
+.jv-row__text { display: grid; gap: 1px; min-width: 0; flex: 1 1 220px; }
+.jv-row__text b { font: 500 15px/22px var(--font-head); }
+.jv-row__text span { color: var(--muted); font-size: 14px; }
+:root[data-size="laptop"] .jv-view__cols { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--gap); }
+:root[data-size="phone"] .jv-view__cols { grid-template-columns: minmax(0, 1fr); }
+:root[data-size="phone"] .jv-view { padding-bottom: 24px; gap: var(--gap); }
+:root[data-size="phone"] .jv-view__grid { grid-template-columns: minmax(0, 1fr); }
+
+/* ── Night HUD pass (N5b, HUD v2 §2–§3, §5, §8) ─────────────────────────────────────────────────────────
+   Dividers inside a panel are quiet (--rule, never the bright ice --line). In Night every panel on these tabs is a
+   square HUD window (the .jv-frame look: 1 px frame, static glow, near-opaque fill, top sheen); Daylight keeps its
+   Earth cards. Chosen chips, segments and switches are a brighter frame + text, never cyan (cyan = Jarvis). */
+.jv-row { border-bottom-color: var(--rule); }
+.jv-view__head h1 { overflow-wrap: anywhere; }
+:root[data-theme="night"] .jv-view__head h1 {
+  font: var(--display); font-size: 34px; line-height: 36px; letter-spacing: var(--display-track);
+  text-transform: var(--kicker-case); text-shadow: var(--text-glow);
+}
+:root[data-theme="night"] .jv-view__sub { color: var(--text-2); }
+:root[data-theme="night"] :is(jv-view-today, jv-view-life, jv-view-activity, jv-view-memory, jv-view-unsorted, jv-view-controls, jv-view-hood, jv-branch-page) :is(.jv-sheet, .jv-card) {
+  border: 1px solid var(--frame); border-radius: var(--r-card);
+  background:
+    linear-gradient(90deg, transparent, var(--sheen) 18%, var(--sheen) 82%, transparent) top / 100% 1px no-repeat,
+    var(--panel);
+  box-shadow: var(--glow);
+}
+/* a kicker used as a panel heading: room under it, a count or tag at its end */
+.jv-view__kicker { display: flex; align-items: center; gap: var(--gap-small); margin-bottom: 10px; min-width: 0; }
+.jv-view__kicker > .jv-kicker:first-child { overflow: hidden; text-overflow: ellipsis; }
+.jv-view__kicker > .jv-kicker--end { margin-left: auto; }
+/* counts: mono tabular figures; "waiting for your yes" is the amber hollow square + number (never a red badge) */
+:root[data-theme="night"] .jv-view__count { font: var(--kicker); border-radius: var(--r-control); background: transparent; color: var(--text-2); box-shadow: inset 0 0 0 1px var(--line-dim); }
+:root[data-theme="night"] .jv-view__count--waiting { color: var(--warn); background: transparent; box-shadow: inset 0 0 0 1.5px var(--warn); }
+/* chips, segments and switches become small outlined mono pills (the .jv-pill look) */
+:root[data-theme="night"] .jv-chip {
+  display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+  font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case);
+  color: var(--text-2); border-color: var(--line-dim);
+}
+:root[data-theme="night"] .jv-chip:hover { color: var(--text); border-color: var(--frame-on); }
+:root[data-theme="night"] .jv-chip[aria-pressed="true"], :root[data-theme="night"] .jv-chip[aria-checked="true"] { color: var(--text); background: var(--sunken); border-color: var(--frame-on); box-shadow: none; }
+:root[data-theme="night"] .jv-seg { background: transparent; border-color: var(--line-dim); border-radius: var(--r-pill); }
+:root[data-theme="night"] .jv-seg button { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--text-2); }
+:root[data-theme="night"] .jv-seg button:hover { color: var(--text); }
+:root[data-theme="night"] .jv-seg button[aria-checked="true"], :root[data-theme="night"] .jv-seg button[aria-pressed="true"] { background: var(--sunken); color: var(--text); border-color: var(--frame-on); box-shadow: none; }
+/* switch: a square track with a mark that moves, and the word (ON / OFF) */
+:root[data-theme="night"] .jv-switch { font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); border-width: 1px; border-color: var(--line-dim); background: transparent; color: var(--text-2); }
+:root[data-theme="night"] .jv-switch::before { width: 22px; height: 22px; border-radius: var(--r-control); border: 1.5px dashed var(--line-dim); }
+:root[data-theme="night"] .jv-switch[aria-checked="true"] { color: var(--text); background: var(--sunken); border-color: var(--frame-on); box-shadow: none; }
+:root[data-theme="night"] .jv-switch[aria-checked="true"]::before { background: var(--text); border: 0; }
+:root[data-theme="night"] .jv-row__text b { font-weight: 500; }
+:root[data-theme="night"] .jv-row__text span { color: var(--text-2); }
+:root[data-theme="night"] .jv-crumbs [aria-current] { color: var(--text); }
+:root[data-theme="night"] select { background: var(--panel); color: var(--text); border-color: var(--line-dim); border-radius: var(--r-control); }
+
+/* ── Glance marks (HUD v2 §5): until <jv-glance> (N5a) is registered, a stand-in draws the same shape + colour +
+   word from its attributes, so every state already reads as shape + colour + word. Once the element is defined
+   these rules stop matching and N5a's own drawing takes over. */
+jv-glance:not(:defined) {
+  --g: var(--text-3);
+  display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; white-space: nowrap;
+  font: var(--kicker); letter-spacing: var(--kicker-track); text-transform: var(--kicker-case); color: var(--g);
+}
+jv-glance:not(:defined)::before { content: ""; flex: none; width: 12px; height: 12px; box-sizing: border-box; }
+jv-glance:not(:defined)::after { content: attr(label); }
+jv-glance:not(:defined)[label=""]::after { content: none; }
+jv-glance[state="done"]:not(:defined) { --g: var(--cyan-hi); }
+jv-glance[state="done"]:not(:defined)::before { width: 16px; height: 16px; border-radius: 50%; background: var(--g);
+  /* a filled disc with a dark check cut out of it */
+  -webkit-mask: radial-gradient(circle, black 70%, transparent 71%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.2 8.4l2.6 2.5 5-5.6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  -webkit-mask-composite: xor; mask-composite: exclude; }
+jv-glance[state="progress"]:not(:defined) { --g: var(--line); }
+jv-glance[state="progress"]:not(:defined)::before { border-radius: 50%; border: 1.5px solid var(--line-dim); border-top-color: var(--g); border-right-color: var(--g); }
+jv-glance[state="jarvis"]:not(:defined) { --g: var(--cyan); }
+jv-glance[state="jarvis"]:not(:defined)::before { border-radius: 50%; border: 1.5px solid var(--g); box-shadow: inset 0 0 0 3px var(--panel), inset 0 0 0 6px var(--g); }
+jv-glance[state="soon"]:not(:defined) { --g: var(--warn); }
+jv-glance[state="soon"]:not(:defined)::before { width: 10px; height: 10px; margin: 0 1px; border: 1.5px solid var(--g); transform: rotate(45deg); }
+jv-glance[state="yes"]:not(:defined) { --g: var(--warn); }
+jv-glance[state="yes"]:not(:defined)::before { border: 1.5px solid var(--g); }
+jv-glance[state="critical"]:not(:defined) { --g: var(--crit); }
+jv-glance[state="critical"]:not(:defined)::before { background: var(--g); clip-path: polygon(50% 4%, 100% 96%, 0 96%); }
+jv-glance[state="parked"]:not(:defined) { --g: var(--text-3); }
+jv-glance[state="parked"]:not(:defined)::before { border-radius: 50%; border: 1.5px dashed var(--g); }

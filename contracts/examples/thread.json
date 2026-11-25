@@ -1,0 +1,32 @@
+{
+ "id": "th-pps7",
+ "kind": "pdf",
+ "ref": "file-pps7",
+ "branch": "ge-122",
+ "title": "PPS 7",
+ "thumb": {
+  "src": "/api/thumb/file-pps7-p3.webp",
+  "kind": "page",
+  "alt": "Page 3 of PPS 7, question 7"
+ },
+ "resume": {
+  "page": 3,
+  "y": 71.2,
+  "label": "Q7",
+  "source": "inferred",
+  "at": "2026-11-15T21:14:00"
+ },
+ "done": [
+  "Q1",
+  "Q2",
+  "Q3",
+  "Q4",
+  "Q5",
+  "Q6"
+ ],
+ "viewed": [
+  "Q4"
+ ],
+ "state": "paused",
+ "updated": "2026-11-15T21:14:00"
+}

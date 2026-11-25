@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en" data-theme="night" data-size="full">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>Jarvis</title>
+  <link rel="icon" href="icons/app.svg" type="image/svg+xml">
+  <link rel="preload" href="fonts/lexend-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/atkinson-hyperlegible-next-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="core/shell.css">
+  <!-- component and view styles: one line per merged work package (overseer) -->
+  <link rel="stylesheet" href="components/window/window.css">
+  <link rel="stylesheet" href="components/orb/orb.css">
+  <link rel="stylesheet" href="components/now-card/now-card.css">
+  <link rel="stylesheet" href="components/tabs/tabs.css">
+  <link rel="stylesheet" href="components/source-chip/source-chip.css">
+  <link rel="stylesheet" href="components/notice/notice.css">
+  <link rel="stylesheet" href="components/clock/clock.css">
+  <link rel="stylesheet" href="components/status-line/status-line.css">
+  <link rel="stylesheet" href="components/big-number/big-number.css">
+  <link rel="stylesheet" href="components/caption/caption.css">
+  <link rel="stylesheet" href="components/working-on/working-on.css">
+  <link rel="stylesheet" href="components/file-tile/file-tile.css">
+  <link rel="stylesheet" href="components/plant/plant.css">
+  <link rel="stylesheet" href="components/command-bar/command-bar.css">
+  <link rel="stylesheet" href="components/fact-card/fact-card.css">
+  <link rel="stylesheet" href="components/mini-chart/mini-chart.css">
+  <link rel="stylesheet" href="components/action-row/action-row.css">
+  <link rel="stylesheet" href="components/approval-card/approval-card.css">
+  <link rel="stylesheet" href="components/branch-card/branch-card.css">
+  <link rel="stylesheet" href="components/timeline/timeline.css">
+  <link rel="stylesheet" href="components/glance/glance.css">
+  <link rel="stylesheet" href="components/thumb/thumb.css">
+  <link rel="stylesheet" href="components/rail/rail.css">
+  <link rel="stylesheet" href="components/resume-card/resume-card.css">
+  <link rel="stylesheet" href="views/views.css">
+  <link rel="stylesheet" href="views/stage/canvas.css">
+  <link rel="stylesheet" href="views/now/now.css">
+  <link rel="stylesheet" href="views/stage/stage.css">
+  <link rel="stylesheet" href="views/today/today.css">
+  <link rel="stylesheet" href="views/activity/activity.css">
+  <link rel="stylesheet" href="views/controls/controls.css">
+  <link rel="stylesheet" href="views/hood/hood.css">
+  <link rel="stylesheet" href="views/strip/strip.css">
+  <link rel="stylesheet" href="views/life/life.css">
+  <link rel="stylesheet" href="views/branch/branch.css">
+  <link rel="stylesheet" href="views/memory/memory.css">
+  <link rel="stylesheet" href="views/phone/phone.css">
+  <link rel="stylesheet" href="views/reader/reader.css">
+  <link rel="stylesheet" href="components/day-dial/day-dial.css">
+  <link rel="stylesheet" href="views/now/ambient.css">
+  <link rel="stylesheet" href="components/web-frame/web-frame.css">
+  <link rel="stylesheet" href="components/day-map/day-map.css">
+  <link rel="stylesheet" href="components/agent-task/agent-task.css">
+  <link rel="stylesheet" href="views/reach/reach.css">
+  <link rel="stylesheet" href="views/keys/keys.css">
+</head>
+<body class="jv-grid">
+  <a class="jv-skip" href="#stage">Skip to the main view</a>
+  <!-- ambient region: the backdrop the ambient screen draws into (day dial, standby orb). Empty and unseen otherwise. -->
+  <div class="jv-ambient" id="ambient"></div>
+  <header class="jv-chrome" id="chrome">
+    <span class="jv-chrome__mark" aria-hidden="true">JARVIS</span>
+    <a class="jv-chrome__demo" id="demo-chip" href="#/controls" hidden title="Demo mode: a scripted day, not your real data. Replay it from Controls.">Demo<span class="jv-sr"> mode. Open Controls to replay the demo day</span></a>
+    <span class="jv-chrome__space"></span>
+    <jv-tabs id="tabs"></jv-tabs><!-- the phone's tab bar; elsewhere the page dots under the icon row (components/tabs) -->
+  </header>
+  <main id="stage" tabindex="-1" aria-label="Jarvis hub"></main>
+  <!-- the bottom band, on every tab: the status word left · the icon row (the Rail, with search and the page dots)
+       centre, with the caption above it while Jarvis speaks · the orb's dock right -->
+  <footer class="jv-foot" id="foot">
+    <div class="jv-band__left">
+      <jv-status-line id="status"></jv-status-line>
+      <jv-working-on id="jobs"></jv-working-on>
+    </div>
+    <div class="jv-band__centre">
+      <jv-caption id="caption"></jv-caption>
+      <jv-rail id="rail"></jv-rail>
+    </div>
+    <div class="jv-band__right" aria-hidden="true"></div>
+  </footer>
+  <div class="jv-dock" id="dock">
+    <jv-orb id="orb" size="corner" state="idle" openable></jv-orb>
+  </div>
+  <jv-toasts id="toasts"></jv-toasts>
+  <jv-command-bar id="command-bar"></jv-command-bar>
+  <script type="module" src="core/main.js"></script>
+</body>
+</html>
